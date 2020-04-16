@@ -2,7 +2,8 @@
     "name": "ss-search",
     "version": "1.0.0",
     "description": "The most basic, yet powerful text search.",
-    "main": "index.js",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "files": [
         "lib/**/*"
     ],
@@ -10,7 +11,12 @@
         "build": "tsc",
         "format": "prettier --write \"./**/*.ts\"",
         "lint": "tslint -p tsconfig.json",
-        "test": "mocha -r ts-node/register tests/**.test.ts"
+        "test": "mocha -r ts-node/register tests/**.test.ts",
+        "prepare": "npm run build",
+        "prepublishOnly": "npm test && npm run lint",
+        "preversion": "npm run lint",
+        "version": "npm run format && git add -A src",
+        "postversion": "git push && git push --tags"
     },
     "repository": {
         "type": "git",
@@ -21,7 +27,9 @@
         "text",
         "typescript",
         "javascript",
-        "fast"
+        "fast",
+        "array",
+        "object"
     ],
     "author": "Yann Thibodeau",
     "license": "ISC",
