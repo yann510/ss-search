@@ -11,18 +11,28 @@ export function tokenize(searchText: string): string[] {
     return normalize(escapeRegExp(searchText)).match(/\w+/gim) || []
 }
 
-const convertToSearchableStrings = memoize((elements: any[], searchableKeys: string[]) => {
+export const convertToSearchableStrings = memoize((elements: any[], searchableKeys: string[]) => {
+    if (!elements || elements.length === 0 || !searchableKeys || searchableKeys.length === 0) {
+        return []
+    }
+
     return elements
         .map((element) =>
             searchableKeys
+                .filter((key) => {
+                    const value = get(element, key)
+
+                    return key.includes(".") || (value != null && typeof value !== "function")
+                })
                 .map((key) => {
                     const keys = key.split(".")
                     const firstKeyValue = get(element, keys[0])
 
-                    const isArrayWithNestedProperties = keys.length > 1 && Array.isArray(firstKeyValue)
+                    const isArrayWithNestedProperties = Array.isArray(firstKeyValue) && keys.length > 1
                     if (isArrayWithNestedProperties) {
                         return firstKeyValue.map((x: any) => get(x, keys.slice(1, keys.length)))
                     }
+
                     if (Array.isArray(firstKeyValue) || typeof firstKeyValue === "object") {
                         return JSON.stringify(firstKeyValue)
                     }

@@ -5,6 +5,17 @@ const expect = chai.expect
 
 describe("index", function () {
     describe("#normalize", function () {
+        it("Should return empty string when null is passed", function () {
+            // Arrange
+            const baiscText: any = null
+
+            // Act
+            const actual = normalize(baiscText)
+
+            // Assert
+            expect(actual).to.be.eql("")
+        })
+
         it("Should keep the original text as it is simple", function () {
             // Arrange
             const baiscText = "this search library is so simple, yet so good"
