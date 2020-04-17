@@ -7,18 +7,18 @@
 - Will return exactly what you are looking for
 - Very small size; only depends on 4 lodash functions
 
-# Demo
+## Demo
 You're probably not convinced yet, so take a look at this interactive
 [demo]().
 
-# Install
+## Install
 ss-search is available on [npm](https://www.npmjs.com/package/ss-search). It can be installed with the following command:
 
 `npm install ss-search` 
 
-# Usage
+## Usage
 
-## Basic
+### Basic
 ```javascript
 import { search } from "ss-search"
 
@@ -41,7 +41,7 @@ const results = search(data, keys, searchText)
 
 Yes. It is that simple, no need to configure anything, it works out of the box.
 
-## Data Types
+### Data Types
 
 Almost all data types are supported [boolean, number, string, object, array].
 ```javascript
@@ -58,25 +58,25 @@ const data = [
 ]
 ```
 
-### Boolean
+#### Boolean
 ```javascript
 const results = search(data, ["boolean"], "true")
 // results: will return our original dataset
 ```
 
-### Number
+#### Number
 ```javascript
 const results = search(data, ["number"], "2")
 // results: will return our original dataset
 ```
 
-### String
+#### String
 ```javascript
 const results = search(data, ["string"], "value")
 // results: will return our original dataset
 ```
 
-### Object
+#### Object
 ```javascript
 const results = search(data, ["object"], "property")
 // results: will return our original dataset even though the searched text is not contained in the `nestedProperty` value, because our object will be transformed to a string with JSON.stringify
@@ -86,7 +86,7 @@ const results = search(data, ["object.nestedProperty"], "property")
 // results: will return an empty array as we extract the value of our nested object
 ```
 
-### Array
+#### Array
 ```javascript
 const results = search(data, ["array"], "value2")
 // results: will return our original dataset using JSON.stringify
