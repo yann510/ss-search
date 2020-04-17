@@ -16,28 +16,27 @@ export const convertToSearchableStrings = memoize((elements: any[], searchableKe
         return []
     }
 
+    const arraySelectorRegex = /\[(.*)\]/
     return elements
         .map((element) =>
             searchableKeys
-                .filter((key) => {
-                    const value = get(element, key)
-
-                    return key.includes(".") || (value != null && typeof value !== "function")
-                })
                 .map((key) => {
-                    const keys = key.split(".")
-                    const firstKeyValue = get(element, keys[0])
+                    const arraySelector = get(arraySelectorRegex.exec(key), "1")
 
-                    const isArrayWithNestedProperties = Array.isArray(firstKeyValue) && keys.length > 1
-                    if (isArrayWithNestedProperties) {
-                        return firstKeyValue.map((x: any) => get(x, keys.slice(1, keys.length)))
+                    const value = get(element, key.replace(arraySelectorRegex, ""))
+                    if (!arraySelector && (value == null || typeof value == "function")) {
+                        return ""
                     }
 
-                    if (Array.isArray(firstKeyValue) || typeof firstKeyValue === "object") {
-                        return JSON.stringify(firstKeyValue)
+                    if (arraySelector) {
+                        return value.map((x: any) => get(x, arraySelector))
                     }
 
-                    return firstKeyValue
+                    if (Array.isArray(value) || typeof value === "object") {
+                        return JSON.stringify(value)
+                    }
+
+                    return value
                 })
                 .reduce((a, b) => a + b, ""),
         )
@@ -50,6 +49,9 @@ export function search<T>(elements: T[], searchableKeys: string[], searchText: s
     const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys)
 
     return searchableDataStrings
-        .map((x, i) => (searchWords.filter((searchWord) => x.indexOf(searchWord) > -1).length === searchWords.length ? elements[i] : null))
+        .map((x, i) => {
+            const matchesAllSearchWords = searchWords.filter((searchWord) => x.indexOf(searchWord) > -1).length === searchWords.length
+            return matchesAllSearchWords ? elements[i] : null
+        })
         .filter((x) => x)
 }

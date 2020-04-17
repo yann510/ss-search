@@ -119,6 +119,22 @@ describe("index", function () {
             expect(actual).to.be.eql(['{"nestedproperty":"value"}'])
         })
 
+        it("Should extract nested object property", function () {
+            // Arrange
+            const data = [
+                {
+                    object: { nestedProperty: "value" },
+                },
+            ]
+            const keys = ["object.nestedProperty"]
+
+            // Act
+            const actual = convertToSearchableStrings(data, keys)
+
+            // Assert
+            expect(actual).to.be.eql(["value"])
+        })
+
         it("Should convert array to json string", function () {
             // Arrange
             const data = [
@@ -135,20 +151,44 @@ describe("index", function () {
             expect(actual).to.be.eql(['["value1","value2"]'])
         })
 
-        it("Should extract array object value when using the '.' notation as the key selector", function () {
+        it("Should extract array object value when using the '[]' notation as the key selector", function () {
             // Arrange
             const data = [
                 {
                     array: [{ prop1: "value1", prop2: "value2" }],
                 },
             ]
-            const keys = ["array.prop2"]
+            const keys = ["array[prop2]"]
 
             // Act
             const actual = convertToSearchableStrings(data, keys)
 
             // Assert
             expect(actual).to.be.eql(["value2"])
+        })
+
+        it("Should return empty string when the elements value provided is not an object", function () {
+            // Arrange
+            const data = ["string"]
+            const keys = [""]
+
+            // Act
+            const actual = convertToSearchableStrings(data, keys)
+
+            // Assert
+            expect(actual).to.be.eql([""])
+        })
+
+        it("Should return empty string when the key is missing from the object", function () {
+            // Arrange
+            const data = [{ key: "value" }]
+            const keys = ["invalidKey"]
+
+            // Act
+            const actual = convertToSearchableStrings(data, keys)
+
+            // Assert
+            expect(actual).to.be.eql([""])
         })
     })
 })
