@@ -24,7 +24,7 @@ export const convertToSearchableStrings = memoize((elements: any[], searchableKe
                     const arraySelector = get(arraySelectorRegex.exec(key), "1")
 
                     const value = get(element, key.replace(arraySelectorRegex, ""))
-                    if (!arraySelector && (value === null || value === undefined || typeof value == "function")) {
+                    if (!arraySelector && (value === null || value === undefined || typeof value === "function")) {
                         return ""
                     }
 
