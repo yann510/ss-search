@@ -1,5 +1,6 @@
 # s(imply)s(tupid)-search
-## The most basic, yet powerful text search.
+### The most basic, yet powerful text search.
+### Stop searching, start finding.
 
 - Easy to use; will return you appropriate results out of the box, no need to configure anything
 - Search local array of objects as easily as never before
@@ -8,8 +9,9 @@
 - Very small size; only depends on 4 lodash functions
 
 ## Demo
+
 You're probably not convinced yet, so take a look at this interactive
-[demo]().
+[demo](). 
 
 ## Install
 ss-search is available on [npm](https://www.npmjs.com/package/ss-search). It can be installed with the following command:
