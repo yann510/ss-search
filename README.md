@@ -10,8 +10,10 @@
 
 ## Demo
 
-You're probably not convinced yet, so take a look at this interactive
-[demo](). 
+![](demo.gif)
+
+If you're not convinced yet, take a look at this interactive
+[demo](https://ss-search.netlify.app/). 
 
 ## Install
 ss-search is available on [npm](https://www.npmjs.com/package/ss-search). It can be installed with the following command:
