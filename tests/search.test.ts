@@ -1,5 +1,5 @@
 import * as chai from "chai"
-import { search } from '../src';
+import { search } from "../src"
 
 const expect = chai.expect
 
@@ -10,12 +10,12 @@ const dataset = [
     },
     {
         number: 2,
-        text: "A search function should provide accurate results"
+        text: "A search function should provide accurate results",
     },
     {
         number: 3,
-        text: "A search function should return results that match everything provided in the search text"
-    }
+        text: "A search function should return results that match everything provided in the search text",
+    },
 ]
 
 describe("index", function () {

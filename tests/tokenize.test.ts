@@ -1,7 +1,7 @@
-import * as chai from "chai";
-import { tokenize } from '../src';
+import * as chai from "chai"
+import { tokenize } from "../src"
 
-const expect = chai.expect;
+const expect = chai.expect
 
 describe("index", function () {
     describe("#tokenize", function () {
@@ -26,6 +26,6 @@ describe("index", function () {
             // Assert
             const expected = ["i", "will", "now", "get", "split", "into", "tokens", "by", "this", "lovely", "tokenization", "function"]
             expect(actual).to.be.eql(expected)
-        });
-    });
-});
+        })
+    })
+})
