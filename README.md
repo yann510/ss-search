@@ -40,16 +40,16 @@ const searchKeys = ["text"]
 const searchText = "fast search"
 
 const results = search(data, keys, searchText)
-// results: [{ number: 2, text: "A search function should provide accurate results" }]
 ```
+results: `[{ number: 2, text: "A search function should provide accurate results" }]`
 
 Yes. It is that simple, no need to configure anything, it works out of the box.
 
 ### Data Types
 
 Almost all data types are supported [boolean, number, string, object, array].
+This dataset will be used as a common starting point for our type examples
 ```javascript
-// This dataset will be used as a common starting point for our type examples
 const data = [
     {
         boolean: true,
@@ -65,37 +65,42 @@ const data = [
 #### Boolean
 ```javascript
 const results = search(data, ["boolean"], "true")
-// results: will return our original dataset
 ```
+results: will return our original dataset
 
 #### Number
 ```javascript
 const results = search(data, ["number"], "2")
-// results: will return our original dataset
 ```
+results: will return our original dataset
 
 #### String
 ```javascript
 const results = search(data, ["string"], "value")
-// results: will return our original dataset
 ```
+results: will return our original dataset
 
 #### Object
 ```javascript
 const results = search(data, ["object"], "property")
-// results: will return our original dataset even though the searched text is not contained in the `nestedProperty` value, because our object will be transformed to a string with JSON.stringify
-
-// If you want to access a nested property of an object:
-const results = search(data, ["object.nestedProperty"], "property")
-// results: will return an empty array as we extract the value of our nested object
 ```
+results: will return our original dataset even though the searched text is not contained in the `nestedProperty` value, because our object will be transformed to a string with JSON.stringify
+
+
+If you want to access a nested property of an object:
+```javascript
+const results = search(data, ["object.nestedProperty"], "property")
+```
+results: will return an empty array as we extract the value of our nested object
 
 #### Array
 ```javascript
 const results = search(data, ["array"], "value2")
-// results: will return our original dataset using JSON.stringify
-
-// Array of objects
-const results = search(data, ["arrayObjects[arrayObjectProperty]"], "value object")
-// results: will return our original dataset as we extracted the specific value of the array objects using the array selector
 ```
+results: will return our original dataset using JSON.stringify
+
+Array of objects:
+```javascript
+const results = search(data, ["arrayObjects[arrayObjectProperty]"], "value object")
+```
+results: will return our original dataset as we extracted the specific value of the array objects using the array selector

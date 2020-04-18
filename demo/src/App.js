@@ -124,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
     const classes = useStyles()
 
-    const [open, setOpen] = React.useState(true)
+    const [open, setOpen] = React.useState(false)
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
     const [searchText, setSearchText] = React.useState("")
