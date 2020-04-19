@@ -40,16 +40,16 @@ const searchKeys = ["text"]
 const searchText = "fast search"
 
 const results = search(data, keys, searchText)
+// results: [{ number: 2, text: "A search function should provide accurate results" }]
 ```
-results: `[{ number: 2, text: "A search function should provide accurate results" }]`
 
 Yes. It is that simple, no need to configure anything, it works out of the box.
 
 ### Data Types
 
 Almost all data types are supported [boolean, number, string, object, array].
-This dataset will be used as a common starting point for our type examples
 ```javascript
+// This dataset will be used as a common starting point for our type examples
 const data = [
     {
         boolean: true,
