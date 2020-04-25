@@ -1,4 +1,4 @@
-import deburr from 'lodash/deburr';
+import deburr from "lodash/deburr"
 import escapeRegExp from "lodash/escapeRegExp"
 import memoize from "lodash/memoize"
 import get from "lodash/get"
