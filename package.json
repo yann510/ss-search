@@ -1,6 +1,6 @@
 {
     "name": "ss-search",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "The most basic, yet powerful text search.",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
