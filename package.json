@@ -38,8 +38,6 @@
     },
     "homepage": "https://github.com/yann510/ss-search#readme",
     "devDependencies": {
-        "@rollup/plugin-commonjs": "^11.1.0",
-        "@rollup/plugin-typescript": "^4.1.1",
         "@types/chai": "^4.2.11",
         "@types/lodash": "^4.14.149",
         "@types/mocha": "^7.0.2",
