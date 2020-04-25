@@ -1,3 +1,8 @@
+![npm](https://img.shields.io/npm/v/ss-search?style=flat-square)
+![Travis (.org)](https://img.shields.io/travis/yann510/ss-search?style=flat-square)
+![Coveralls github](https://img.shields.io/coveralls/github/yann510/ss-search?style=flat-square)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/ss-search?style=flat-square)
+
 # s(imply)s(tupid)-search
 ### The most basic, yet powerful text search.
 ### Stop searching, start finding.
