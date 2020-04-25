@@ -1,7 +1,7 @@
-const deburr = require("lodash/deburr")
-const escapeRegExp = require("lodash/escapeRegExp")
-const memoize = require("lodash/memoize")
-const get = require("lodash/get")
+import deburr from "lodash/deburr"
+import escapeRegExp from "lodash/escapeRegExp"
+import memoize from "lodash/memoize"
+import get from "lodash/get"
 
 export function normalize(text: string) {
     return deburr(text)
@@ -49,7 +49,7 @@ export const convertToSearchableStrings = memoize((elements: any[], searchableKe
 export function search<T>(elements: T[], searchableKeys: string[], searchText: string) {
     const searchWords = tokenize(searchText)
 
-    const searchableDataStrings: string[] = convertToSearchableStrings(elements, searchableKeys)
+    const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys)
 
     return searchableDataStrings
         .map((x, i) => {
