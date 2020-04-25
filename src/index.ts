@@ -1,4 +1,7 @@
-import { deburr, escapeRegExp, memoize, get } from "lodash"
+import deburr from 'lodash/deburr';
+import escapeRegExp from "lodash/escapeRegExp"
+import memoize from "lodash/memoize"
+import get from "lodash/get"
 
 export function normalize(text: string) {
     return deburr(text)
