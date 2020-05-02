@@ -56,5 +56,5 @@ export function search<T>(elements: T[], searchableKeys: string[], searchText: s
             const matchesAllSearchWords = searchWords.filter((searchWord) => x.indexOf(searchWord) > -1).length === searchWords.length
             return matchesAllSearchWords ? elements[i] : null
         })
-        .filter((x) => x)
+        .filter((x) => x) as T[]
 }
