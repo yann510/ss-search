@@ -12,7 +12,7 @@ import TableFooter from "@material-ui/core/TableFooter"
 import TablePagination from "@material-ui/core/TablePagination"
 import Box from "@material-ui/core/Box"
 import React from "react"
-import { search, tokenize } from "ss-search"
+import { indexDocuments, search, tokenize } from "ss-search"
 import { makeStyles } from "@material-ui/core/styles"
 import axios from "axios"
 import { debounce } from "lodash"
@@ -72,6 +72,7 @@ function Demo() {
             const data = flatten(responses.map((x) => x.data))
             setData(data)
             setSearchResults(data)
+            indexDocuments(data, Object.keys(data[0]))
             setIsLoading(false)
         }
         fetchData().catch((e) => console.error(e))
@@ -84,7 +85,7 @@ function Demo() {
     }
 
     const debouncedSearch = debounce((searchText: string) => {
-        setSearchResults(search(data, Object.keys(data[0]), searchText) as Data[])
+        setSearchResults(search(data, Object.keys(data[0]), searchText))
 
         const endTime = performance.now()
         setSearchTime(endTime - (startTime + 100)) // + 100 to account for the debounce time
