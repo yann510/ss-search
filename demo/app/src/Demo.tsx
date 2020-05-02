@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import axios from "axios"
 import { debounce } from "lodash"
 import { Backdrop, CircularProgress } from "@material-ui/core"
+import { flatten } from "lodash"
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -67,10 +68,11 @@ function Demo() {
 
     React.useEffect(() => {
         async function fetchData() {
-            const response = await axios.get<Data[]>("data.json")
-            setData(response.data)
-            setSearchResults(response.data)
-            // setIsLoading(false)
+            const responses = await Promise.all(Array.from(Array(10).keys()).map((x, i) => axios.get<Data[]>(`data-chunk-${i}.json`)))
+            const data = flatten(responses.map((x) => x.data))
+            setData(data)
+            setSearchResults(data)
+            setIsLoading(false)
         }
         fetchData().catch((e) => console.error(e))
     }, [])
