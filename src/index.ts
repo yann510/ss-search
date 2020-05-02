@@ -14,7 +14,7 @@ export function tokenize(searchText: string): string[] {
     return normalize(escapeRegExp(searchText)).match(/\w+/gim) || []
 }
 
-export const convertToSearchableStrings = memoize((elements: any[], searchableKeys: string[]) => {
+export const convertToSearchableStrings = memoize(<T>(elements: T[], searchableKeys: string[]) => {
     if (!elements || elements.length === 0 || !searchableKeys || searchableKeys.length === 0) {
         return []
     }
@@ -45,6 +45,8 @@ export const convertToSearchableStrings = memoize((elements: any[], searchableKe
         )
         .map((x) => normalize(x))
 })
+
+export const indexDocuments = convertToSearchableStrings
 
 export function search<T>(elements: T[], searchableKeys: string[], searchText: string) {
     const searchWords = tokenize(searchText)
