@@ -16,7 +16,7 @@ import { search, tokenize } from "ss-search"
 import { makeStyles } from "@material-ui/core/styles"
 import axios from "axios"
 import { debounce } from "lodash"
-import { Backdrop, CircularProgress } from '@material-ui/core';
+import { Backdrop, CircularProgress } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,7 +33,14 @@ const useStyles = makeStyles((theme) => ({
     },
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
-        color: '#fff',
+        color: "#fff",
+    },
+    backdropContent: {
+        display: "grid",
+        gridTemplateRows: "50px 70px",
+    },
+    circularProgress: {
+        placeSelf: "center",
     },
 }))
 
@@ -63,7 +70,7 @@ function Demo() {
             const response = await axios.get<Data[]>("data.json")
             setData(response.data)
             setSearchResults(response.data)
-            setIsLoading(false)
+            // setIsLoading(false)
         }
         fetchData().catch((e) => console.error(e))
     }, [])
@@ -81,7 +88,7 @@ function Demo() {
         setSearchTime(endTime - (startTime + 100)) // + 100 to account for the debounce time
     }, 100)
     const handleSearch = (searchText: string) => {
-        startTime =  performance.now()
+        startTime = performance.now()
 
         console.log(searchText, data[0])
         setSearchText(searchText)
@@ -95,7 +102,10 @@ function Demo() {
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <Backdrop className={classes.backdrop} open={isLoading}>
-                            <CircularProgress color="inherit" />
+                            <div className={classes.backdropContent}>
+                                <CircularProgress className={classes.circularProgress} color="inherit" />
+                                <span>Loading 1,000,000 entries...</span>
+                            </div>
                         </Backdrop>
                         <Typography variant="body2" color="textSecondary" align="right">{`Execution time ${Math.round(searchTime)}ms`}</Typography>
                         <TextField className={classes.searchTextField} label="Search" value={searchText} onChange={(e) => handleSearch(e.target.value)} />
