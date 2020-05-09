@@ -162,10 +162,7 @@ function Benchmark(props: Props) {
 
                         setJsSearch(search)
                     },
-                    searchFn: (data: Data[], searchText: string, params: any) => {
-                        console.log(params.jsSearch.search(searchText))
-                        return params.jsSearch.search(searchText)
-                    },
+                    searchFn: (data: Data[], searchText: string, params: any) => params.jsSearch.search(searchText),
                 },
             ].map((x) => {
                 const startTime = performance.now()
