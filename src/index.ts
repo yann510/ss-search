@@ -49,6 +49,10 @@ export const convertToSearchableStrings = memoize(<T>(elements: T[], searchableK
 export const indexDocuments = convertToSearchableStrings
 
 export function search<T>(elements: T[], searchableKeys: string[], searchText: string) {
+    if (!searchText) {
+        return elements
+    }
+
     const searchWords = tokenize(searchText)
 
     const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys)
