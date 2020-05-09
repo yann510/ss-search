@@ -2,10 +2,10 @@ import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
-import React from "react"
+import React, { useState } from "react"
 import { indexDocuments, search, tokenize } from "ss-search"
 import { makeStyles } from "@material-ui/core/styles"
-import { debounce, round, defer } from "lodash"
+import { debounce, round, defer, get, keyBy } from "lodash"
 import { Data } from "./models/data"
 import DataTable from "./DataTable"
 import TableHead from "@material-ui/core/TableHead"
@@ -15,6 +15,9 @@ import TableBody from "@material-ui/core/TableBody"
 import Table from "@material-ui/core/Table"
 import Fuse from "fuse.js"
 import { CircularProgress } from "@material-ui/core"
+import lunr from "lunr"
+import * as JsSearch from "js-search"
+const fuzzysort = require("fuzzysort")
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,7 +42,8 @@ interface BenchmarkResult {
     bootstrapTimeMs: number
     searchResults: Data[]
     searchTimeMs: number
-    isLoading?: boolean
+    isLoading: boolean
+    bootstrapFn: (data: Data[]) => void
     searchFn: (data: Data[], searchText: string, ...params: any) => Data[]
 }
 
@@ -57,7 +61,17 @@ const asyncDefer = (fn: () => void) => {
 }
 
 const debouncedSearches = debounce(
-    async (searchText: string, data: Data[], benchmarkResults: BenchmarkResult[], setBenchmarkResults: any, setSearchWords: any, fuse: any) => {
+    async (
+        searchText: string,
+        data: Data[],
+        dataById: { [index: number]: Data },
+        benchmarkResults: BenchmarkResult[],
+        setBenchmarkResults: any,
+        setSearchWords: any,
+        fuse: any,
+        lunrIndex: any,
+        jsSearch: any,
+    ) => {
         setSearchWords(tokenize(searchText))
 
         for (let i = 0; i < benchmarkResults.length; i++) {
@@ -65,7 +79,7 @@ const debouncedSearches = debounce(
 
             await asyncDefer(() => {
                 const startTime = performance.now()
-                const searchResults = benchmarkResult.searchFn(data, searchText, fuse)
+                const searchResults = benchmarkResult.searchFn(data, searchText, { fuse, lunrIndex, dataById, jsSearch })
                 const searchTime = round(performance.now() - startTime, 2)
 
                 benchmarkResults.splice(i, 1, { ...benchmarkResult, searchResults: searchResults, searchTimeMs: searchTime, isLoading: false })
@@ -87,35 +101,82 @@ function Benchmark(props: Props) {
     const [searchWords, setSearchWords] = React.useState<string[]>([])
     const [benchmarkResults, setBenchmarkResults] = React.useState<BenchmarkResult[]>([])
     const [fuse, setFuse] = React.useState<any>()
+    const [lunrIndex, setLunrIndex] = React.useState<any>()
+    const [jsSearch, setJsSearch] = React.useState<any>()
     const [isBoostraping, setIsBoostraping] = React.useState(true)
+    const [dataById, setDataById] = React.useState<{ [index: number]: Data }>({})
 
     React.useEffect(() => {
         if (data && data.length > 0) {
-            const ssSearchStartTime = performance.now()
-            indexDocuments(data, Object.keys(data[0]))
-            const ssSerachBoostrapTime = round(performance.now() - ssSearchStartTime)
-
-            const fuseStartTime = performance.now()
-            setFuse(new Fuse(data, { keys: Object.keys(data[0]) }))
-            const fuseBoostrapTime = round(performance.now() - fuseStartTime)
-
-            setBenchmarkResults([
+            const benchmarkResults: BenchmarkResult[] = [
                 {
                     libraryName: "ss-search",
-                    bootstrapTimeMs: ssSerachBoostrapTime,
-                    searchResults: data,
-                    searchTimeMs: 0,
+                    bootstrapFn: (data: Data[]) => indexDocuments(data, Object.keys(data[0])),
                     searchFn: (data: Data[], searchText: string) => search(data, Object.keys(data[0]), searchText),
                 },
                 {
                     libraryName: "fuse.js",
-                    bootstrapTimeMs: fuseBoostrapTime,
-                    searchResults: data,
-                    searchTimeMs: 0,
-                    searchFn: (data: Data[], searchText: string, fuse: any) => fuse.search(searchText).map((x: { item: Data }) => x.item),
+                    bootstrapFn: (data: Data[]) => setFuse(new Fuse(data, { keys: Object.keys(data[0]) })),
+                    searchFn: (data: Data[], searchText: string, params: any) => (params.fuse.search(searchText) as { item: Data }[]).map((x) => x.item),
                 },
-            ])
+                {
+                    libraryName: "lunr.js",
+                    bootstrapFn: (data: Data[]) => {
+                        const idx = lunr(function () {
+                            this.ref("id")
+                            Object.keys(data[0])
+                                .filter((k) => k !== "id")
+                                .forEach((k) => this.field(k))
 
+                            data.forEach(function (d) {
+                                // @ts-ignore
+                                this.add(d)
+                            }, this)
+                        })
+
+                        setLunrIndex(idx)
+                    },
+                    searchFn: (data: Data[], searchText: string, params: any) =>
+                        params.lunrIndex.search(searchText).map((x: { ref: string }) => get(params.dataById, x.ref)),
+                },
+                {
+                    libraryName: "fuzzysort",
+                    bootstrapFn: (data: Data[]) => {},
+                    searchFn: (data: Data[], searchText: string) =>
+                        fuzzysort
+                            .go(
+                                searchText,
+                                data.map((x) => ({ ...x, id: x.id.toString(), age: x.age.toString() })),
+                                {
+                                    keys: Object.keys(data[0]),
+                                },
+                            )
+                            .map((x: { obj: Data }) => x.obj),
+                },
+                {
+                    libraryName: "js-search",
+                    bootstrapFn: (data: Data[]) => {
+                        const search = new JsSearch.Search("isbn")
+                        Object.keys(data[0]).forEach(k => search.addIndex(k))
+                        search.addDocuments(data)
+
+                        setJsSearch(search)
+                    },
+                    searchFn: (data: Data[], searchText: string, params: any) => {
+                        console.log(params.jsSearch.search(searchText))
+                        return params.jsSearch.search(searchText)
+                    },
+                },
+            ].map((x) => {
+                const startTime = performance.now()
+                x.bootstrapFn(data)
+                const bootstrapTimeMs = round(performance.now() - startTime, 2)
+
+                return { ...x, bootstrapTimeMs, searchResults: data, searchTimeMs: 0, isLoading: false }
+            })
+
+            setBenchmarkResults(benchmarkResults)
+            setDataById(keyBy(data, (x) => x.id))
             setIsBoostraping(false)
         }
     }, [data])
@@ -125,7 +186,7 @@ function Benchmark(props: Props) {
         const benchmarks = benchmarkResults.map((x) => ({ ...x, isLoading: true }))
         setBenchmarkResults(benchmarks)
 
-        debouncedSearches(searchText, data, benchmarks, setBenchmarkResults, setSearchWords, fuse)
+        debouncedSearches(searchText, data, dataById, benchmarks, setBenchmarkResults, setSearchWords, fuse, lunrIndex, jsSearch)
     }
 
     return (

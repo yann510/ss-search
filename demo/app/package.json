@@ -15,7 +15,10 @@
     "axios": "^0.19.2",
     "clsx": "^1.1.0",
     "fuse.js": "^5.2.3",
+    "fuzzysort": "^1.1.4",
+    "js-search": "^2.0.0",
     "lodash": "^4.17.15",
+    "lunr": "^2.3.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-highlight-words": "^0.16.0",
@@ -48,7 +51,9 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/js-search": "^1.4.0",
     "@types/lodash": "^4.14.150",
+    "@types/lunr": "^2.3.3",
     "@types/react-highlight-words": "^0.16.1",
     "@types/react-router-dom": "^5.1.5",
     "dreamjs": "^0.2.0"
