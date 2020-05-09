@@ -2,22 +2,12 @@ import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
-import Table from "@material-ui/core/Table"
-import TableHead from "@material-ui/core/TableHead"
-import TableRow from "@material-ui/core/TableRow"
-import TableCell from "@material-ui/core/TableCell"
-import TableBody from "@material-ui/core/TableBody"
-import Highlighter from "react-highlight-words"
-import TableFooter from "@material-ui/core/TableFooter"
-import TablePagination from "@material-ui/core/TablePagination"
-import Box from "@material-ui/core/Box"
 import React from "react"
 import { indexDocuments, search, tokenize } from "ss-search"
 import { makeStyles } from "@material-ui/core/styles"
-import axios from "axios"
 import { debounce } from "lodash"
-import { Backdrop, CircularProgress } from "@material-ui/core"
-import { flatten } from "lodash"
+import { Data } from "./models/data"
+import DataTable from "./DataTable"
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -26,77 +16,48 @@ const useStyles = makeStyles((theme) => ({
         overflow: "auto",
         flexDirection: "column",
     },
-    fixedHeight: {
-        height: 240,
-    },
     searchTextField: {
         marginBottom: theme.spacing(2),
     },
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
-        color: "#fff",
-    },
-    backdropContent: {
-        display: "grid",
-        gridTemplateRows: "50px 70px",
-    },
-    circularProgress: {
-        placeSelf: "center",
-    },
 }))
-
-export interface Data {
-    id: string
-    name: string
-    age: number
-    address: string
-}
 
 let startTime = performance.now()
 
-function Demo() {
+const debounceTime = 200
+const debouncedSearch = debounce((searchText: string, data: Data[], setSearchResults: any, setSearchTime: any) => {
+    setSearchResults(search(data, Object.keys(data[0]), searchText))
+
+    const endTime = performance.now()
+    setSearchTime(endTime - (startTime + debounceTime))
+}, debounceTime)
+
+interface Props {
+    data: Data[]
+}
+
+function Demo(props: Props) {
+    const { data } = props
+
     const classes = useStyles()
 
-    const [page, setPage] = React.useState(0)
-    const [rowsPerPage, setRowsPerPage] = React.useState(10)
     const [searchText, setSearchText] = React.useState("")
-    const [data, setData] = React.useState<Data[]>([])
     const [searchResults, setSearchResults] = React.useState<Data[]>(data)
     const [searchWords, setSearchWords] = React.useState<string[]>([])
     const [searchTime, setSearchTime] = React.useState(0)
-    const [isLoading, setIsLoading] = React.useState(true)
 
     React.useEffect(() => {
-        async function fetchData() {
-            const responses = await Promise.all(Array.from(Array(10).keys()).map((x, i) => axios.get<Data[]>(`data-chunk-${i}.json`)))
-            const data = flatten(responses.map((x) => x.data))
-            setData(data)
-            setSearchResults(data)
+        if (data && data.length > 0) {
             indexDocuments(data, Object.keys(data[0]))
-            setIsLoading(false)
+            setSearchResults(data)
         }
-        fetchData().catch((e) => console.error(e))
-    }, [])
+    }, [data])
 
-    const handleChangePage = (event: any, newPage: number) => setPage(newPage)
-    const handleChangeRowsPerPage = (event: any) => {
-        setRowsPerPage(parseInt(event.target.value, 10))
-        setPage(0)
-    }
-
-    const debouncedSearch = debounce((searchText: string) => {
-        setSearchResults(search(data, Object.keys(data[0]), searchText))
-
-        const endTime = performance.now()
-        setSearchTime(endTime - (startTime + 100)) // + 100 to account for the debounce time
-    }, 100)
     const handleSearch = (searchText: string) => {
         startTime = performance.now()
 
-        console.log(searchText, data[0])
         setSearchText(searchText)
         setSearchWords(tokenize(searchText))
-        debouncedSearch(searchText)
+        debouncedSearch(searchText, data, setSearchResults, setSearchTime)
     }
 
     return (
@@ -104,57 +65,14 @@ function Demo() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <Backdrop className={classes.backdrop} open={isLoading}>
-                            <div className={classes.backdropContent}>
-                                <CircularProgress className={classes.circularProgress} color="inherit" />
-                                <span>Loading 1,000,000 entries...</span>
-                            </div>
-                        </Backdrop>
                         <Typography variant="body2" color="textSecondary" align="right">{`Execution time ${Math.round(searchTime)}ms`}</Typography>
                         <TextField className={classes.searchTextField} label="Search" value={searchText} onChange={(e) => handleSearch(e.target.value)} />
-                        <Table size="small">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>ID</TableCell>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Age</TableCell>
-                                    <TableCell>Address</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {searchResults.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                    <TableRow key={row.id}>
-                                        {Object.keys(row).map((key) => (
-                                            <TableCell key={key}>
-                                                <Highlighter searchWords={searchWords} textToHighlight={(row as any)[key].toString()} />
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TablePagination
-                                        style={{ border: "none" }}
-                                        count={searchResults.length}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
-                                        onChangePage={handleChangePage}
-                                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                                    />
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
+                        <DataTable data={searchResults} searchWords={searchWords} />
                     </Paper>
                 </Grid>
             </Grid>
-            <Box pt={4}>
-                <Typography variant="body2" color="textSecondary" align="center">
-                    Stop searching, start finding.
-                </Typography>
-            </Box>
         </>
     )
 }
 
-export default Demo
+export default React.memo(Demo)

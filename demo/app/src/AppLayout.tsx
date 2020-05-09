@@ -5,7 +5,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import Divider from "@material-ui/core/Divider"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
-import { Code, Dashboard } from "@material-ui/icons"
+import { Code, Dashboard, Timer } from "@material-ui/icons";
 import ListItemText from "@material-ui/core/ListItemText"
 import Drawer from "@material-ui/core/Drawer"
 import React from "react"
@@ -15,6 +15,7 @@ import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import MenuIcon from "@material-ui/icons/Menu"
 import { Link, useLocation } from "react-router-dom"
+import { Container } from '@material-ui/core';
 
 const drawerWidth = 240
 
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
         }),
     },
     menuButton: {
+        position: "absolute",
         marginRight: 36,
     },
     menuButtonHidden: {
@@ -94,7 +96,7 @@ function AppLayout() {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+            <AppBar position="fixed" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         edge="start"
@@ -105,9 +107,12 @@ function AppLayout() {
                     >
                         <MenuIcon />
                     </IconButton>
+                    <Container>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        {(location.pathname === "/demo" || location.pathname === "/") && <>Demo with 1,000,000 entries</>}
+                        {(location.pathname === "/demo" || location.pathname === "/") && <>Demo with 10,000 entries</>}
+                        {location.pathname === "/benchmark" && <>Benchmark</>}
                     </Typography>
+                    </Container>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -132,6 +137,14 @@ function AppLayout() {
                             <Dashboard />
                         </ListItemIcon>
                         <ListItemText primary="Demo" />
+                    </Link>
+                </ListItem>
+                <ListItem button key="Benchmark" selected={location.pathname === "/benchmark"}>
+                    <Link to="/benchmark" className={classes.menuLink}>
+                        <ListItemIcon>
+                            <Timer />
+                        </ListItemIcon>
+                        <ListItemText primary="Benchmark" />
                     </Link>
                 </ListItem>
                 <ListItem button key="Documentation">
