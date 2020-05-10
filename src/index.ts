@@ -2,6 +2,7 @@ import deburr from "lodash/deburr"
 import escapeRegExp from "lodash/escapeRegExp"
 import memoize from "lodash/memoize"
 import get from "lodash/get"
+import round from "lodash/round"
 
 export function normalize(text: string) {
     return deburr(text)
@@ -48,7 +49,19 @@ export const convertToSearchableStrings = memoize(<T>(elements: T[], searchableK
 
 export const indexDocuments = convertToSearchableStrings
 
-export function search<T>(elements: T[], searchableKeys: string[], searchText: string) {
+export const getScore = (matchesAllSearchWords: boolean, searchWords: string[], searchableDataString: string) => {
+    if (!matchesAllSearchWords) {
+        return 0
+    }
+
+    const searchableDataStringWithoutNonWordCharacters = searchableDataString.replace(/[^\w]+/gm, "")
+    const remainingTextAfterRemovingSearchWords = searchWords
+        .sort((a, b) => b.length - a.length)
+        .reduce((remainingText, searchWord) => remainingText.replace(new RegExp(searchWord, "gm"), ""), searchableDataStringWithoutNonWordCharacters)
+    return round(1 - remainingTextAfterRemovingSearchWords.length / searchableDataStringWithoutNonWordCharacters.length, 4)
+}
+
+export function search<T>(elements: T[], searchableKeys: string[], searchText: string, options: { withScore?: boolean } = {}) {
     if (!searchText) {
         return elements
     }
@@ -60,7 +73,12 @@ export function search<T>(elements: T[], searchableKeys: string[], searchText: s
     return searchableDataStrings
         .map((x, i) => {
             const matchesAllSearchWords = searchWords.filter((searchWord) => x.indexOf(searchWord) > -1).length === searchWords.length
-            return matchesAllSearchWords ? elements[i] : null
+            if (options.withScore) {
+                const score = getScore(matchesAllSearchWords, searchWords, x)
+                return { element: elements[i], score }
+            }
+
+            return (matchesAllSearchWords ? elements[i] : null) as T
         })
-        .filter((x) => x) as T[]
+        .filter((x) => x)
 }

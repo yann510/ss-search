@@ -108,4 +108,5 @@ const results = search(data, ["arrayObjects[arrayObjectProperty]"], "value objec
 ### Benchmark
 
 How does it compare to other search libraries? Test out for yourself with this interactive [benchmark](https://ss-search.netlify.app/benchmark) ;)
+
 ![](benchmark.gif)

@@ -45,5 +45,31 @@ describe("index", function () {
             // Assert
             expect(actual).to.be.eql([data[2]])
         })
+
+        it("Should return elements when searchText is an empty string", function () {
+            // Arrange
+            const data = dataset
+            const keys = Object.keys(data[0])
+            const searchText = ""
+
+            // Act
+            const actual = search(data, keys, searchText)
+
+            // Assert
+            expect(actual).to.be.eql(data)
+        })
+
+        it("Should return scored results when score option is activated", function () {
+            // Arrange
+            const data = dataset.slice(0, 1)
+            const keys = ["number"]
+            const searchText = "1"
+
+            // Act
+            const actual = search(data, keys, searchText, { withScore: true })
+
+            // Assert
+            expect(actual).to.be.eql([{ element: data[0], score: 1 }])
+        })
     })
 })
