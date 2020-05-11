@@ -2,7 +2,7 @@ import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
-import React, { useState } from "react"
+import React from "react"
 import { indexDocuments, search, tokenize } from "ss-search"
 import { makeStyles } from "@material-ui/core/styles"
 import { debounce, round, defer, get, keyBy } from "lodash"
@@ -14,9 +14,10 @@ import TableCell from "@material-ui/core/TableCell"
 import TableBody from "@material-ui/core/TableBody"
 import Table from "@material-ui/core/Table"
 import Fuse from "fuse.js"
-import { CircularProgress } from "@material-ui/core"
+import { Backdrop, CircularProgress } from "@material-ui/core"
 import lunr from "lunr"
 import * as JsSearch from "js-search"
+import BackdropProgress from "./BackdropLoader"
 const fuzzysort = require("fuzzysort")
 
 const useStyles = makeStyles((theme) => ({
@@ -39,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface BenchmarkResult {
     libraryName: string
-    bootstrapTimeMs: number
+    indexationTimeMs: number
     searchResults: Data[]
     searchTimeMs: number
     isLoading: boolean
-    bootstrapFn: (data: Data[]) => void
+    indexationFn: (data: Data[]) => void
     searchFn: (data: Data[], searchText: string, ...params: any) => Data[]
 }
 
@@ -90,8 +91,6 @@ const debouncedSearches = debounce(
     200,
 )
 
-const getGeneratedId = () => Math.random().toString(36)
-
 function Benchmark(props: Props) {
     const { data } = props
 
@@ -103,78 +102,81 @@ function Benchmark(props: Props) {
     const [fuse, setFuse] = React.useState<any>()
     const [lunrIndex, setLunrIndex] = React.useState<any>()
     const [jsSearch, setJsSearch] = React.useState<any>()
-    const [isBoostraping, setIsBoostraping] = React.useState(true)
+    const [isIndexing, setIsIndexing] = React.useState(true)
     const [dataById, setDataById] = React.useState<{ [index: number]: Data }>({})
 
     React.useEffect(() => {
         if (data && data.length > 0) {
-            const benchmarkResults: BenchmarkResult[] = [
-                {
-                    libraryName: "ss-search",
-                    bootstrapFn: (data: Data[]) => indexDocuments(data, Object.keys(data[0])),
-                    searchFn: (data: Data[], searchText: string) => search(data, Object.keys(data[0]), searchText),
-                },
-                {
-                    libraryName: "fuse.js",
-                    bootstrapFn: (data: Data[]) => setFuse(new Fuse(data, { keys: Object.keys(data[0]) })),
-                    searchFn: (data: Data[], searchText: string, params: any) => (params.fuse.search(searchText) as { item: Data }[]).map((x) => x.item),
-                },
-                {
-                    libraryName: "lunr.js",
-                    bootstrapFn: (data: Data[]) => {
-                        const idx = lunr(function () {
-                            this.ref("id")
-                            Object.keys(data[0])
-                                .filter((k) => k !== "id")
-                                .forEach((k) => this.field(k))
-
-                            data.forEach(function (d) {
-                                // @ts-ignore
-                                this.add(d)
-                            }, this)
-                        })
-
-                        setLunrIndex(idx)
+            const newDataReference = [...data]
+            defer(() => {
+                const benchmarkResults: BenchmarkResult[] = [
+                    {
+                        libraryName: "ss-search",
+                        indexationFn: (data: Data[]) => indexDocuments(data, Object.keys(data[0])),
+                        searchFn: (data: Data[], searchText: string) => search(data, Object.keys(data[0]), searchText),
                     },
-                    searchFn: (data: Data[], searchText: string, params: any) =>
-                        params.lunrIndex.search(searchText).map((x: { ref: string }) => get(params.dataById, x.ref)),
-                },
-                {
-                    libraryName: "fuzzysort",
-                    bootstrapFn: (data: Data[]) => {},
-                    searchFn: (data: Data[], searchText: string) =>
-                        fuzzysort
-                            .go(
-                                searchText,
-                                data.map((x) => ({ ...x, id: x.id.toString(), age: x.age.toString() })),
-                                {
-                                    keys: Object.keys(data[0]),
-                                },
-                            )
-                            .map((x: { obj: Data }) => x.obj),
-                },
-                {
-                    libraryName: "js-search",
-                    bootstrapFn: (data: Data[]) => {
-                        const search = new JsSearch.Search("isbn")
-                        Object.keys(data[0]).forEach(k => search.addIndex(k))
-                        search.addDocuments(data)
-
-                        setJsSearch(search)
+                    {
+                        libraryName: "fuse.js",
+                        indexationFn: (data: Data[]) => setFuse(new Fuse(data, { keys: Object.keys(data[0]) })),
+                        searchFn: (data: Data[], searchText: string, params: any) => (params.fuse.search(searchText) as { item: Data }[]).map((x) => x.item),
                     },
-                    searchFn: (data: Data[], searchText: string, params: any) => params.jsSearch.search(searchText),
-                },
-            ].map((x) => {
-                const startTime = performance.now()
-                x.bootstrapFn(data)
-                const bootstrapTimeMs = round(performance.now() - startTime, 2)
+                    {
+                        libraryName: "lunr.js",
+                        indexationFn: (data: Data[]) => {
+                            const idx = lunr(function () {
+                                this.ref("id")
+                                Object.keys(data[0])
+                                    .filter((k) => k !== "id")
+                                    .forEach((k) => this.field(k))
 
-                return { ...x, bootstrapTimeMs, searchResults: data, searchTimeMs: 0, isLoading: false }
+                                data.forEach(function (d) {
+                                    // @ts-ignore
+                                    this.add(d)
+                                }, this)
+                            })
+
+                            setLunrIndex(idx)
+                        },
+                        searchFn: (data: Data[], searchText: string, params: any) =>
+                            params.lunrIndex.search(searchText).map((x: { ref: string }) => get(params.dataById, x.ref)),
+                    },
+                    {
+                        libraryName: "fuzzysort",
+                        indexationFn: () => {},
+                        searchFn: (data: Data[], searchText: string) =>
+                            fuzzysort
+                                .go(
+                                    searchText,
+                                    data.map((x) => ({ ...x, id: x.id.toString(), age: x.age.toString() })),
+                                    {
+                                        keys: Object.keys(data[0]),
+                                    },
+                                )
+                                .map((x: { obj: Data }) => x.obj),
+                    },
+                    {
+                        libraryName: "js-search",
+                        indexationFn: (data: Data[]) => {
+                            const search = new JsSearch.Search("id")
+                            Object.keys(data[0]).forEach((k) => search.addIndex(k))
+                            search.addDocuments(data)
+
+                            setJsSearch(search)
+                        },
+                        searchFn: (data: Data[], searchText: string, params: any) => params.jsSearch.search(searchText),
+                    },
+                ].map((x) => {
+                    const startTime = performance.now()
+                    x.indexationFn(newDataReference)
+                    const indexationTimeMs = round(performance.now() - startTime, 2)
+
+                    return { ...x, indexationTimeMs, searchResults: newDataReference, searchTimeMs: 0, isLoading: false }
+                })
+
+                setBenchmarkResults(benchmarkResults)
+                setDataById(keyBy(newDataReference, (x) => x.id))
+                setIsIndexing(false)
             })
-
-            setBenchmarkResults(benchmarkResults)
-            setDataById(keyBy(data, (x) => x.id))
-            setIsBoostraping(false)
         }
     }, [data])
 
@@ -188,6 +190,7 @@ function Benchmark(props: Props) {
 
     return (
         <>
+            <BackdropProgress isLoading={isIndexing} text="Indexing search libraries..." />
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
@@ -196,7 +199,7 @@ function Benchmark(props: Props) {
                             <TableHead>
                                 <TableRow>
                                     <TableCell className={classes.benchmarkTable}>Library</TableCell>
-                                    <TableCell className={classes.benchmarkTable}>Bootstrap Time (ms)</TableCell>
+                                    <TableCell className={classes.benchmarkTable}>Indexation Time (ms)</TableCell>
                                     <TableCell className={classes.benchmarkTable}>Results Count</TableCell>
                                     <TableCell className={classes.benchmarkTable}>Search Time (ms)</TableCell>
                                 </TableRow>
@@ -206,8 +209,8 @@ function Benchmark(props: Props) {
                                     <TableRow key={benchmarkResult.libraryName}>
                                         <TableCell className={classes.benchmarkTable}>{benchmarkResult.libraryName}</TableCell>
                                         <TableCell className={classes.benchmarkTable}>
-                                            {isBoostraping && <CircularProgress color="primary" size={16} />}
-                                            {!isBoostraping && <>{benchmarkResult.bootstrapTimeMs}ms</>}
+                                            {isIndexing && <CircularProgress color="primary" size={16} />}
+                                            {!isIndexing && <>{benchmarkResult.indexationTimeMs}ms</>}
                                         </TableCell>
                                         <TableCell className={classes.benchmarkTable}>
                                             {benchmarkResult.isLoading && <CircularProgress color="primary" size={16} />}

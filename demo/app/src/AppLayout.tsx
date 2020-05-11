@@ -5,7 +5,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import Divider from "@material-ui/core/Divider"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
-import { Code, Dashboard, Timer } from "@material-ui/icons";
+import { Code, Dashboard, Timer } from "@material-ui/icons"
 import ListItemText from "@material-ui/core/ListItemText"
 import Drawer from "@material-ui/core/Drawer"
 import React from "react"
@@ -15,9 +15,9 @@ import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import MenuIcon from "@material-ui/icons/Menu"
 import { Link, useLocation } from "react-router-dom"
-import { Container } from '@material-ui/core';
+import { Container } from "@material-ui/core"
 
-const drawerWidth = 240
+export const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,8 +34,7 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
     },
     appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(["width", "margin"], {
+        transition: theme.transitions.create(["margin", "width"], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
@@ -44,9 +43,16 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
         transition: theme.transitions.create(["width", "margin"], {
-            easing: theme.transitions.easing.sharp,
+            easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
     },
     menuButton: {
         position: "absolute",
@@ -57,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
     },
     menuLink: {
         display: "grid",
-        gridTemplateColumns: "1fr 50px",
         alignItems: "center",
         textDecoration: "none",
         color: "inherit",
@@ -65,33 +70,28 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
-    drawerPaper: {
-        position: "relative",
-        whiteSpace: "nowrap",
-        width: drawerWidth,
-        transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerPaperClose: {
-        overflowX: "hidden",
-        transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: 0,
-    },
 }))
 
-function AppLayout() {
+interface Props {
+    onOpenChange: (open: boolean) => void
+}
+
+function AppLayout(props: Props) {
+    const { onOpenChange } = props
+
     const classes = useStyles()
     const location = useLocation()
 
     const [open, setOpen] = React.useState(false)
 
-    const handleDrawerOpen = () => setOpen(true)
-    const handleDrawerClose = () => setOpen(false)
+    const handleDrawerOpen = () => {
+        onOpenChange(true)
+        setOpen(true)
+    }
+    const handleDrawerClose = () => {
+        onOpenChange(false)
+        setOpen(false)
+    }
 
     return (
         <div className={classes.root}>
@@ -108,20 +108,14 @@ function AppLayout() {
                         <MenuIcon />
                     </IconButton>
                     <Container>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        {(location.pathname === "/demo" || location.pathname === "/") && <>Demo with 10,000 entries</>}
-                        {location.pathname === "/benchmark" && <>Benchmark</>}
-                    </Typography>
+                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                            {(location.pathname === "/demo" || location.pathname === "/") && <>Demo with 10,000 entries</>}
+                            {location.pathname === "/benchmark" && <>Benchmark</>}
+                        </Typography>
                     </Container>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                variant="persistent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
+            <Drawer variant="persistent" className={classes.drawer} classes={{ paper: classes.drawerPaper }} anchor="left" open={open}>
                 <div className={classes.toolbarIcon}>
                     <Typography component="h1" variant="h6">
                         ss-search
@@ -131,30 +125,30 @@ function AppLayout() {
                     </IconButton>
                 </div>
                 <Divider />
-                <ListItem button key="Demo" selected={location.pathname === "/demo" || location.pathname === "/"}>
-                    <Link to="/demo" className={classes.menuLink}>
+                <Link to="/demo" className={classes.menuLink}>
+                    <ListItem button key="Demo" selected={location.pathname === "/demo" || location.pathname === "/"}>
                         <ListItemIcon>
                             <Dashboard />
                         </ListItemIcon>
                         <ListItemText primary="Demo" />
-                    </Link>
-                </ListItem>
-                <ListItem button key="Benchmark" selected={location.pathname === "/benchmark"}>
-                    <Link to="/benchmark" className={classes.menuLink}>
+                    </ListItem>
+                </Link>
+                <Link to="/benchmark" className={classes.menuLink}>
+                    <ListItem button key="Benchmark" selected={location.pathname === "/benchmark"}>
                         <ListItemIcon>
                             <Timer />
                         </ListItemIcon>
                         <ListItemText primary="Benchmark" />
-                    </Link>
-                </ListItem>
-                <ListItem button key="Documentation">
-                    <a className={classes.menuLink} href="https://github.com/yann510/ss-search#usage" target="_blank" rel="noopener noreferrer">
+                    </ListItem>
+                </Link>
+                <a className={classes.menuLink} href="https://github.com/yann510/ss-search#usage" target="_blank" rel="noopener noreferrer">
+                    <ListItem button key="Documentation">
                         <ListItemIcon>
                             <Code />
                         </ListItemIcon>
                         <ListItemText primary="Documentation" />
-                    </a>
-                </ListItem>
+                    </ListItem>
+                </a>
             </Drawer>
         </div>
     )
