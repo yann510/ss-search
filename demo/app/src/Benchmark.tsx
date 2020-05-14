@@ -18,6 +18,7 @@ import { CircularProgress } from "@material-ui/core"
 import lunr from "lunr"
 import * as JsSearch from "js-search"
 import BackdropProgress from "./BackdropLoader"
+const Flexsearch = require("flexsearch")
 const fuzzysort = require("fuzzysort")
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +73,7 @@ const debouncedSearches = debounce(
         fuse: any,
         lunrIndex: any,
         jsSearch: any,
+        flexsearch: any,
     ) => {
         setSearchWords(tokenize(searchText))
 
@@ -80,7 +82,7 @@ const debouncedSearches = debounce(
 
             await asyncDefer(() => {
                 const startTime = performance.now()
-                const searchResults = benchmarkResult.searchFn(data, searchText, { fuse, lunrIndex, dataById, jsSearch })
+                const searchResults = benchmarkResult.searchFn(data, searchText, { fuse, lunrIndex, dataById, jsSearch, flexsearch })
                 const searchTime = round(performance.now() - startTime, 2)
 
                 benchmarkResults.splice(i, 1, { ...benchmarkResult, searchResults: searchResults, searchTimeMs: searchTime, isLoading: false })
@@ -102,6 +104,7 @@ function Benchmark(props: Props) {
     const [fuse, setFuse] = React.useState<any>()
     const [lunrIndex, setLunrIndex] = React.useState<any>()
     const [jsSearch, setJsSearch] = React.useState<any>()
+    const [flexsearch, setFlexsearch] = React.useState<any>()
     const [isIndexing, setIsIndexing] = React.useState(true)
     const [dataById, setDataById] = React.useState<{ [index: number]: Data }>({})
 
@@ -165,6 +168,20 @@ function Benchmark(props: Props) {
                         },
                         searchFn: (data: Data[], searchText: string, params: any) => params.jsSearch.search(searchText),
                     },
+                    {
+                        libraryName: "flexsearch",
+                        indexationFn: (data: Data[]) => {
+                            const flexsearch = new Flexsearch({
+                                doc: {
+                                    id: "id",
+                                    field: Object.keys(data[0]),
+                                },
+                            })
+                            flexsearch.add(data)
+                            setFlexsearch(flexsearch)
+                        },
+                        searchFn: (data: Data[], searchText: string, params: any) => params.flexsearch.search(searchText),
+                    },
                 ].map((x) => {
                     const startTime = performance.now()
                     x.indexationFn(newDataReference)
@@ -185,7 +202,7 @@ function Benchmark(props: Props) {
         const benchmarks = benchmarkResults.map((x) => ({ ...x, isLoading: true }))
         setBenchmarkResults(benchmarks)
 
-        debouncedSearches(searchText, data, dataById, benchmarks, setBenchmarkResults, setSearchWords, fuse, lunrIndex, jsSearch)
+        debouncedSearches(searchText, data, dataById, benchmarks, setBenchmarkResults, setSearchWords, fuse, lunrIndex, jsSearch, flexsearch)
     }
 
     return (
