@@ -11,7 +11,7 @@
 - Search local array of objects as easily as never before
 - Automatic indexing
 - Will return exactly what you are looking for
-- Very small size; only depends on 4 lodash functions
+- Very small size; only depends on 5 lodash functions which are extracted using rollup, which means we have a zero dependency lbirary
 
 ## Demo
 
@@ -44,8 +44,8 @@ const data = [
 const searchKeys = ["text"] 
 const searchText = "fast search"
 
-const results = search(data, keys, searchText)
-// results: [{ number: 2, text: "A search function should provide accurate results" }]
+const results = search(data, searchKeys, searchText)
+// results: [{ number: 1, text: "A search function should be fast" }]
 ```
 
 Yes. It is that simple, no need to configure anything, it works out of the box.
@@ -75,34 +75,56 @@ const results = search(data, ["boolean"], "true")
 
 #### Number
 ```javascript
-const results = search(data, ["number"], "2")
+const results = search(data, ["number"], "1")
 // results: will return our original dataset
 ```
 
 #### String
 ```javascript
-const results = search(data, ["string"], "value")
+const results = search(data, ["string"], "search")
 // results: will return our original dataset
 ```
 
 #### Object
+
+Providing a key which refers to an object will stringify that object using JSON.stringify
+
 ```javascript
 const results = search(data, ["object"], "property")
-// results: will return our original dataset even though the searched text is not contained in the `nestedProperty` value, because our object will be transformed to a string with JSON.stringify
+// results: will return our original dataset as it matches the property key "nestedProperty" of our object
+```
 
-// If you want to access a nested property of an object:
+If you want to access a nested property of an object to extract only a single value
+
+```javascript
 const results = search(data, ["object.nestedProperty"], "property")
-// results: will return an empty array as we extract the value of our nested object
+// results: will return an empty array as we extracted the value of our nested object
+// if we had searched for "nested value" we would of had the original dataset
 ```
 
 #### Array
+
+Providing a key which refers to an array will stringify that array using JSON.stringify
+         
 ```javascript
 const results = search(data, ["array"], "value2")
-// results: will return our original dataset using JSON.stringify
+// results: will return our original dataset
+```
 
-// Array of objects
-const results = search(data, ["arrayObjects[arrayObjectProperty]"], "value object")
-// results: will return our original dataset as we extracted the specific value of the array objects using the array selector
+If you have an array of objects on which you want to search all properties
+
+```javascript
+const results = search(data, ["arrayObjects"], "arrayObjectProperty")
+// results: will return an our original dataset as it's treated just like a regular array
+// thus the arrayObjectProperty is part of the searchable text
+```
+
+If you have an array of objects where you want only specific properties to be searchable
+
+```javascript
+const results = search(data, ["arrayObjects[arrayObjectProperty]"], "arrayObjectProperty")
+// results: will return an empty array as we extracted the value of our nested array of objects
+// if we had searched for "value object" we would of had the original dataset 
 ```
 
 ### Benchmark
