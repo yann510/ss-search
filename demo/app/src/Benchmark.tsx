@@ -119,11 +119,6 @@ function Benchmark(props: Props) {
                         searchFn: (data: Data[], searchText: string) => search(data, Object.keys(data[0]), searchText),
                     },
                     {
-                        libraryName: "fuse.js",
-                        indexationFn: (data: Data[]) => setFuse(new Fuse(data, { keys: Object.keys(data[0]) })),
-                        searchFn: (data: Data[], searchText: string, params: any) => (params.fuse.search(searchText) as { item: Data }[]).map((x) => x.item),
-                    },
-                    {
                         libraryName: "lunr.js",
                         indexationFn: (data: Data[]) => {
                             const idx = lunr(function () {
@@ -181,6 +176,11 @@ function Benchmark(props: Props) {
                             setFlexsearch(flexsearch)
                         },
                         searchFn: (data: Data[], searchText: string, params: any) => params.flexsearch.search(searchText),
+                    },
+                    {
+                        libraryName: "fuse.js",
+                        indexationFn: (data: Data[]) => setFuse(new Fuse(data, { keys: Object.keys(data[0]) })),
+                        searchFn: (data: Data[], searchText: string, params: any) => (params.fuse.search(searchText) as { item: Data }[]).map((x) => x.item),
                     },
                 ].map((x) => {
                     const startTime = performance.now()
