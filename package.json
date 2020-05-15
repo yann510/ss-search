@@ -16,7 +16,8 @@
         "prepublishOnly": "npm test && npm run lint",
         "preversion": "npm run lint",
         "version": "npm run format && git add -A src",
-        "postversion": "git push && git push --tags"
+        "postversion": "git push && git push --tags",
+        "benchmark": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./benchmark/benchmark.ts"
     },
     "repository": {
         "type": "git",
@@ -38,10 +39,12 @@
     },
     "homepage": "https://github.com/yann510/ss-search#readme",
     "devDependencies": {
+        "@types/benchmark": "^1.0.32",
         "@types/chai": "^4.2.11",
         "@types/lodash": "^4.14.149",
         "@types/mocha": "^7.0.2",
         "@types/node": "^13.13.2",
+        "benchmark": "^2.1.4",
         "chai": "^4.2.0",
         "coveralls": "^3.1.0",
         "lodash": "^4.17.15",

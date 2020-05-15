@@ -11,7 +11,7 @@
 - Search local array of objects as easily as never before
 - Automatic indexing
 - Will return exactly what you are looking for
-- Very small size; only depends on 5 lodash functions which are extracted using rollup, which means we have a zero dependency lbirary
+- Very small size; only depends on 5 lodash functions which are extracted using rollup, which means we have a zero dependency library
 
 ## Demo
 

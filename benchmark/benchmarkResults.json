@@ -1,0 +1,86 @@
+[
+  {
+    "version": "1.0.0",
+    "operationType": 0,
+    "operationsPerSecond": 433.91463497610135,
+    "runsSampled": 286
+  },
+  {
+    "version": "1.1.0",
+    "operationType": 0,
+    "operationsPerSecond": 427.8006582268031,
+    "runsSampled": 286
+  },
+  {
+    "version": "1.1.1",
+    "operationType": 0,
+    "operationsPerSecond": 432.4827385592166,
+    "runsSampled": 286
+  },
+  {
+    "version": "1.1.2",
+    "operationType": 0,
+    "operationsPerSecond": 441.74492894609324,
+    "runsSampled": 284
+  },
+  {
+    "version": "1.2.1",
+    "operationType": 0,
+    "operationsPerSecond": 440.7979661610588,
+    "runsSampled": 288
+  },
+  {
+    "version": "1.2.2",
+    "operationType": 0,
+    "operationsPerSecond": 422.08782387477606,
+    "runsSampled": 285
+  },
+  {
+    "version": "1.3.0",
+    "operationType": 0,
+    "operationsPerSecond": 428.45712878848843,
+    "runsSampled": 284
+  },
+  {
+    "version": "1.3.1",
+    "operationType": 0,
+    "operationsPerSecond": 428.3193778071497,
+    "runsSampled": 285
+  },
+  {
+    "version": "1.4.0",
+    "operationType": 0,
+    "operationsPerSecond": 426.0991053737693,
+    "runsSampled": 284
+  },
+  {
+    "version": "1.4.1",
+    "operationType": 0,
+    "operationsPerSecond": 425.72740118893523,
+    "runsSampled": 285
+  },
+  {
+    "version": "1.4.2",
+    "operationType": 0,
+    "operationsPerSecond": 426.88024737394903,
+    "runsSampled": 286
+  },
+  {
+    "version": "1.4.3",
+    "operationType": 0,
+    "operationsPerSecond": 434.19798534491457,
+    "runsSampled": 286
+  },
+  {
+    "version": "1.4.4",
+    "operationType": 0,
+    "operationsPerSecond": 428.28348463244146,
+    "runsSampled": 284
+  },
+  {
+    "version": "1.5.0",
+    "operationType": 0,
+    "operationsPerSecond": 433.1286398248874,
+    "runsSampled": 286
+  }
+]
