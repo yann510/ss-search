@@ -1,64 +1,7 @@
 {
-    "name": "ss-search",
-    "version": "1.5.0",
-    "description": "The most basic, yet powerful text search.",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
-    "files": [
-        "lib/**/*"
-    ],
-    "scripts": {
-        "build": "rollup --config",
-        "format": "prettier --write \"./**/*.ts\"",
-        "lint": "tslint -p tsconfig.json",
-        "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc -r text -r lcov mocha -r ts-node/register tests/**.test.ts",
-        "prepare": "npm run build",
-        "prepublishOnly": "npm test && npm run lint",
-        "preversion": "npm run lint",
-        "version": "npm run format && git add -A src",
-        "postversion": "git push && git push --tags",
-        "benchmark": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./benchmark/benchmark.ts"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/yann510/ss-search.git"
-    },
-    "keywords": [
-        "search",
-        "text",
-        "typescript",
-        "javascript",
-        "fast",
-        "array",
-        "object"
-    ],
-    "author": "Yann Thibodeau",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/yann510/ss-search/issues"
-    },
-    "homepage": "https://github.com/yann510/ss-search#readme",
-    "devDependencies": {
-        "@types/benchmark": "^1.0.32",
-        "@types/chai": "^4.2.11",
-        "@types/lodash": "^4.14.149",
-        "@types/mocha": "^7.0.2",
-        "@types/node": "^13.13.2",
-        "benchmark": "^2.1.4",
-        "chai": "^4.2.0",
-        "coveralls": "^3.1.0",
-        "lodash": "^4.17.15",
-        "mocha": "^7.1.1",
-        "nyc": "^15.0.1",
-        "prettier": "^2.0.2",
-        "rollup": "^2.7.2",
-        "rollup-plugin-commonjs": "^10.1.0",
-        "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-typescript2": "^0.27.0",
-        "ts-node": "^8.8.2",
-        "tslint": "^6.1.0",
-        "tslint-config-prettier": "^1.18.0",
-        "typescript": "^3.8.3"
-    },
-    "dependencies": {}
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.21.0"
+  }
 }

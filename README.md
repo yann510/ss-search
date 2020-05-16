@@ -132,3 +132,11 @@ const results = search(data, ["arrayObjects[arrayObjectProperty]"], "arrayObject
 How does it compare to other search libraries? Test out for yourself with this interactive [benchmark](https://ss-search.netlify.app/benchmark) ;)
 
 ![](benchmark.gif)
+
+### Developing
+
+To better manage dependencies across the monorepo I'm using [lerna](https://github.com/lerna/lerna).
+
+The following command will install lerna globally and install the depedencies of all the packages of the repository.
+
+```npm i lerna -g && lerna bootstrap --hoist```

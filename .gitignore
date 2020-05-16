@@ -1,7 +1,8 @@
 .idea
 node_modules
-/lib
+packages/ss-search/lib
 .nyc_output
 coverage
 dist
-demo/api/
+packages/api/
+.DS_Store

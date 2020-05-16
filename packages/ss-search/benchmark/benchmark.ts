@@ -21,12 +21,7 @@ const benchmarkResultPath = `${__dirname}/benchmarkResults.json`
 
 const packageVersions: string[] = JSON.parse(execSync("npm view ss-search versions --json").toString())
 
-let benchmarkResults: BenchmarkResult[]
-if (!existsSync(benchmarkResultPath)) {
-    benchmarkResults = []
-} else {
-    benchmarkResults = JSON.parse(readFileSync(benchmarkResultPath).toString())
-}
+let benchmarkResults: BenchmarkResult[] = existsSync(benchmarkResultPath) ? JSON.parse(readFileSync(benchmarkResultPath).toString()) : []
 
 const missingVersionsToBenchmark = difference(
     packageVersions,

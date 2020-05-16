@@ -3,11 +3,11 @@
 		"target": "es6",
 		"module": "ESNext",
 		"declaration": true,
-		"outDir": "./lib",
+		"outDir": "packages/ss-search/lib",
 		"strict": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "tests/**/*"]
+	"include": ["packages/ss-search/src/**/*"],
+	"exclude": ["node_modules", "packages/ss-search/tests/**/*"]
 }
