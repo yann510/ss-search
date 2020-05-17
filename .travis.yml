@@ -2,5 +2,13 @@ language: node_js
 node_js:
   - 13
 
+before_script:
+  - "npx lerna run prepublishOnly"
+
+script:
+  - "npx lerna run build"
+  - "npx lerna run test"
+
 after_script:
-  - "cat ./coverage/lcov.info | coveralls"
+  - "cd packages/ss-search && cat ./coverage/lcov.info | coveralls"
+  - "npx semantic-release"
