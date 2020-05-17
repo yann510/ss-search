@@ -140,4 +140,4 @@ To better manage dependencies across the monorepo I'm using [lerna](https://gith
 
 The following command will install lerna globally and install the depedencies of all the packages of the repository.
 
-```npm i lerna -g && lerna bootstrap --hoist```
+```npm i && npx lerna bootstrap --hoist```
