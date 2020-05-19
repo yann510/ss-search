@@ -11,4 +11,4 @@ script:
 
 after_script:
   - "cat ./packages/ss-search/coverage/lcov.info | coveralls"
-  - "npx semantic-release"
+  - "npx lerna run semantic-release"
