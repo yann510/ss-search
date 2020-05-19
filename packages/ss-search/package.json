@@ -10,14 +10,10 @@
   "scripts": {
     "build": "rollup --config",
     "watch": "rollup --config --watch",
-    "format": "prettier --write \"./**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc -r text -r lcov mocha -r ts-node/register tests/**.test.ts",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags",
     "benchmark": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./benchmark/benchmark.ts",
     "semantic-release": "semantic-release"
   },
