@@ -3,6 +3,7 @@
 ![Travis (.org)](https://img.shields.io/travis/yann510/ss-search?style=flat-square)
 ![Coveralls github](https://img.shields.io/coveralls/github/yann510/ss-search?style=flat-square)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
 
 # s(imply)s(tupid)-search
 ### The most basic, yet powerful text search.
@@ -138,6 +139,14 @@ How does it compare to other search libraries? Test out for yourself with this i
 
 To better manage dependencies across the monorepo I'm using [lerna](https://github.com/lerna/lerna).
 
-The following command will install lerna globally and install the depedencies of all the packages of the repository.
+The following command will install lerna (and other depedencies) and install the depedencies of all the packages of the repository.
 
 ```npm i && npx lerna bootstrap --hoist```
+
+#### Commit format
+
+To make things easier for all contributors, I'm using [commitizen](https://github.com/commitizen/cz-cli) to enforce compatible commit messages with [semantic-release](https://github.com/semantic-release/semantic-release).
+Also, to make sure it is enforced, I'm using [husky](https://github.com/typicode/husky) to easily add validation hooks. 
+When you run `git commit` you will be prompted with an interactive CLI to help you with the formatting of your commit message.
+
+TLDR: making a contribution is easy peasy and you cannot go wrong ;) 

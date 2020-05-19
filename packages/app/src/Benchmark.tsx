@@ -116,7 +116,7 @@ function Benchmark(props: Props) {
                     {
                         libraryName: "ss-search",
                         indexationFn: (data: Data[]) => indexDocuments(data, Object.keys(data[0])),
-                        searchFn: (data: Data[], searchText: string) => search(data, Object.keys(data[0]), searchText),
+                        searchFn: (data: Data[], searchText: string) => search(data, Object.keys(data[0]), searchText) as Data[],
                     },
                     {
                         libraryName: "lunr.js",

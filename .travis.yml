@@ -6,8 +6,8 @@ before_script:
   - "npx lerna bootstrap --hoist"
 
 script:
-  - "npx lerna run build"
   - "npx lerna run prepublishOnly"
+  - "npx lerna run build"
 
 after_script:
   - "cd packages/ss-search && cat ./coverage/lcov.info | coveralls"
