@@ -6,7 +6,8 @@ before_script:
   - "npx lerna bootstrap --hoist"
 
 script:
-  - "npx lerna run prepublishOnly"
+  - "npx lerna run lint"
+  - "npx lerna run test"
   - "npx lerna run build"
 
 after_script:

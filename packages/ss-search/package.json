@@ -13,7 +13,6 @@
     "lint": "tslint -p tsconfig.json",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc -r text -r lcov mocha -r ts-node/register tests/**.test.ts",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
     "benchmark": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./benchmark/benchmark.ts",
     "semantic-release": "semantic-release"
   },
@@ -37,6 +36,7 @@
   },
   "homepage": "https://github.com/yann510/ss-search#readme",
   "devDependencies": {
+    "@semantic-release/git": "^9.0.0",
     "@types/benchmark": "^1.0.32",
     "@types/chai": "^4.2.11",
     "@types/lodash": "^4.14.150",
@@ -60,5 +60,15 @@
     "tslint": "^6.1.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      ["@semantic-release/git", {
+        "assets": ["package.json"],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }]
+    ]
   }
 }
