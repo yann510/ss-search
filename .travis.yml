@@ -2,14 +2,15 @@ language: node_js
 node_js:
   - 13
 
-before_script:
-  - "npx lerna bootstrap --hoist"
+install:
+  - npm ci
+  - npx lerna bootstrap
 
 script:
-  - "npx lerna run lint"
-  - "npx lerna run test"
-  - "npx lerna run build"
+  - npx lerna run lint
+  - npx lerna run test
+  - npx lerna run build
 
 after_script:
-  - "cat ./packages/ss-search/coverage/lcov.info | coveralls"
-  - "npx lerna run semantic-release"
+  - cat ./packages/ss-search/coverage/lcov.info | coveralls
+  - npx lerna run semantic-release
