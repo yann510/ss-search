@@ -36,7 +36,6 @@
   },
   "homepage": "https://github.com/yann510/ss-search#readme",
   "devDependencies": {
-    "@semantic-release/git": "^9.0.0",
     "@types/benchmark": "^1.0.32",
     "@types/chai": "^4.2.11",
     "@types/lodash": "^4.14.150",
