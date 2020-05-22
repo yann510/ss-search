@@ -52,7 +52,6 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.3.0",
     "rollup-plugin-typescript2": "^0.27.0",
-    "semantic-release": "^17.0.7",
     "ts-node": "^8.8.2",
     "tslint": "^6.1.0",
     "typescript": "^3.8.3"
@@ -64,7 +63,8 @@
       ["@semantic-release/git", {
         "assets": ["package.json"],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }]
+      }],
+      "@semantic-release/npm"
     ]
   }
 }
