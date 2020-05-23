@@ -1,3 +1,10 @@
+## [1.5.15](https://github.com/yann510/ss-search/compare/v1.5.14...v1.5.15) (2020-05-23)
+
+
+### Bug Fixes
+
+* **ss-search:** added debugging to travis for coveralls ([c307aaa](https://github.com/yann510/ss-search/commit/c307aaaa195aaf03f68ad297c66162864016bfe4))
+
 ## [1.5.14](https://github.com/yann510/ss-search/compare/v1.5.13...v1.5.14) (2020-05-23)
 
 
