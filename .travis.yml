@@ -14,4 +14,3 @@ script:
 after_script:
   - cat ./packages/ss-search/coverage/lcov.info | coveralls
   - npx lerna run semantic-release
-  - git status
