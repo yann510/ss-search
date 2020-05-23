@@ -1,10 +1,11 @@
 import { data } from "./data"
 import { exec, execSync } from "child_process"
 import { readFileSync, writeFileSync, existsSync } from "fs"
+// @ts-ignore
 import difference from "lodash/difference"
 // @ts-ignore
-import { search } from "ss-search"
 import Benchmark from "benchmark"
+import { isMainThread } from "worker_threads"
 
 enum OperationType {
     Search,
@@ -19,42 +20,46 @@ interface BenchmarkResult {
 
 const benchmarkResultPath = `${__dirname}/benchmarkResults.json`
 
-const packageVersions: string[] = JSON.parse(execSync("npm view ss-search versions --json").toString())
+async function main() {
+    const packageVersions: string[] = JSON.parse(execSync("npm view ss-search versions --json").toString())
 
-let benchmarkResults: BenchmarkResult[] = existsSync(benchmarkResultPath) ? JSON.parse(readFileSync(benchmarkResultPath).toString()) : []
+    let benchmarkResults: BenchmarkResult[] = existsSync(benchmarkResultPath) ? JSON.parse(readFileSync(benchmarkResultPath).toString()) : []
 
-const missingVersionsToBenchmark = difference(
-    packageVersions,
-    benchmarkResults.map((x) => x.version),
-)
+    const missingVersionsToBenchmark = difference(
+        packageVersions,
+        benchmarkResults.map((x) => x.version),
+    )
 
-for (const version of missingVersionsToBenchmark) {
-    execSync(`cd ${__dirname} && npm i --prefix ./ ss-search@${version}`).toString()
+    for (const version of missingVersionsToBenchmark) {
+        execSync(`cd ${__dirname} && npm i --prefix ./ ss-search@${version}`).toString()
 
-    const suite = new Benchmark.Suite()
+        const lib = await import("ss-search")
 
-    // add tests
-    suite
-        .add(
-            "search",
-            function () {
-                search(data, Object.keys(data[0]), "l o r a w e l l s Lesmuf")
-            },
-            { minSamples: 200 },
-        )
-        // add listeners
-        .on("cycle", function (event: any) {
-            const benchmarkResult: BenchmarkResult = {
-                version,
-                operationType: OperationType.Search,
-                operationsPerSecond: event.target.hz,
-                runsSampled: event.target.stats.sample.length,
-            }
-            benchmarkResults = [...benchmarkResults, benchmarkResult]
+        new Benchmark.Suite()
+            // add tests
+            .add(
+                "search",
+                function () {
+                    lib.search(data, Object.keys(data[0]), "l o r a w e l l s Lesmuf")
+                },
+                { minSamples: 200 },
+            )
+            // add listeners
+            .on("cycle", function (event: any) {
+                const benchmarkResult: BenchmarkResult = {
+                    version,
+                    operationType: OperationType.Search,
+                    operationsPerSecond: event.target.hz,
+                    runsSampled: event.target.stats.sample.length,
+                }
+                benchmarkResults = [...benchmarkResults, benchmarkResult]
 
-            writeFileSync(benchmarkResultPath, JSON.stringify(benchmarkResults, null, 2))
+                writeFileSync(benchmarkResultPath, JSON.stringify(benchmarkResults, null, 2))
 
-            console.log(`Benchmarked versrion ${version} - ${event.target}`)
-        })
-        .run({ minSamples: 200 })
+                console.log(`Benchmarked versrion ${version} - ${event.target}`)
+            })
+            .run({ minSamples: 200 })
+    }
 }
+
+main()
