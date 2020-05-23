@@ -13,10 +13,11 @@
     "lint": "tslint -p tsconfig.json",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc -r text -r lcov mocha -r ts-node/register tests/**.test.ts",
     "prepare": "npm run build",
-    "prepublishOnly": "cp ../../README.md ./ && cp ../../benchmark.gif ./ && cp ../../demo.gif ./",
-    "postpublish": "npm i ss-search --prefix ./benchmark && npm run benchmark",
+    "coveralls": "cat ./coverage/lcov.info | npx coveralls",
     "benchmark": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./benchmark/benchmark.ts",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "prepublishOnly": "cp ../../README.md ./ && cp ../../benchmark.gif ./ && cp ../../demo.gif ./",
+    "postpublish": "npm i ss-search --prefix ./benchmark && npm run benchmark && npm run coveralls"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "@types/node": "^13.13.4",
     "benchmark": "^2.1.4",
     "chai": "^4.2.0",
+    "coveralls": "^3.1.0",
     "lodash": "^4.17.15",
     "mocha": "^7.1.1",
     "nyc": "^15.0.1",
