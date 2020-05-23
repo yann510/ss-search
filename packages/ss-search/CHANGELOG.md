@@ -1,3 +1,10 @@
+## [1.5.11](https://github.com/yann510/ss-search/compare/v1.5.10...v1.5.11) (2020-05-23)
+
+
+### Bug Fixes
+
+* **ss-search:** fixed automatic benchmark ([1dd4948](https://github.com/yann510/ss-search/commit/1dd4948517ceb7fe39bac2acad354449882eea00))
+
 ## [1.5.10](https://github.com/yann510/ss-search/compare/v1.5.9...v1.5.10) (2020-05-23)
 
 
