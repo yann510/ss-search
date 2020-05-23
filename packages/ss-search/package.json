@@ -1,6 +1,6 @@
 {
   "name": "ss-search",
-  "version": "1.5.1",
+  "version": "1.5.8",
   "description": "The most basic, yet powerful text search.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -62,10 +62,16 @@
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
       "@semantic-release/npm",
-      ["@semantic-release/github", {
-        "assets": ["packages/ss-search/package.json", "packages/ss-search/package-lock.json"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "packages/ss-search/package.json",
+            "packages/ss-search/package-lock.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
       "@semantic-release/git"
     ]
   }
