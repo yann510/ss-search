@@ -12,5 +12,5 @@ script:
   - npx lerna run build
 
 after_script:
-  - cat ./packages/ss-search/coverage/lcov.info | coveralls
+  - cat ./packages/ss-search/coverage/lcov.info | npx coveralls
   - npx lerna run semantic-release
