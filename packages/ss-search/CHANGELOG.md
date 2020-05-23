@@ -1,3 +1,10 @@
+## [1.5.12](https://github.com/yann510/ss-search/compare/v1.5.11...v1.5.12) (2020-05-23)
+
+
+### Bug Fixes
+
+* **ss-search:** benchmark results should get commited by ci ([cec361f](https://github.com/yann510/ss-search/commit/cec361f88218e8d49043414cf75e493af3138ac4))
+
 ## [1.5.11](https://github.com/yann510/ss-search/compare/v1.5.10...v1.5.11) (2020-05-23)
 
 
