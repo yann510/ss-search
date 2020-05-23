@@ -1,3 +1,10 @@
+## [1.5.16](https://github.com/yann510/ss-search/compare/v1.5.15...v1.5.16) (2020-05-23)
+
+
+### Bug Fixes
+
+* **ss-search:** coveralls should def work now ([76ee9db](https://github.com/yann510/ss-search/commit/76ee9db17a19c9960e84f232fb3955f2f24ed6a6))
+
 ## [1.5.15](https://github.com/yann510/ss-search/compare/v1.5.14...v1.5.15) (2020-05-23)
 
 
