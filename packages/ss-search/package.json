@@ -14,7 +14,7 @@
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc -r text -r lcov mocha -r ts-node/register tests/**.test.ts",
     "prepare": "npm run build",
     "prepublishOnly": "cp ../../README.md ./ && cp ../../benchmark.gif ./ && cp ../../demo.gif ./",
-    "postpublish": "npm run benchmark",
+    "postpublish": "npm i ss-search --prefix ./benchmark && npm run benchmark",
     "benchmark": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./benchmark/benchmark.ts",
     "semantic-release": "semantic-release"
   },

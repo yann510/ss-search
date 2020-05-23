@@ -1,11 +1,8 @@
 import { data } from "./data"
 import { exec, execSync } from "child_process"
 import { readFileSync, writeFileSync, existsSync } from "fs"
-// @ts-ignore
 import difference from "lodash/difference"
-// @ts-ignore
 import Benchmark from "benchmark"
-import { isMainThread } from "worker_threads"
 
 enum OperationType {
     Search,
