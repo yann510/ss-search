@@ -1,5 +1,5 @@
 import { data } from "./data"
-import { exec, execSync } from "child_process"
+import { execSync } from "child_process"
 import { readFileSync, writeFileSync, existsSync } from "fs"
 import difference from "lodash/difference"
 import Benchmark from "benchmark"
@@ -28,8 +28,9 @@ async function main() {
     )
 
     for (const version of missingVersionsToBenchmark) {
-        execSync(`cd ${__dirname} && npm i --prefix ./ ss-search@${version}`).toString()
+        execSync(`npm i --prefix ${__dirname} ss-search@${version}`)
 
+        // @ts-ignore
         const lib = await import("ss-search")
 
         new Benchmark.Suite()
