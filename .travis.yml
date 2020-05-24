@@ -12,4 +12,5 @@ script:
   - npx lerna run build
 
 after_script:
+  - npx lerna run benchmark
   - npx lerna run semantic-release

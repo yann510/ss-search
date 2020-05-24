@@ -17,7 +17,7 @@
     "benchmark": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./benchmark/benchmark.ts",
     "semantic-release": "semantic-release",
     "prepublishOnly": "cp ../../README.md ./ && cp ../../benchmark.gif ./ && cp ../../demo.gif ./",
-    "postpublish": "npm i ss-search --prefix ./benchmark && npm run benchmark && npm run coveralls"
+    "postpublish": "npm i ss-search --prefix ./benchmark && npm run coveralls"
   },
   "repository": {
     "type": "git",
