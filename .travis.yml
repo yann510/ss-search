@@ -12,5 +12,5 @@ script:
   - npx lerna run build
 
 after_script:
-  - npx lerna run benchmark
+  - npm run benchmark --prefix packages/ss-search
   - npx lerna run semantic-release
