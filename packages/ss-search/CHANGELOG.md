@@ -1,3 +1,10 @@
+## [1.5.18](https://github.com/yann510/ss-search/compare/v1.5.17...v1.5.18) (2020-05-24)
+
+
+### Bug Fixes
+
+* **ss-search:** benchmark should really be commited now ([b51a861](https://github.com/yann510/ss-search/commit/b51a86135940fc59c953294c37588a0c8a867636))
+
 ## [1.5.17](https://github.com/yann510/ss-search/compare/v1.5.16...v1.5.17) (2020-05-24)
 
 
