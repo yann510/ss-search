@@ -1,3 +1,10 @@
+## [1.5.20](https://github.com/yann510/ss-search/compare/v1.5.19...v1.5.20) (2020-05-24)
+
+
+### Bug Fixes
+
+* **ss-search:** this will really work, I promise ([cf3b58e](https://github.com/yann510/ss-search/commit/cf3b58ea81b6f9a9ba6887e4aa199846d9e03774))
+
 ## [1.5.19](https://github.com/yann510/ss-search/compare/v1.5.18...v1.5.19) (2020-05-24)
 
 
