@@ -1,3 +1,10 @@
+## [1.5.19](https://github.com/yann510/ss-search/compare/v1.5.18...v1.5.19) (2020-05-24)
+
+
+### Bug Fixes
+
+* **ss-search:** fixed for real real ([e11f080](https://github.com/yann510/ss-search/commit/e11f08006128dd34cfca35300cae4d0f2cdd3267))
+
 ## [1.5.18](https://github.com/yann510/ss-search/compare/v1.5.17...v1.5.18) (2020-05-24)
 
 
