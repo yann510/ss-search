@@ -8,7 +8,7 @@ enum OperationType {
     Search,
 }
 
-interface BenchmarkResult {
+export interface BenchmarkResult {
     version: string
     operationType: OperationType
     operationsPerSecond: number

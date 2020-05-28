@@ -5,7 +5,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import Divider from "@material-ui/core/Divider"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
-import { Code, Dashboard, Timer } from "@material-ui/icons"
+import { Code, Dashboard, Timer, ShutterSpeed } from "@material-ui/icons"
 import ListItemText from "@material-ui/core/ListItemText"
 import Drawer from "@material-ui/core/Drawer"
 import React from "react"
@@ -111,6 +111,7 @@ function AppLayout(props: Props) {
                         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                             {(location.pathname === "/demo" || location.pathname === "/") && <>Demo with 10,000 entries</>}
                             {location.pathname === "/benchmark" && <>Benchmark</>}
+                            {location.pathname === "/benchmark-version" && <>Benchmark of all released versions of ss-search</>}
                         </Typography>
                     </Container>
                 </Toolbar>
@@ -139,6 +140,14 @@ function AppLayout(props: Props) {
                             <Timer />
                         </ListItemIcon>
                         <ListItemText primary="Benchmark" />
+                    </ListItem>
+                </Link>
+                <Link to="/benchmark-version" className={classes.menuLink}>
+                    <ListItem button key="Benchmark Version" selected={location.pathname === "/benchmark-version"}>
+                        <ListItemIcon>
+                            <ShutterSpeed />
+                        </ListItemIcon>
+                        <ListItemText primary="Benchmark Version" />
                     </ListItem>
                 </Link>
                 <a className={classes.menuLink} href="https://github.com/yann510/ss-search#usage" target="_blank" rel="noopener noreferrer">
