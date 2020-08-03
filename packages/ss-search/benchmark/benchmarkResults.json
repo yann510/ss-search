@@ -166,5 +166,11 @@
     "operationType": 0,
     "operationsPerSecond": 350.56618196947187,
     "runsSampled": 289
+  },
+  {
+    "version": "1.5.20",
+    "operationType": 0,
+    "operationsPerSecond": 335.96257280705737,
+    "runsSampled": 284
   }
 ]

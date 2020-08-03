@@ -1,3 +1,10 @@
+## [1.5.21](https://github.com/yann510/ss-search/compare/v1.5.20...v1.5.21) (2020-08-03)
+
+
+### Bug Fixes
+
+* **lint:** fixed lint errors ([4c8f6fa](https://github.com/yann510/ss-search/commit/4c8f6fa55de196e9eb3d13ca7c1ae97f82caa954))
+
 ## [1.5.20](https://github.com/yann510/ss-search/compare/v1.5.19...v1.5.20) (2020-05-24)
 
 
