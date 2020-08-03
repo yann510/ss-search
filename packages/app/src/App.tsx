@@ -12,8 +12,8 @@ import Benchmark from "./Benchmark"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 import BackdropProgress from "./BackdropLoader"
-import clsx from 'clsx';
-import BenchmarkVersion from './BenchmarkVersion';
+import clsx from "clsx"
+import BenchmarkVersion from "./BenchmarkVersion"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -79,7 +79,7 @@ function App() {
                                 <Benchmark data={data} />
                             </Route>
                             <Route exact path="/benchmark-version">
-                                <BenchmarkVersion/>
+                                <BenchmarkVersion />
                             </Route>
                         </Switch>
                         <Box pt={4}>

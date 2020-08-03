@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "format": "prettier --write \"./**/*.ts\""
+    "format": "prettier --write \"./**/*.(ts|tsx)\""
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
