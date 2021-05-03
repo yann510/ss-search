@@ -16,6 +16,10 @@ const dataset = [
         number: 3,
         text: "A search function should return results that match everything provided in the search text",
     },
+    {
+        number: 4,
+        text: "Функция поиска должна искать не только по латинскому алфавиту, но и по другим",
+    },
 ]
 
 describe("index", function () {
@@ -70,6 +74,19 @@ describe("index", function () {
 
             // Assert
             expect(actual).to.be.eql([{ element: data[0], score: 1 }])
+        })
+
+        it("Should match non-latin alphabets equally well as the latin", function() {
+            // Arrange
+            const data = dataset.slice(0, 4)
+            const keys = Object.keys(data[0])
+            const searchText = "должна искать"
+
+            // Act
+            const actual = search(data, keys, searchText)
+
+            // Assert
+            expect(actual).to.be.eql([data[4]])
         })
     })
 })
