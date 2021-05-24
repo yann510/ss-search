@@ -86,7 +86,7 @@ describe("index", function () {
             const actual = search(data, keys, searchText)
 
             // Assert
-            expect(actual).to.be.eql([data[4]])
+            expect(actual).to.be.eql([{ ...data[3] }])
         })
     })
 })
