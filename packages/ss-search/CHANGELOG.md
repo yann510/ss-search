@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/yann510/ss-search/compare/v1.6.0...v1.6.1) (2021-05-27)
+
+
+### Bug Fixes
+
+* added coveralls token to github CI ([3c7e45d](https://github.com/yann510/ss-search/commit/3c7e45d57cd0299af980668defd633804d83f1c8))
+
 # [1.6.0](https://github.com/yann510/ss-search/compare/v1.5.21...v1.6.0) (2021-05-27)
 
 
