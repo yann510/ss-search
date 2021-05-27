@@ -1,0 +1,55 @@
+name: ss-search CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.13.1]
+
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.5.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install NPM packages
+        run: npm i
+
+      - name: Bootstrap Lerna
+        run: npx lerna bootstrap
+
+      - name: Lint files
+        run: npx lerna run lint
+
+      - name: Run tests
+        run: npx lerna run test
+
+      - name: Build apps
+        run: npx lerna run build
+
+      - name: Run benchmark
+        run: npm run benchmark --prefix packages/ss-search
+
+      - name: Release + Deploy
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx lerna run semantic-release
