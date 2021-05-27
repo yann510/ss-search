@@ -1,3 +1,16 @@
+# [1.6.0](https://github.com/yann510/ss-search/compare/v1.5.21...v1.6.0) (2021-05-27)
+
+
+### Bug Fixes
+
+* package deployment ([0b480fe](https://github.com/yann510/ss-search/commit/0b480feda195259159ecb256af15651902523398)), closes [#22](https://github.com/yann510/ss-search/issues/22)
+* tests ([5cbc1f2](https://github.com/yann510/ss-search/commit/5cbc1f23c8900f88427a1a710b2ca08194b4eb1a))
+
+
+### Features
+
+* **index.ts:** add support for non-latin languages ([2fd455e](https://github.com/yann510/ss-search/commit/2fd455edf2ed423ad6138e1b5b0ef0e78a8fa52c))
+
 ## [1.5.21](https://github.com/yann510/ss-search/compare/v1.5.20...v1.5.21) (2020-08-03)
 
 
