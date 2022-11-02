@@ -155,7 +155,11 @@ describe("index", function () {
             // Arrange
             const data = [
                 {
+                    object: { nestedProperty: "value" },
                     array: [{ prop1: "value1", prop2: "value2" }],
+                },
+                {
+                    object: { nestedProperty: "value" },
                 },
             ]
             const keys = ["array[prop2]"]
@@ -164,7 +168,7 @@ describe("index", function () {
             const actual = convertToSearchableStrings(data, keys)
 
             // Assert
-            expect(actual).to.be.eql(["value2"])
+            expect(actual).to.be.eql(["value2", ""])
         })
 
         it("Should return empty string when the elements value provided is not an object", function () {
