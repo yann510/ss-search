@@ -1,3 +1,11 @@
+## [1.6.2](https://github.com/yann510/ss-search/compare/v1.6.1...v1.6.2) (2022-11-02)
+
+
+### Bug Fixes
+
+* avoid calling .map on undefined for array selector ([dc61f06](https://github.com/yann510/ss-search/commit/dc61f06e2211f4f4ad906fcea4ef83e2f1e15621))
+* avoid calling .map on undefined for array selector ([642396d](https://github.com/yann510/ss-search/commit/642396d3b3b820338d495b861837a8271b140ff0)), closes [#37](https://github.com/yann510/ss-search/issues/37)
+
 ## [1.6.1](https://github.com/yann510/ss-search/compare/v1.6.0...v1.6.1) (2021-05-27)
 
 
