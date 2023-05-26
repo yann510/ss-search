@@ -67,7 +67,6 @@ export function search<T>(elements: T[], searchableKeys: string[], searchText: s
     }
 
     const searchWords = tokenize(searchText)
-
     const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys)
 
     return searchableDataStrings

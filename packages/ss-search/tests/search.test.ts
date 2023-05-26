@@ -20,6 +20,10 @@ const dataset = [
         number: 4,
         text: "Функция поиска должна искать не только по латинскому алфавиту, но и по другим",
     },
+    {
+        number: 5,
+        nestedArray: [{ text: "A proper search function should be able to search through nested arrays" }],
+    },
 ]
 
 describe("index", function () {
@@ -76,7 +80,7 @@ describe("index", function () {
             expect(actual).to.be.eql([{ element: data[0], score: 1 }])
         })
 
-        it("Should match non-latin alphabets equally well as the latin", function() {
+        it("Should match non-latin alphabets equally well as the latin", function () {
             // Arrange
             const data = dataset.slice(0, 4)
             const keys = Object.keys(data[0])
@@ -87,6 +91,19 @@ describe("index", function () {
 
             // Assert
             expect(actual).to.be.eql([{ ...data[3] }])
+        })
+
+        it("Should match nested arrays", function () {
+            // Arrange
+            const data = dataset.slice(0, 5)
+            const keys = ["nestedArray[text]"]
+            const searchText = "nested"
+
+            // Act
+            const actual = search(data, keys, searchText)
+
+            // Assert
+            expect(actual).to.be.eql(data[4])
         })
     })
 })
