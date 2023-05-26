@@ -3,9 +3,9 @@ import { tokenize } from "../src"
 
 const expect = chai.expect
 
-describe("index", function () {
-    describe("#tokenize", function () {
-        it("Should return empty array when null is passed", function () {
+describe("index", () => {
+    describe("#tokenize", () => {
+        it("Should return empty array when null is passed", () => {
             // Arrange
             const text: any = null
 
@@ -16,7 +16,7 @@ describe("index", function () {
             expect(actual).to.be.eql([])
         })
 
-        it("Should transform text into an array of words", function () {
+        it("Should transform text into an array of words", () => {
             // Arrange
             const text = "I will now get,  split into tokens; by this lovely.: tokenization' function"
 

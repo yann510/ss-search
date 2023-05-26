@@ -12,7 +12,7 @@ export function normalize(text: string) {
 }
 
 export function tokenize(searchText: string): string[] {
-    return normalize(escapeRegExp(searchText)).match(/[\p{L}\d]+/gium) || []
+    return normalize(escapeRegExp(searchText)).match(/[\p{L}\d]+/gimu) || []
 }
 
 export const convertToSearchableStrings = memoize(<T>(elements: T[], searchableKeys: string[]) => {
@@ -54,7 +54,7 @@ export const getScore = (matchesAllSearchWords: boolean, searchWords: string[], 
         return 0
     }
 
-    const searchableDataStringWithoutNonWordCharacters = searchableDataString.replace(/[^\p{L}\d]+/gium, "")
+    const searchableDataStringWithoutNonWordCharacters = searchableDataString.replace(/[^\p{L}\d]+/gimu, "")
     const remainingTextAfterRemovingSearchWords = searchWords
         .sort((a, b) => b.length - a.length)
         .reduce((remainingText, searchWord) => remainingText.replace(new RegExp(searchWord, "gm"), ""), searchableDataStringWithoutNonWordCharacters)

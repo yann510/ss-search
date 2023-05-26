@@ -37,13 +37,13 @@ async function main() {
             // add tests
             .add(
                 "search",
-                function () {
+                () => {
                     lib.search(data, Object.keys(data[0]), "l o r a w e l l s Lesmuf")
                 },
                 { minSamples: 200 },
             )
             // add listeners
-            .on("cycle", function (event: any) {
+            .on("cycle", (event: any) => {
                 const benchmarkResult: BenchmarkResult = {
                     version,
                     operationType: OperationType.Search,
