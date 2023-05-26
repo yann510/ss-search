@@ -20,11 +20,15 @@ const dataset = [
         number: 4,
         text: "Функция поиска должна искать не только по латинскому алфавиту, но и по другим",
     },
+    {
+        number: 5,
+        nestedArray: [{ text: "A proper search function should be able to search through nested arrays" }],
+    },
 ]
 
-describe("index", function () {
-    describe("#search", function () {
-        it("Should match all data", function () {
+describe("index", () => {
+    describe("#search", () => {
+        it("Should match all data", () => {
             // Arrange
             const data = dataset.slice(0, 2)
             const keys = Object.keys(data[0])
@@ -37,7 +41,7 @@ describe("index", function () {
             expect(actual).to.be.eql(data)
         })
 
-        it("Should match every search word (so number 3 only)", function () {
+        it("Should match every search word (so number 3 only)", () => {
             // Arrange
             const data = dataset.slice(0, 3)
             const keys = Object.keys(data[0])
@@ -50,7 +54,7 @@ describe("index", function () {
             expect(actual).to.be.eql([data[2]])
         })
 
-        it("Should return elements when searchText is an empty string", function () {
+        it("Should return elements when searchText is an empty string", () => {
             // Arrange
             const data = dataset
             const keys = Object.keys(data[0])
@@ -63,7 +67,7 @@ describe("index", function () {
             expect(actual).to.be.eql(data)
         })
 
-        it("Should return scored results when score option is activated", function () {
+        it("Should return scored results when score option is activated", () => {
             // Arrange
             const data = dataset.slice(0, 1)
             const keys = ["number"]
@@ -76,7 +80,7 @@ describe("index", function () {
             expect(actual).to.be.eql([{ element: data[0], score: 1 }])
         })
 
-        it("Should match non-latin alphabets equally well as the latin", function() {
+        it("Should match non-latin alphabets equally well as the latin", () => {
             // Arrange
             const data = dataset.slice(0, 4)
             const keys = Object.keys(data[0])
@@ -87,6 +91,19 @@ describe("index", function () {
 
             // Assert
             expect(actual).to.be.eql([{ ...data[3] }])
+        })
+
+        it("Should match nested arrays", () => {
+            // Arrange
+            const data = dataset.slice(0, 5)
+            const keys = ["nestedArray[text]"]
+            const searchText = "nested"
+
+            // Act
+            const actual = search(data, keys, searchText)
+
+            // Assert
+            expect(actual[0]).to.be.eql(data[4])
         })
     })
 })

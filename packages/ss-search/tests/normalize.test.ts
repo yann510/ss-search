@@ -3,9 +3,9 @@ import { normalize } from "../src"
 
 const expect = chai.expect
 
-describe("index", function () {
-    describe("#normalize", function () {
-        it("Should return empty string when null is passed", function () {
+describe("index", () => {
+    describe("#normalize", () => {
+        it("Should return empty string when null is passed", () => {
             // Arrange
             const baiscText: any = null
 
@@ -16,7 +16,7 @@ describe("index", function () {
             expect(actual).to.be.eql("")
         })
 
-        it("Should keep the original text as it is simple", function () {
+        it("Should keep the original text as it is simple", () => {
             // Arrange
             const baiscText = "this search library is so simple, yet so good"
 
@@ -27,7 +27,7 @@ describe("index", function () {
             expect(actual).to.be.eql(baiscText)
         })
 
-        it("Should replace accent chars", function () {
+        it("Should replace accent chars", () => {
             // Arrange
             const accentText = "thís séârch lîbräry ïs sô sïmplÉ, yet sÖ gòöd"
 
