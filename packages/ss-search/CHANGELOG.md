@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/yann510/ss-search/compare/v1.6.2...v1.7.0) (2023-05-27)
+
+
+### Bug Fixes
+
+* semantic release commit ([e8a4447](https://github.com/yann510/ss-search/commit/e8a4447e31d3bfcd128a90f6076f2d911d3ed8aa))
+
+
+### Features
+
+* added test for nested array search ([6292504](https://github.com/yann510/ss-search/commit/6292504e6a9aa70c122d72901803f6b69379fc40))
+
 ## [1.6.2](https://github.com/yann510/ss-search/compare/v1.6.1...v1.6.2) (2022-11-02)
 
 
