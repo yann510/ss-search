@@ -24,7 +24,7 @@
     "react-dom": "^16.13.1",
     "react-highlight-words": "^0.16.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "recharts": "^1.8.5",
     "ss-search": "^1.5.20",
     "typescript": "^3.8.3"
