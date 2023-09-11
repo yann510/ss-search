@@ -20,12 +20,12 @@
 ![](demo.gif)
 
 If you're not convinced yet, take a look at this interactive
-[demo](https://ss-search.netlify.app/). 
+[demo](https://ss-search.netlify.app/).
 
 ## Install
 ss-search is available on [npm](https://www.npmjs.com/package/ss-search). It can be installed with the following command:
 
-`npm install ss-search` 
+`npm install ss-search`
 
 ## Usage
 
@@ -107,7 +107,7 @@ const results = search(data, ["object.nestedProperty"], "property")
 #### Array
 
 Providing a key which refers to an array will stringify that array using JSON.stringify
-         
+
 ```javascript
 const results = search(data, ["array"], "value2")
 // results: will return our original dataset
@@ -137,16 +137,13 @@ How does it compare to other search libraries? Test out for yourself with this i
 
 ### Developing
 
-To better manage dependencies across the monorepo I'm using [lerna](https://github.com/lerna/lerna).
+To better manage dependencies across the monorepo I'm using [NX](https://nx.dev/).
 
-The following command will install lerna (and other depedencies) and install the depedencies of all the packages of the repository.
+Install dependencies:
+```npm i```
 
-```npm i && npx lerna bootstrap --hoist```
+Start the web-app:
+```npm run web-app:serve```
 
-#### Commit format
-
-To make things easier for all contributors, I'm using [commitizen](https://github.com/commitizen/cz-cli) to enforce compatible commit messages with [semantic-release](https://github.com/semantic-release/semantic-release).
-Also, to make sure it is enforced, I'm using [husky](https://github.com/typicode/husky) to easily add validation hooks. 
-When you run `git commit` you will be prompted with an interactive CLI to help you with the formatting of your commit message.
-
-TLDR: making a contribution is easy peasy and you cannot go wrong ;) 
+Test the library:
+```npm run test:all```
