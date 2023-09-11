@@ -48,6 +48,7 @@ jobs:
         run: npm run build:all
 
       - name: Run benchmark
+        if: github.ref == 'refs/heads/master'
         run: npm run benchmark
 
       - name: Release + Deploy
