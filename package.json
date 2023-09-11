@@ -1,6 +1,6 @@
 {
   "name": "@ss-search/source",
-  "version": "0.0.0",
+  "version": "1.7.0",
   "license": "MIT",
   "scripts": {
     "format:all": "prettier --write --config .prettierrc \"**/*.{ts,tsx,js,json}\"",
