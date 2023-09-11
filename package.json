@@ -88,6 +88,7 @@
     "vitest": "0.32.4"
   },
   "release": {
+    "repositoryUrl": "https://github.com/yann510/ss-search",
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",

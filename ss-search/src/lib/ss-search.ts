@@ -40,7 +40,7 @@ export const convertToSearchableStrings = memoize(<T>(elements: T[] | null, sear
 
           return value
         })
-        .reduce((a, b) => a + b, ''),
+        .reduce((a, b) => a + b, '')
     )
     .map((x) => normalize(x))
 })
@@ -57,7 +57,7 @@ export const getScore = (matchesAllSearchWords: boolean, searchWords: string[], 
     .sort((a, b) => b.length - a.length)
     .reduce(
       (remainingText, searchWord) => remainingText.replace(new RegExp(searchWord, 'gm'), ''),
-      searchableDataStringWithoutNonWordCharacters,
+      searchableDataStringWithoutNonWordCharacters
     )
   return round(1 - remainingTextAfterRemovingSearchWords.length / searchableDataStringWithoutNonWordCharacters.length, 4)
 }
@@ -70,7 +70,7 @@ export function search<T>(
   elements: T[],
   searchableKeys: string[],
   searchText: string,
-  options: { withScore: true },
+  options: { withScore: true }
 ): { element: T; score: number }[]
 
 // Implementation signature
@@ -78,7 +78,7 @@ export function search<T>(
   elements: T[],
   searchableKeys: string[],
   searchText: string,
-  options?: { withScore?: boolean },
+  options?: { withScore?: boolean }
 ): T[] | { element: T; score: number }[] {
   if (!searchText) {
     return elements

@@ -18,17 +18,13 @@ export interface BenchmarkResult {
 const benchmarkResultPath = `${__dirname}/../../../../apps/web-app/src/assets/benchmarkResults.json`
 
 async function main() {
-  const packageVersions: string[] = JSON.parse(
-    execSync('npm view ss-search versions --json').toString(),
-  )
+  const packageVersions: string[] = JSON.parse(execSync('npm view ss-search versions --json').toString())
 
-  let benchmarkResults: BenchmarkResult[] = existsSync(benchmarkResultPath)
-    ? JSON.parse(readFileSync(benchmarkResultPath).toString())
-    : []
+  let benchmarkResults: BenchmarkResult[] = existsSync(benchmarkResultPath) ? JSON.parse(readFileSync(benchmarkResultPath).toString()) : []
 
   const missingVersionsToBenchmark = difference(
     packageVersions,
-    benchmarkResults.map((x) => x.version),
+    benchmarkResults.map((x) => x.version)
   )
 
   for (const version of missingVersionsToBenchmark) {
@@ -45,7 +41,7 @@ async function main() {
         () => {
           lib.search(data, Object.keys(data[0]), 'l o r a w e l l s Lesmuf')
         },
-        { minSamples: 200 },
+        { minSamples: 200 }
       )
       // add listeners
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,10 +54,7 @@ async function main() {
         }
         benchmarkResults = [...benchmarkResults, benchmarkResult]
 
-        writeFileSync(
-          benchmarkResultPath,
-          JSON.stringify(benchmarkResults, null, 2),
-        )
+        writeFileSync(benchmarkResultPath, JSON.stringify(benchmarkResults, null, 2))
 
         console.log(`Benchmarked version ${version} - ${event.target}`)
       })

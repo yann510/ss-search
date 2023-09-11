@@ -14,10 +14,7 @@ export function BackdropProgress(props: Props) {
   return (
     <Backdrop className={classes.backdrop} open={isLoading}>
       <div className={classes.backdropContent}>
-        <CircularProgress
-          className={classes.circularProgress}
-          color="inherit"
-        />
+        <CircularProgress className={classes.circularProgress} color="inherit" />
         <span>{text}</span>
       </div>
     </Backdrop>

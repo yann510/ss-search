@@ -17,7 +17,7 @@ const debouncedSearch = debounce(
     searchText: string,
     data: Data[],
     setSearchResults: React.Dispatch<React.SetStateAction<Data[]>>,
-    setSearchTime: React.Dispatch<React.SetStateAction<number>>,
+    setSearchTime: React.Dispatch<React.SetStateAction<number>>
   ) => {
     const searchResults = search(data, Object.keys(data[0]), searchText)
     setSearchResults(searchResults)
@@ -25,7 +25,7 @@ const debouncedSearch = debounce(
     const endTime = performance.now()
     setSearchTime(endTime - (startTime + debounceTime))
   },
-  debounceTime,
+  debounceTime
 )
 
 interface Props {

@@ -59,7 +59,7 @@ const debouncedSearches = debounce(
     lunrIndex: lunr.Index | undefined,
     jsSearch: JsSearch.Search | undefined,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    flexsearch: any,
+    flexsearch: any
   ) => {
     setSearchWords(tokenize(searchText))
 
@@ -87,7 +87,7 @@ const debouncedSearches = debounce(
       })
     }
   },
-  200,
+  200
 )
 
 function BenchmarkPage(props: Props) {
@@ -151,7 +151,7 @@ function BenchmarkPage(props: Props) {
                   })),
                   {
                     keys: Object.keys(data[0]),
-                  },
+                  }
                 )
                 .map((x) => x.obj),
           },
