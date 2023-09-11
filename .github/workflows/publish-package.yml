@@ -35,6 +35,7 @@ jobs:
           key: modules-${{ hashFiles('package-lock.json') }}
 
       - name: Install NPM packages
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Lint files
