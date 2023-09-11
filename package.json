@@ -2,6 +2,7 @@
   "name": "@ss-search/source",
   "version": "1.7.0",
   "license": "MIT",
+  "repository": "https://github.com/yann510/ss-search",
   "scripts": {
     "format:all": "prettier --write --config .prettierrc \"**/*.{ts,tsx,js,json}\"",
     "lint:all": "nx run-many --target=lint --all",
