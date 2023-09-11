@@ -45,7 +45,7 @@ jobs:
         run: npm run test:all
 
       - name: Build apps
-        run: npm run build:all
+        run: npm run build:all -- --prod
 
       - name: Run benchmark
         if: github.ref == 'refs/heads/master'

@@ -87,7 +87,7 @@
     "vite": "4.3.9",
     "vitest": "0.32.4"
   },
-  "release": {
+  "nxrelease": {
     "repositoryUrl": "https://github.com/yann510/ss-search",
     "plugins": [
       "@semantic-release/commit-analyzer",
