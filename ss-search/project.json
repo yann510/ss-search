@@ -1,0 +1,41 @@
+{
+  "name": "ss-search",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "ss-search/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/ss-search",
+        "main": "ss-search/src/index.ts",
+        "tsConfig": "ss-search/tsconfig.lib.json",
+        "assets": [],
+        "project": "ss-search/package.json",
+        "compiler": "swc",
+        "format": ["cjs", "esm"],
+        "rollupConfig": "ss-search/rollup.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["ss-search/**/*.ts", "ss-search/package.json"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../coverage/ss-search"
+      }
+    },
+    "semantic-release": {
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release"
+    }
+  },
+  "tags": []
+}
