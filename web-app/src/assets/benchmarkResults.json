@@ -202,5 +202,23 @@
     "operationType": 0,
     "operationsPerSecond": 769.1726455838527,
     "runsSampled": 290
+  },
+  {
+    "version": "1.8.0",
+    "operationType": 0,
+    "operationsPerSecond": 356.10639530380524,
+    "runsSampled": 287
+  },
+  {
+    "version": "1.8.1",
+    "operationType": 0,
+    "operationsPerSecond": 395.99397705084226,
+    "runsSampled": 286
+  },
+  {
+    "version": "1.8.2",
+    "operationType": 0,
+    "operationsPerSecond": 396.71246953503413,
+    "runsSampled": 285
   }
 ]
