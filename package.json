@@ -3,6 +3,10 @@
   "version": "1.8.1",
   "license": "MIT",
   "repository": "https://github.com/yann510/ss-search",
+  "private": true,
+  "engines": {
+    "node": ">=18 <19"
+  },
   "scripts": {
     "format:all": "prettier --write --config .prettierrc \"**/*.{ts,tsx,js,json}\"",
     "lint:all": "nx run-many --target=lint --all",
@@ -12,7 +16,6 @@
     "benchmark": "nx run benchmark:build && node dist/benchmark/main.js",
     "web-app:serve": "nx run web-app:serve"
   },
-  "private": true,
   "dependencies": {
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
