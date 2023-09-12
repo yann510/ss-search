@@ -17,11 +17,11 @@ import { CircularProgress } from '@mui/material'
 import lunr from 'lunr'
 import * as JsSearch from 'js-search'
 import { BackdropProgress } from '../components/backdrop-loader'
-import { indexDocuments, search, tokenize } from '@yann510/ss-search'
 import { makeStyles } from 'tss-react/mui'
 
 import fuzzysort from 'fuzzysort'
 import Flexsearch from 'flexsearch'
+import { indexDocuments, search, tokenize } from '@yann510/ss-search'
 
 interface BenchmarkResult {
   libraryName: string

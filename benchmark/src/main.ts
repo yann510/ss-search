@@ -15,7 +15,7 @@ export interface BenchmarkResult {
   runsSampled: number
 }
 
-const benchmarkResultPath = `${__dirname}/../../../../apps/web-app/src/assets/benchmarkResults.json`
+const benchmarkResultPath = `${__dirname}/../../../../web-app/src/assets/benchmarkResults.json`
 
 async function main() {
   const packageVersions: string[] = JSON.parse(execSync('npm view ss-search versions --json').toString())

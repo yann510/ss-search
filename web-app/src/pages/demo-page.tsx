@@ -6,8 +6,8 @@ import React from 'react'
 import { debounce } from 'lodash'
 import { Data } from '../models/data'
 import DataTable from '../components/data-table'
-import { indexDocuments, search, tokenize } from '@yann510/ss-search'
 import { makeStyles } from 'tss-react/mui'
+import { indexDocuments, search, tokenize } from '@yann510/ss-search'
 
 let startTime = performance.now()
 

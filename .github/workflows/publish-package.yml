@@ -51,9 +51,16 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: npm run benchmark
 
-      - name: Release + Deploy
+      - name: Release + Publish package
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: npm run semantic-release:all
+
+      - name: Deploy to netlify
+        if: github.ref == 'refs/heads/master'
+        run: npm run netlify:deploy
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

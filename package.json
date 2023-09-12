@@ -3,6 +3,10 @@
   "version": "1.8.1",
   "license": "MIT",
   "repository": "https://github.com/yann510/ss-search",
+  "private": true,
+  "engines": {
+    "node": ">=18 <19"
+  },
   "scripts": {
     "format:all": "prettier --write --config .prettierrc \"**/*.{ts,tsx,js,json}\"",
     "lint:all": "nx run-many --target=lint --all",
@@ -10,9 +14,9 @@
     "build:all": "nx run-many --target=build --all",
     "semantic-release:all": "nx run-many --target=semantic-release --all",
     "benchmark": "nx run benchmark:build && node dist/benchmark/main.js",
-    "web-app:serve": "nx run web-app:serve"
+    "web-app:serve": "nx run web-app:serve",
+    "netlify:deploy": "netlify deploy --prod --dir=dist/web-app"
   },
-  "private": true,
   "dependencies": {
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
@@ -78,6 +82,7 @@
     "jest": "29.6.4",
     "jest-environment-jsdom": "29.6.4",
     "jest-environment-node": "^29.4.1",
+    "netlify": "13.1.10",
     "nx": "16.8.1",
     "nx-cloud": "latest",
     "prettier": "2.8.8",
