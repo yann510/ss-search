@@ -1,3 +1,23 @@
+## [1.8.1](https://github.com/yann510/ss-search/compare/v1.8.0...v1.8.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* semantic-release ([1405328](https://github.com/yann510/ss-search/commit/1405328445d20c7eae8c9edf50c9f62ecd449c36))
+* version tagging ([aaf15a4](https://github.com/yann510/ss-search/commit/aaf15a4185eb101ad14a3bbf376950d17ad3af07))
+
+
+
+
+
+## [1.8.1](https://github.com/yann510/ss-search/compare/v1.8.0...v1.8.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* semantic-release ([1405328](https://github.com/yann510/ss-search/commit/1405328445d20c7eae8c9edf50c9f62ecd449c36))
+* version tagging ([aaf15a4](https://github.com/yann510/ss-search/commit/aaf15a4185eb101ad14a3bbf376950d17ad3af07))
+
 # [1.8.0](https://github.com/yann510/ss-search/compare/v1.7.0...v1.8.0) (2023-09-12)
 
 
