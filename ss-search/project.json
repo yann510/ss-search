@@ -35,6 +35,9 @@
     },
     "semantic-release": {
       "executor": "@theunderscorer/nx-semantic-release:semantic-release",
+      "options": {
+        "tagFormat": "${PROJECT_NAME}-v${version}"
+      }
     }
   },
   "tags": []
