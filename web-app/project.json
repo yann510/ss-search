@@ -1,7 +1,7 @@
 {
   "name": "web-app",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/web-app/src",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "web-app/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,11 +10,11 @@
       "defaultConfiguration": "production",
       "options": {
         "target": "web",
-        "outputPath": "dist/apps/web-app",
-        "main": "apps/web-app/src/main.tsx",
-        "tsConfig": "apps/web-app/tsconfig.app.json",
-        "rspackConfig": "apps/web-app/rspack.config.js",
-        "assets": ["apps/web-app/src/favicon.ico", "apps/web-app/src/assets"]
+        "outputPath": "dist/web-app",
+        "main": "web-app/src/main.tsx",
+        "tsConfig": "web-app/tsconfig.app.json",
+        "rspackConfig": "web-app/rspack.config.js",
+        "assets": ["web-app/src/favicon.ico", "web-app/src/assets"]
       },
       "configurations": {
         "development": {
@@ -43,14 +43,14 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/web-app/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["web-app/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/web-app/jest.config.ts",
+        "jestConfig": "web-app/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
