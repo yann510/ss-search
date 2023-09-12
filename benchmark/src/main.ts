@@ -28,6 +28,7 @@ async function main() {
   )
 
   for (const version of missingVersionsToBenchmark) {
+    console.log(`Benchmarking version ${version}`)
     execSync(`npm i --prefix ${__dirname} ss-search@${version}`)
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

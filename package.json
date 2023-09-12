@@ -9,7 +9,7 @@
     "test:all": "nx run-many --target=test --all",
     "build:all": "nx run-many --target=build --all",
     "semantic-release:all": "nx run-many --target=semantic-release --all",
-    "benchmark": "node dist/benchmark/main.js",
+    "benchmark": "nx run benchmark:build && node dist/benchmark/main.js",
     "web-app:serve": "nx run web-app:serve"
   },
   "private": true,
