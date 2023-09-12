@@ -15,7 +15,6 @@
         "project": "ss-search/package.json",
         "compiler": "swc",
         "format": ["cjs", "esm"],
-        "rollupConfig": "ss-search/rollup.config.js"
       }
     },
     "lint": {
