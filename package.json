@@ -15,7 +15,7 @@
     "semantic-release:all": "nx run-many --target=semantic-release --all",
     "benchmark": "nx run benchmark:build && node dist/benchmark/main.js",
     "web-app:serve": "nx run web-app:serve",
-    "netlify:deploy": "netlify deploy --prod --dir=dist/web-app"
+    "netlify:deploy": "nx web-app:build --prod && netlify deploy --prod --dir=dist/web-app"
   },
   "dependencies": {
     "@emotion/react": "11.11.1",
