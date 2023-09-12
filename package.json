@@ -92,26 +92,13 @@
     "tagFormat": "v${version}",
     "buildTarget": "ss-search:build",
     "outputPath": "dist/ss-search",
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "CHANGELOG.md",
-            "package.json",
-            "package-lock.json",
-            "ss-search/package.json",
-            "ss-search/package-lock.json",
-            "web-app/src/assets/benchmarkResults.json"
-          ],
-          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-        }
-      ],
-      "@semantic-release/github"
+    "gitAssets": [
+      "CHANGELOG.md",
+      "package.json",
+      "package-lock.json",
+      "ss-search/package.json",
+      "ss-search/package-lock.json",
+      "web-app/src/assets/benchmarkResults.json"
     ]
   }
 }
