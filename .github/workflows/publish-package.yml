@@ -61,7 +61,7 @@ jobs:
       - name: Deploy to netlify
         uses: netlify/actions/cli@master
         with:
-          args: deploy --dir=dist/apps/web-app --prod
+          args: deploy --dir=dist/apps/web-app --prod --site=ss-search --filter=dist/apps/web-app
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
