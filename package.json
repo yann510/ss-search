@@ -89,7 +89,6 @@
   },
   "nxrelease": {
     "repositoryUrl": "https://github.com/yann510/ss-search",
-    "dryRun": true,
     "tagFormat": "v${version}",
     "buildTarget": "ss-search:build",
     "outputPath": "dist/ss-search",
