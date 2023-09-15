@@ -86,4 +86,19 @@ describe('#search', () => {
     // Assert
     expect(actual[0]).toEqual(data[4])
   })
+
+  test('Should return score property even when no search text is provided with withScore option', () => {
+    // Arrange
+    const data = dataset;
+    const keys = Object.keys(data[0]);
+    const searchText = '';
+
+    // Act
+    const actual = search(data, keys, searchText, { withScore: true });
+
+    // Assert
+    actual.forEach(result => {
+      expect(result).toHaveProperty('score');
+    });
+  });
 })

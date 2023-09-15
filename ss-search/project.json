@@ -14,7 +14,7 @@
         "assets": [],
         "project": "ss-search/package.json",
         "compiler": "swc",
-        "format": ["cjs", "esm"],
+        "format": ["cjs", "esm"]
       }
     },
     "lint": {

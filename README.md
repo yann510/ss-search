@@ -1,6 +1,6 @@
 ![npm](https://img.shields.io/npm/v/ss-search?style=flat-square)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/ss-search?style=flat-square)
-![Travis (.org)](https://img.shields.io/travis/yann510/ss-search?style=flat-square)
+![build](https://github.com/yann510/ss-search/actions/workflows/publish-package.yml/badge.svg)
 ![Coveralls github](https://img.shields.io/coveralls/github/yann510/ss-search?style=flat-square)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
@@ -11,22 +11,25 @@
 
 ### Stop searching, start finding.
 
-- Easy to use; will return you appropriate results out of the box, no need to configure anything
-- Search local array of objects as easily as never before
-- Automatic indexing
-- Will return exactly what you are looking for
-- Very small size; only depends on 5 lodash functions which are extracted using rollup, which means we have a zero dependency library
+- **Ease of Use**: Get appropriate results instantly without any configuration.
+- **Local Array Search**: Effortlessly search through a local array of objects.
+- **Automatic Indexing**: No manual indexing required.
+- **Precision**: Always get exactly what you're looking for.
+- **Lightweight**: Depends on just 5 lodash functions for a minimized size after tree shaking.
 
 ## Demo
 
 ![](demo.gif)
 
-If you're not convinced yet, take a look at this interactive
-[demo](https://ss-search.netlify.app/).
+Still not convinced? Experience its power firsthand with this interactive [demo](https://ss-search.netlify.app/).
+
+### Benchmark
+
+How does it compare to other search libraries? Test out for yourself with this interactive [benchmark](https://ss-search.netlify.app/benchmark) ;)
 
 ## Install
 
-ss-search is available on [npm](https://www.npmjs.com/package/ss-search). It can be installed with the following command:
+ss-search is available on [npm](https://www.npmjs.com/package/ss-search). Install it with:
 
 `npm install ss-search`
 
@@ -54,7 +57,7 @@ const results = search(data, searchKeys, searchText)
 // results: [{ number: 1, text: "A search function should be fast" }]
 ```
 
-Yes. It is that simple, no need to configure anything, it works out of the box.
+It's that straightforward. No configurations, it just works.
 
 ### Data Types
 
@@ -137,9 +140,37 @@ const results = search(data, ['arrayObjects[arrayObjectProperty]'], 'arrayObject
 // if we had searched for "value object" we would of had the original dataset
 ```
 
-### Benchmark
+### Options for the `search` function
 
-How does it compare to other search libraries? Test out for yourself with this interactive [benchmark](https://ss-search.netlify.app/benchmark) ;)
+Customize your search experience using the following options:
+
+| Option parameter | Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ---------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `withScore`      | `true` | When set to `true`, the search function will return an array of objects, each containing the matched element and its corresponding score. The score represents how closely the element matches the search text, with a higher score indicating a closer match. Even if the search doesn't match, it will return a score of 0. |
+| `withScore`      | `false` | When set to `false` or not provided, the function will return an array of matched elements without their scores.                                                                                                                                                                                                                                                                                                                                           |
+
+### Example Usage
+
+Without `withScore` option:
+
+```javascript
+const data = [{ name: 'John' }, { name: 'Jane' }, { name: 'Doe' }]
+const result = search(data, ['name'], 'John')
+console.log(result) // [{ name: 'John' }]
+```
+
+With `withScore` option:
+
+```javascript
+const data = [{ name: 'John' }, { name: 'Jane' }, { name: 'Doe' }]
+const result = search(data, ['name'], 'John', { withScore: true })
+console.log(result) 
+// [
+//  { element: { name: 'John' }, score: 1 },
+//  { element: { name: 'Jane' }, score: 0 },
+//  { element: { name: 'Doe' }, score: 0 }
+// ]
+```
 
 ![](benchmark.gif)
 
