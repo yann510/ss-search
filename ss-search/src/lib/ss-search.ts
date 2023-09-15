@@ -62,45 +62,32 @@ export const getScore = (matchesAllSearchWords: boolean, searchWords: string[], 
   return round(1 - remainingTextAfterRemovingSearchWords.length / searchableDataStringWithoutNonWordCharacters.length, 4)
 }
 
-// Overload 1: No options provided or withScore is not true
-export function search<T>(elements: T[], searchableKeys: string[], searchText: string): T[]
+export type SearchResultWithScore<T> = { element: T; score: number }
 
-// Overload 2: withScore is true
-export function search<T>(
+export function search<T, TWithScore extends boolean>(
   elements: T[],
   searchableKeys: string[],
   searchText: string,
-  options: { withScore: true }
-): { element: T; score: number }[]
-
-// Implementation signature
-export function search<T>(
-  elements: T[],
-  searchableKeys: string[],
-  searchText: string,
-  options?: { withScore?: boolean }
-): T[] | { element: T; score: number }[] {
-  if (!searchText) {
-    return elements
-  }
-
+  options?: { withScore?: TWithScore }
+): TWithScore extends true ? SearchResultWithScore<T>[] : T[]
+{
   const searchWords = tokenize(searchText)
   const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys)
 
-  if (options?.withScore) {
-    return searchableDataStrings
-      .map((x, i) => {
-        const matchesAllSearchWords = searchWords.filter((searchWord) => x.indexOf(searchWord) > -1).length === searchWords.length
-        const score = getScore(matchesAllSearchWords, searchWords, x)
-        return { element: elements[i], score }
-      })
-      .filter((x) => x)
-  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return searchableDataStrings.reduce<any>((accumulator, x, i) => {
+    const matchesAllSearchWords = searchWords.every((searchWord) => x.includes(searchWord))
+    if (options?.withScore) {
+      const score = getScore(matchesAllSearchWords, searchWords, x)
+      accumulator.push({ element: elements[i], score })
 
-  return searchableDataStrings
-    .map((x, i) => {
-      const matchesAllSearchWords = searchWords.filter((searchWord) => x.indexOf(searchWord) > -1).length === searchWords.length
-      return matchesAllSearchWords ? elements[i] : null
-    })
-    .filter((x): x is T => x !== null)
+      return accumulator
+    }
+
+    if (matchesAllSearchWords) {
+      accumulator.push(elements[i])
+    }
+
+    return accumulator
+  }, [])
 }

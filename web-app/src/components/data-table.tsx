@@ -8,9 +8,10 @@ import TableFooter from '@mui/material/TableFooter'
 import TablePagination from '@mui/material/TablePagination'
 import Table from '@mui/material/Table'
 import React, { ChangeEvent } from 'react'
+import { SearchResultWithScore } from '@yann510/ss-search'
 
 interface Props {
-  data: Data[]
+  data: Data[] | SearchResultWithScore<Data>[]
   searchWords: string[]
 }
 
@@ -26,6 +27,22 @@ function DataTable(props: Props) {
     setPage(0)
   }
 
+  const getDataKeys = (row: Data | SearchResultWithScore<Data>) => {
+    if (row.element) {
+      return Object.keys(row.element)
+    }
+
+    return Object.keys(row)
+  }
+
+  const getDataProperty = (row: Data | SearchResultWithScore<Data>, key: keyof Data) => {
+    if (row.element) {
+      return (row as SearchResultWithScore<Data>).element[key]
+    }
+
+    return (row as Data)[key]
+  }
+
   return (
     <Table size="small">
       <TableHead>
@@ -34,17 +51,21 @@ function DataTable(props: Props) {
           <TableCell>Name</TableCell>
           <TableCell>Age</TableCell>
           <TableCell>Address</TableCell>
+          <TableCell>Score</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
           return (
-            <TableRow key={row.id}>
-              {Object.keys(row).map((key) => (
+            <TableRow key={getDataProperty(row, "id")}>
+              {getDataKeys(row).map((key) => (
                 <TableCell key={key}>
-                  <Highlighter searchWords={searchWords} textToHighlight={row[key].toString()} />
+                  <Highlighter searchWords={searchWords} textToHighlight={getDataProperty(row, key)?.toString()} />
                 </TableCell>
               ))}
+              <TableCell>
+                {row?.score !== undefined ? row.score : "N/A"}
+              </TableCell>
             </TableRow>
           )
         })}
