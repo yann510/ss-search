@@ -50,7 +50,7 @@
     "@nx/rspack": "16.8.1",
     "@nx/vite": "16.8.1",
     "@nx/workspace": "16.8.1",
-    "@rspack/core": "0.1.12",
+    "@rspack/core": "1.0.5",
     "@rspack/dev-server": "1.0.0",
     "@rspack/plugin-minify": "0.1.12",
     "@swc/cli": "0.1.62",
