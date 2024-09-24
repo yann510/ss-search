@@ -46,7 +46,7 @@
     "@nx/linter": "16.8.1",
     "@nx/node": "^16.8.1",
     "@nx/react": "16.8.1",
-    "@nx/rollup": "16.8.1",
+    "@nx/rollup": "19.8.0",
     "@nx/rspack": "16.8.1",
     "@nx/vite": "16.8.1",
     "@nx/workspace": "16.8.1",
