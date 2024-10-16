@@ -52,6 +52,7 @@ jobs:
         run: npm run benchmark
 
       - name: Release + Publish package
+        if: github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
