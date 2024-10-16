@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/yann510/ss-search/compare/v1.9.0...v1.9.1) (2024-10-16)
+
+
+### Bug Fixes
+
+* change package type to module ([#92](https://github.com/yann510/ss-search/issues/92)) ([25cb7cb](https://github.com/yann510/ss-search/commit/25cb7cb823fff58b865c345035ec73974a621d73))
+
 # [1.9.0](https://github.com/yann510/ss-search/compare/v1.8.3...v1.9.0) (2023-09-15)
 
 
