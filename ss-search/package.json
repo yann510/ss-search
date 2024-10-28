@@ -1,6 +1,6 @@
 {
   "name": "ss-search",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "repository": "https://github.com/yann510/ss-search",
   "dependencies": {
     "lodash": "4.17.21"

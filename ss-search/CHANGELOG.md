@@ -1,3 +1,16 @@
+# [1.10.0](https://github.com/yann510/ss-search/compare/v1.9.1...v1.10.0) (2024-10-28)
+
+
+### Bug Fixes
+
+* netlify in ci + added utility scripts ([#93](https://github.com/yann510/ss-search/issues/93)) ([3b6b2de](https://github.com/yann510/ss-search/commit/3b6b2dec1de3f432b6ac95d92e62aa5b9e94c15d))
+
+
+### Features
+
+* **nx-cloud:** setup nx cloud workspace ([#94](https://github.com/yann510/ss-search/issues/94)) ([768711d](https://github.com/yann510/ss-search/commit/768711d2b85fcc828875217e824037455e90d706))
+* **nx-cloud:** setup nx cloud workspace ([#95](https://github.com/yann510/ss-search/issues/95)) ([452ce3a](https://github.com/yann510/ss-search/commit/452ce3a3bd59b05cdf6b9c2e25138f1b5fcdac73))
+
 ## [1.9.1](https://github.com/yann510/ss-search/compare/v1.9.0...v1.9.1) (2024-10-16)
 
 
