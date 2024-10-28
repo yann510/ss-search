@@ -1,5 +1,5 @@
-const { composePlugins, withNx, withWeb } = require('@nx/rspack')
+const { composePlugins, withNx, withReact } = require('@nx/rspack')
 
-module.exports = composePlugins(withNx(), withWeb(), (config) => {
-  return { ...config, devServer: { ...config.devServer, historyApiFallback: true } }
+module.exports = composePlugins(withNx(), withReact(), (config) => {
+  return config
 })

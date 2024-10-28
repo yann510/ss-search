@@ -48,10 +48,10 @@
   "generators": {
     "@nx/react": {
       "application": {
+        "babel": true,
         "style": "css",
         "linter": "eslint",
-        "bundler": "rspack",
-        "babel": true
+        "bundler": "rspack"
       },
       "component": {
         "style": "css"
