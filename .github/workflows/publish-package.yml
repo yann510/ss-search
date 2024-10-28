@@ -1,4 +1,6 @@
 name: ss-search CI
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
 on:
   pull_request:

@@ -5,7 +5,10 @@
   "dependencies": {
     "lodash": "4.17.21"
   },
-  "type": "module",
   "main": "./index.cjs",
-  "module": "./index.js"
+  "module": "./index.esm.js",
+  "exports": {
+    "require": "./index.cjs.js",
+    "import": "./index.esm.js"
+  }
 }

@@ -16,6 +16,7 @@ export interface BenchmarkResult {
 }
 
 const benchmarkResultPath = `${__dirname}/../../../../web-app/src/assets/benchmarkResults.json`
+const ignoredVersions = ["1.9.1"]
 
 async function main() {
   const packageVersions: string[] = JSON.parse(execSync('npm view ss-search versions --json').toString())
@@ -28,6 +29,11 @@ async function main() {
   )
 
   for (const version of missingVersionsToBenchmark) {
+    if (ignoredVersions.includes(version)) {
+      console.info(`Ignoring version ${version}`)
+      continue
+    }
+
     console.log(`Benchmarking version ${version}`)
     execSync(`npm i --prefix ${__dirname} ss-search@${version}`)
 
