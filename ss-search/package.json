@@ -3,7 +3,8 @@
   "version": "1.10.0",
   "repository": "https://github.com/yann510/ss-search",
   "dependencies": {
-    "lodash": "4.17.21"
+    "es-toolkit": "^1.26.1",
+    "lodash-es": "^4.17.21"
   },
   "main": "./index.cjs",
   "module": "./index.esm.js",

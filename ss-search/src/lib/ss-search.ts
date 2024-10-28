@@ -1,9 +1,4 @@
-// import { deburr, escapeRegExp, get, memoize, round } from 'lodash'
-import deburr from 'lodash/deburr'
-import escapeRegExp from 'lodash/escapeRegExp'
-import memoize from 'lodash/memoize'
-import get from 'lodash/get'
-import round from 'lodash/round'
+import { get, deburr, escapeRegExp,memoize, round } from 'lodash-es'
 
 export const normalize = (text: string | undefined) =>
   deburr(text)
