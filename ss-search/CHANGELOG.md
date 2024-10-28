@@ -1,3 +1,11 @@
+## [1.10.1](https://github.com/yann510/ss-search/compare/v1.10.0...v1.10.1) (2024-10-28)
+
+
+### Bug Fixes
+
+* benchmark by using es modules in ss-search package ([20322ab](https://github.com/yann510/ss-search/commit/20322ab61896eb8a7d35b0e922655f4da0976f62))
+* updated nx and removed exposed cloud token -> nx login for remote caching ([#100](https://github.com/yann510/ss-search/issues/100)) ([f47d5d0](https://github.com/yann510/ss-search/commit/f47d5d0f15eaae1f0b6ca522774e5bf48f571604))
+
 # [1.10.0](https://github.com/yann510/ss-search/compare/v1.9.1...v1.10.0) (2024-10-28)
 
 
