@@ -144,10 +144,10 @@ const results = search(data, ['arrayObjects[arrayObjectProperty]'], 'arrayObject
 
 Customize your search experience using the following options:
 
-| Option parameter | Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ---------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `withScore`      | `true` | When set to `true`, the search function will return an array of objects, each containing the matched element and its corresponding score. The score represents how closely the element matches the search text, with a higher score indicating a closer match. Even if the search doesn't match, it will return a score of 0. |
-| `withScore`      | `false` | When set to `false` or not provided, the function will return an array of matched elements without their scores.                                                                                                                                                                                                                                                                                                                                           |
+| Option parameter | Value   | Description                                                                                                                                                                                                                                                                                                                   |
+| ---------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `withScore`      | `true`  | When set to `true`, the search function will return an array of objects, each containing the matched element and its corresponding score. The score represents how closely the element matches the search text, with a higher score indicating a closer match. Even if the search doesn't match, it will return a score of 0. |
+| `withScore`      | `false` | When set to `false` or not provided, the function will return an array of matched elements without their scores.                                                                                                                                                                                                              |
 
 ### Example Usage
 
@@ -164,7 +164,7 @@ With `withScore` option:
 ```javascript
 const data = [{ name: 'John' }, { name: 'Jane' }, { name: 'Doe' }]
 const result = search(data, ['name'], 'John', { withScore: true })
-console.log(result) 
+console.log(result)
 // [
 //  { element: { name: 'John' }, score: 1 },
 //  { element: { name: 'Jane' }, score: 0 },

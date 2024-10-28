@@ -89,16 +89,16 @@ describe('#search', () => {
 
   test('Should return score property even when no search text is provided with withScore option', () => {
     // Arrange
-    const data = dataset;
-    const keys = Object.keys(data[0]);
-    const searchText = '';
+    const data = dataset
+    const keys = Object.keys(data[0])
+    const searchText = ''
 
     // Act
-    const actual = search(data, keys, searchText, { withScore: true });
+    const actual = search(data, keys, searchText, { withScore: true })
 
     // Assert
-    actual.forEach(result => {
-      expect(result).toHaveProperty('score');
-    });
-  });
+    actual.forEach((result) => {
+      expect(result).toHaveProperty('score')
+    })
+  })
 })

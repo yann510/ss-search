@@ -57,15 +57,13 @@ function DataTable(props: Props) {
       <TableBody>
         {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
           return (
-            <TableRow key={getDataProperty(row, "id")}>
+            <TableRow key={getDataProperty(row, 'id')}>
               {getDataKeys(row).map((key) => (
                 <TableCell key={key}>
                   <Highlighter searchWords={searchWords} textToHighlight={getDataProperty(row, key)?.toString()} />
                 </TableCell>
               ))}
-              <TableCell>
-                {row?.score !== undefined ? row.score : "N/A"}
-              </TableCell>
+              <TableCell>{row?.score !== undefined ? row.score : 'N/A'}</TableCell>
             </TableRow>
           )
         })}

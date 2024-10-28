@@ -24,8 +24,7 @@ const debouncedSearch = debounce(
   ) => {
     const searchResults = search(data, Object.keys(data[0]), searchText, { withScore })
     if (typeof searchResults[0]?.score === 'number') {
-      const filteredAndSortedResults = (searchResults as SearchResultWithScore<Data>[])
-        .sort((a, b) => b.score - a.score)
+      const filteredAndSortedResults = (searchResults as SearchResultWithScore<Data>[]).sort((a, b) => b.score - a.score)
       setSearchResults(filteredAndSortedResults)
     } else {
       setSearchResults(searchResults)
@@ -65,13 +64,12 @@ function DemoPage(props: Props) {
   }, [data])
 
   const handleSearch = (searchText: string, withScoreOverride?: boolean) => {
-    startTime = performance.now();
+    startTime = performance.now()
 
-    setSearchText(searchText);
-    setSearchWords(tokenize(searchText));
-    debouncedSearch(searchText, data, setSearchResults, setSearchTime, withScoreOverride ?? withScore);
+    setSearchText(searchText)
+    setSearchWords(tokenize(searchText))
+    debouncedSearch(searchText, data, setSearchResults, setSearchTime, withScoreOverride ?? withScore)
   }
-
 
   return (
     <Grid container spacing={3}>
