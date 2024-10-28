@@ -1,21 +1,35 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "OGQ0YTdhYTktYzk5OS00ZGMxLThhNzAtYTMxMzBlNzllMWM5fHJlYWQtd3JpdGU="
-      }
-    }
+  "workspaceLayout": {
+    "projectNameAndRootFormat": "as-provided"
   },
-  "workspaceLayout": { "projectNameAndRootFormat": "as-provided" },
   "targetDefaults": {
-    "build": { "dependsOn": ["^build"], "inputs": ["production", "^production"] },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore", "{workspaceRoot}/eslint.config.js"]
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "cache": true
     },
-    "test": { "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"] }
+    "@nx/jest:jest": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "cache": true,
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "@nx/vite:test": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "cache": true
+    },
+    "@nx/eslint:lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore", "{workspaceRoot}/eslint.config.js"],
+      "cache": true
+    }
   },
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
@@ -33,9 +47,21 @@
   },
   "generators": {
     "@nx/react": {
-      "application": { "style": "css", "linter": "eslint", "bundler": "rspack", "babel": true },
-      "component": { "style": "css" },
-      "library": { "style": "css", "linter": "eslint" }
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "bundler": "rspack",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
     }
-  }
+  },
+  "useInferencePlugins": false,
+  "nxCloudId": "670f1d8b22b1a18844d39587"
 }

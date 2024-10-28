@@ -69,8 +69,7 @@ export function search<T, TWithScore extends boolean>(
   searchableKeys: string[],
   searchText: string,
   options?: { withScore?: TWithScore }
-): TWithScore extends true ? SearchResultWithScore<T>[] : T[]
-{
+): TWithScore extends true ? SearchResultWithScore<T>[] : T[] {
   const searchWords = tokenize(searchText)
   const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys)
 
