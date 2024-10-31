@@ -1,14 +1,47 @@
 {
   "name": "ss-search",
   "version": "1.10.1",
-  "repository": "https://github.com/yann510/ss-search",
+  "description": "The most basic, yet powerful text search.",
+  "keywords": [
+    "search",
+    "typescript",
+    "simple",
+    "fast",
+    "text",
+    "full-text",
+    "browser",
+    "node",
+    "indexed",
+    "javascript",
+    "array",
+    "object",
+    "easy"
+  ],
+  "homepage": "https://github.com/yann510/ss-search",
+  "bugs": {
+    "url": "https://github.com/yann510/ss-search/issues"
+  },
+  "author": {
+    "name": "Yann Thibodeau",
+    "email": "y.thibodeau1@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yann510/ss-search"
+  },
+  "files": [
+    "./"
+  ],
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.cjs"
+    }
+  },
   "dependencies": {
     "lodash-es": "^4.17.21"
-  },
-  "main": "./index.cjs",
-  "module": "./index.esm.js",
-  "exports": {
-    "require": "./index.cjs.js",
-    "import": "./index.esm.js"
   }
 }

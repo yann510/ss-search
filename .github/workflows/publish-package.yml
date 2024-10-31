@@ -43,11 +43,17 @@ jobs:
       - name: Lint files
         run: npm run lint:all
 
+      - name: Check formatting
+        run: npm run format:check:ci
+
       - name: Run tests
         run: npm run test:all
 
       - name: Build apps
         run: npm run build:all -- --prod
+
+      - name: Check exports
+        run: npm run exports:check
 
       - name: Run benchmark
         if: github.ref == 'refs/heads/master'

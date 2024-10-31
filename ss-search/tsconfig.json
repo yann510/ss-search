@@ -1,15 +1,22 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
-    "types": ["vitest"]
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
   "files": [],
   "include": [],

@@ -1,4 +1,4 @@
-import { data } from './data'
+import data from './data.json'
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import Benchmark from 'benchmark'

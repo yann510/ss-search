@@ -230,7 +230,7 @@ function BenchmarkPage(props: Props) {
               className={classes.searchTextField}
               label="Search"
               value={searchText}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => handleSearch((e.target as unknown as { value: string }).value)}
             />
             <Table>
               <TableHead>
