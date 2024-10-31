@@ -7,8 +7,9 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/{projectName}"],
       "options": {
-        "commands": ["tsup", "cp package.json ../dist/ss-search/package.json"],
+        "commands": ["tsup", "cp package.json ../dist/ss-search/package.json", "cp ../README.md ../dist/ss-search/README.md"],
         "cwd": "ss-search",
         "parallel": false
       }
