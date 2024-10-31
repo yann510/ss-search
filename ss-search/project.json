@@ -6,16 +6,11 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/rollup:rollup",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "dist/ss-search",
-        "main": "ss-search/src/index.ts",
-        "tsConfig": "ss-search/tsconfig.lib.json",
-        "assets": [],
-        "project": "ss-search/package.json",
-        "compiler": "swc",
-        "format": ["cjs", "esm"]
+        "commands": ["tsup", "cp package.json ../dist/ss-search/package.json"],
+        "cwd": "ss-search",
+        "parallel": false
       }
     },
     "lint": {

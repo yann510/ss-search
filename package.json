@@ -1,17 +1,47 @@
 {
   "name": "@ss-search/source",
   "version": "1.8.1",
+  "description": "The most basic, yet powerful text search.",
+  "keywords": [
+    "search",
+    "typescript",
+    "simple",
+    "fast",
+    "text",
+    "full-text",
+    "browser",
+    "node",
+    "indexed",
+    "JavaScript",
+    "array",
+    "object",
+    "easy"
+  ],
+  "homepage": "https://github.com/yann510/ss-search",
+  "bugs": {
+    "url": "https://github.com/yann510/ss-search/issues"
+  },
+  "author": {
+    "name": "Yann Thibodeau",
+    "email": "y.thibodeau1@gmail.com"
+  },
   "license": "MIT",
-  "repository": "https://github.com/yann510/ss-search",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yann510/ss-search"
+  },
   "private": true,
   "engines": {
     "node": ">=20"
   },
   "scripts": {
+    "format:check:ci": "nx format:check",
+    "format:check:local": "nx format:check --base=origin/master",
     "format:write": "nx format:write --base=origin/master",
     "lint:all": "nx run-many --target=lint --all",
     "test:all": "nx run-many --target=test --all",
     "build:all": "nx run-many --target=build --all",
+    "exports:check": "attw --pack dist/ss-search/.",
     "pre-run:ci:local": "npm run format:write && nx run-many --targets=lint --fix && nx run-many --targets=build,test",
     "semantic-release:all": "nx run-many --target=semantic-release --all",
     "benchmark": "nx run benchmark:build && node dist/benchmark/main.js",
@@ -42,6 +72,7 @@
     "tss-react": "4.9.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.16.4",
     "@nx/esbuild": "19.8.8",
     "@nx/eslint": "19.8.8",
     "@nx/eslint-plugin": "19.8.8",
@@ -93,6 +124,7 @@
     "react-refresh": "~0.14.0",
     "ts-jest": "29.1.1",
     "ts-node": "10.9.1",
+    "tsup": "8.3.5",
     "typescript": "5.5.4",
     "vite": "5.4.9",
     "vitest": "2.1.3"
