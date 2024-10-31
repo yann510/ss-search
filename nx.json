@@ -3,6 +3,7 @@
   "workspaceLayout": {
     "projectNameAndRootFormat": "as-provided"
   },
+  "defaultBase": "master",
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
