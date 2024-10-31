@@ -28,6 +28,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Remove package versions from package-lock.json for caching
+        run: jq 'del(.version, .packages[""].version)' package-lock.json > package-lock.json
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v4
