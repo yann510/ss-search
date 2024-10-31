@@ -1,3 +1,11 @@
+## [1.10.2](https://github.com/yann510/ss-search/compare/v1.10.1...v1.10.2) (2024-10-31)
+
+
+### Bug Fixes
+
+* benchmark ([#103](https://github.com/yann510/ss-search/issues/103)) ([52ace52](https://github.com/yann510/ss-search/commit/52ace525f6e89d04c7a246a4de674027cae82cf2))
+* build output is now truly esm friendly and works well with cjs too ([#101](https://github.com/yann510/ss-search/issues/101)) ([ce1e64a](https://github.com/yann510/ss-search/commit/ce1e64a30bdd40c4abd1b8b881a288b29e18abef))
+
 ## [1.10.1](https://github.com/yann510/ss-search/compare/v1.10.0...v1.10.1) (2024-10-28)
 
 
