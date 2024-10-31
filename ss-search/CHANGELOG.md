@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/yann510/ss-search/compare/v1.10.2...v1.10.3) (2024-10-31)
+
+
+### Bug Fixes
+
+* added missing readme + other files to published package ([#104](https://github.com/yann510/ss-search/issues/104)) ([2c85aa4](https://github.com/yann510/ss-search/commit/2c85aa4bdb38e39ed859561a6e81ff50f17fc25b))
+
 ## [1.10.2](https://github.com/yann510/ss-search/compare/v1.10.1...v1.10.2) (2024-10-31)
 
 
