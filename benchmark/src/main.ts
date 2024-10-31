@@ -1,4 +1,4 @@
-import data from './data.json'
+import { data } from './data'
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import Benchmark from 'benchmark'
@@ -16,7 +16,7 @@ export interface BenchmarkResult {
 }
 
 const benchmarkResultPath = `${__dirname}/../../../../web-app/src/assets/benchmarkResults.json`
-const ignoredVersions = ['1.9.1', '1.10.0']
+const ignoredVersions = ['1.9.1', '1.10.0', '1.10.1']
 
 async function main() {
   const packageVersions: string[] = JSON.parse(execSync('npm view ss-search versions --json').toString())
