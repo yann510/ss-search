@@ -1,3 +1,15 @@
+## 1.12.1 (2024-11-03)
+
+
+### 🩹 Fixes
+
+- npm authentication in CI ([a7a507f](https://github.com/yann510/ss-search/commit/a7a507f))
+
+
+### ❤️  Thank You
+
+- Yann Thibodeau
+
 ## 1.12.0 (2024-11-03)
 
 
