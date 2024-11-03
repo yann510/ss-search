@@ -66,6 +66,12 @@ jobs:
       - name: Run benchmark
         run: npm run benchmark
 
+      - name: Configure Git identity (required to create NX git commit and tags)
+        if: github.ref == 'refs/heads/master'
+        run: |
+          git config --global user.email "nx@fake-domain.com"
+          git config --global user.name "NX CI Bot"
+
       - name: Release + Publish package
         if: github.ref == 'refs/heads/master'
         env:
