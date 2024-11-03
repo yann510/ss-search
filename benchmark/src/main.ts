@@ -16,7 +16,7 @@ export interface BenchmarkResult {
 }
 
 const benchmarkResultPath = `${__dirname}/../../../../web-app/src/assets/benchmarkResults.json`
-const ignoredVersions = ['1.9.1', '1.10.0', '1.10.1', '1.10.2']
+const ignoredVersions = ['1.9.1', '1.10.0', '1.10.1', '1.10.2', '1.10.3']
 
 async function main() {
   const packageVersions: string[] = JSON.parse(execSync('npm view ss-search versions --json').toString())
