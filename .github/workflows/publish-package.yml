@@ -72,6 +72,9 @@ jobs:
           git config --global user.email "nx@fake-domain.com"
           git config --global user.name "NX CI Bot"
 
+      - name: Authenticate with npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
       - name: Release + Publish package
         if: github.ref == 'refs/heads/master'
         env:
