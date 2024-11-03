@@ -83,7 +83,8 @@
       "conventionalCommits": true,
       "preVersionCommand": "npx nx run-many -t build",
       "generatorOptions": {
-        "packageRoot": "dist/{projectName}"
+        "packageRoot": "dist/{projectName}",
+        "fallbackCurrentVersionResolver": "disk"
       }
     },
     "git": {
