@@ -30,6 +30,11 @@
     "@nx/eslint:lint": {
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore", "{workspaceRoot}/eslint.config.js"],
       "cache": true
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectName}"
+      }
     }
   },
   "namedInputs": {
@@ -64,5 +69,26 @@
     }
   },
   "useInferencePlugins": false,
-  "nxCloudId": "670f1d8b22b1a18844d39587"
+  "nxCloudId": "670f1d8b22b1a18844d39587",
+  "release": {
+    "projectsRelationship": "independent",
+    "changelog": {
+      "projectChangelogs": {
+        "createRelease": "github"
+      },
+      "workspaceChangelog": false
+    },
+    "projects": ["ss-search"],
+    "version": {
+      "conventionalCommits": true,
+      "preVersionCommand": "npx nx run-many -t build",
+      "generatorOptions": {
+        "packageRoot": "dist/{projectName}"
+      }
+    },
+    "git": {
+      "commit": true,
+      "tag": true
+    }
+  }
 }
