@@ -1,3 +1,43 @@
+## 1.12.0 (2024-11-03)
+
+
+### 🚀 Features
+
+- updated all dependencies + improved return typing with overloads for the search function ([#66](https://github.com/yann510/ss-search/pull/66))
+
+- fixed return type when withScore is passed + optimized readability and speed of search function + fixed bug when withScore is true and search text is empty ([#69](https://github.com/yann510/ss-search/pull/69))
+
+
+### 🩹 Fixes
+
+- semantic-release ([0f9d647](https://github.com/yann510/ss-search/commit/0f9d647))
+
+- semantic-release + format ([4661021](https://github.com/yann510/ss-search/commit/4661021))
+
+- semantic-release ([f5fdfdf](https://github.com/yann510/ss-search/commit/f5fdfdf))
+
+- version tagging ([aaf15a4](https://github.com/yann510/ss-search/commit/aaf15a4))
+
+- semantic-release ([1405328](https://github.com/yann510/ss-search/commit/1405328))
+
+- removed rollup config ([25efdcb](https://github.com/yann510/ss-search/commit/25efdcb))
+
+- change package type to module ([#92](https://github.com/yann510/ss-search/pull/92))
+
+- updated nx and removed exposed cloud token -> nx login for remote caching ([#100](https://github.com/yann510/ss-search/pull/100))
+
+- benchmark by using es modules in ss-search package ([20322ab](https://github.com/yann510/ss-search/commit/20322ab))
+
+- build output is now truly esm friendly and works well with cjs too ([#101](https://github.com/yann510/ss-search/pull/101))
+
+- added missing readme + other files to published package ([#104](https://github.com/yann510/ss-search/pull/104))
+
+
+### ❤️  Thank You
+
+- Vasilis Voyiadjis @billvog
+- Yann Thibodeau
+
 ## 1.11.0 (2024-11-03)
 
 
