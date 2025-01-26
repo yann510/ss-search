@@ -101,4 +101,17 @@ describe('#search', () => {
       expect(result).toHaveProperty('score')
     })
   })
+
+  test('Should match data for different scope on same dataset', () => {
+    // Arrange
+    const data = dataset.slice(0, 2)
+
+    // Act
+    const actualText = search(data, ['text'], 'A search function should be fast')
+    const actualNumber = search(data, ['number'], '2')
+
+    // Assert
+    expect(actualText[0]).toEqual(data[0])
+    expect(actualNumber[0]).toEqual(data[1])
+  })
 })

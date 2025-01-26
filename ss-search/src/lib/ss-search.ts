@@ -8,37 +8,40 @@ export const normalize = (text: string | undefined) =>
 
 export const tokenize = (searchText: string | undefined): string[] => normalize(escapeRegExp(searchText)).match(/[\p{L}\d]+/gimu) || []
 
-export const convertToSearchableStrings = memoize(<T>(elements: T[] | null, searchableKeys: string[] | null) => {
-  if (!elements || elements.length === 0 || !searchableKeys || searchableKeys.length === 0) {
-    return []
-  }
+export const convertToSearchableStrings = memoize(
+  <T>(elements: T[] | null, searchableKeys: string[] | null) => {
+    if (!elements || elements.length === 0 || !searchableKeys || searchableKeys.length === 0) {
+      return []
+    }
 
-  const arraySelectorRegex = /\[(.*)]/
-  return elements
-    .map((element) =>
-      searchableKeys
-        .map((key) => {
-          const arraySelector = get(arraySelectorRegex.exec(key), '1')
+    const arraySelectorRegex = /\[(.*)]/
+    return elements
+      .map((element) =>
+        searchableKeys
+          .map((key) => {
+            const arraySelector = get(arraySelectorRegex.exec(key), '1')
 
-          const value = get(element, key.replace(arraySelectorRegex, ''))
-          if (value === null || value === undefined || typeof value === 'function') {
-            return ''
-          }
+            const value = get(element, key.replace(arraySelectorRegex, ''))
+            if (value === null || value === undefined || typeof value === 'function') {
+              return ''
+            }
 
-          if (arraySelector) {
-            return value.map((x: unknown) => get(x, arraySelector))
-          }
+            if (arraySelector) {
+              return value.map((x: unknown) => get(x, arraySelector))
+            }
 
-          if (Array.isArray(value) || typeof value === 'object') {
-            return JSON.stringify(value)
-          }
+            if (Array.isArray(value) || typeof value === 'object') {
+              return JSON.stringify(value)
+            }
 
-          return value
-        })
-        .reduce((a, b) => a + b, '')
-    )
-    .map((x) => normalize(x))
-})
+            return value
+          })
+          .reduce((a, b) => a + b, '')
+      )
+      .map((x) => normalize(x))
+  },
+  (elements, searchableKeys) => [elements, searchableKeys]
+)
 
 export const indexDocuments = convertToSearchableStrings
 
