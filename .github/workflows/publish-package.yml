@@ -22,9 +22,10 @@ jobs:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup node.js 22
         uses: actions/setup-node@v4

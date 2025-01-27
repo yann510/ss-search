@@ -9,7 +9,7 @@ export const normalize = (text: string | undefined) =>
 export const tokenize = (searchText: string | undefined): string[] => normalize(escapeRegExp(searchText)).match(/[\p{L}\d]+/gimu) || []
 
 export const convertToSearchableStrings = memoize(
-  <T>(elements: T[] | null, searchableKeys: string[] | null) => {
+  <T>(elements: T[] | null, searchableKeys: string[] | null, cacheKey: unknown | null) => {
     if (!elements || elements.length === 0 || !searchableKeys || searchableKeys.length === 0) {
       return []
     }
@@ -19,13 +19,12 @@ export const convertToSearchableStrings = memoize(
       .map((element) =>
         searchableKeys
           .map((key) => {
-            const arraySelector = get(arraySelectorRegex.exec(key), '1')
-
             const value = get(element, key.replace(arraySelectorRegex, ''))
             if (value === null || value === undefined || typeof value === 'function') {
               return ''
             }
 
+            const arraySelector = get(arraySelectorRegex.exec(key), '1')
             if (arraySelector) {
               return value.map((x: unknown) => get(x, arraySelector))
             }
@@ -40,7 +39,7 @@ export const convertToSearchableStrings = memoize(
       )
       .map((x) => normalize(x))
   },
-  (elements, searchableKeys) => [elements, searchableKeys]
+  (elements, _, cacheKey) => cacheKey ?? elements
 )
 
 export const indexDocuments = convertToSearchableStrings
@@ -66,10 +65,10 @@ export function search<T, TWithScore extends boolean>(
   elements: T[],
   searchableKeys: string[],
   searchText: string,
-  options?: { withScore?: TWithScore }
+  options?: { withScore?: TWithScore; cacheKey?: unknown }
 ): TWithScore extends true ? SearchResultWithScore<T>[] : T[] {
   const searchWords = tokenize(searchText)
-  const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys)
+  const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys, options?.cacheKey)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return searchableDataStrings.reduce<any>((accumulator, x, i) => {
