@@ -102,7 +102,20 @@ describe('#search', () => {
     })
   })
 
-  test('Should match data for different scope on same dataset', () => {
+  test('Should match data for different searchKeys on same dataset when passing a different cacheKey', () => {
+    // Arrange
+    const data = dataset.slice(0, 2)
+
+    // Act
+    const actualText = search(data, ['text'], 'A search function should be fast', { cacheKey: 'text' })
+    const actualNumber = search(data, ['number'], '2', { cacheKey: 'number' })
+
+    // Assert
+    expect(actualText[0]).toEqual(data[0])
+    expect(actualNumber[0]).toEqual(data[1])
+  })
+
+  test('Should use the old cache when changing searchKeys with the same elements', () => {
     // Arrange
     const data = dataset.slice(0, 2)
 
@@ -112,6 +125,6 @@ describe('#search', () => {
 
     // Assert
     expect(actualText[0]).toEqual(data[0])
-    expect(actualNumber[0]).toEqual(data[1])
+    expect(actualNumber[0]).toBeUndefined()
   })
 })

@@ -144,10 +144,11 @@ const results = search(data, ['arrayObjects[arrayObjectProperty]'], 'arrayObject
 
 Customize your search experience using the following options:
 
-| Option parameter | Value   | Description                                                                                                                                                                                                                                                                                                                   |
-| ---------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `withScore`      | `true`  | When set to `true`, the search function will return an array of objects, each containing the matched element and its corresponding score. The score represents how closely the element matches the search text, with a higher score indicating a closer match. Even if the search doesn't match, it will return a score of 0. |
-| `withScore`      | `false` | When set to `false` or not provided, the function will return an array of matched elements without their scores.                                                                                                                                                                                                              |
+| Option parameter | Value     | Description                                                                                                                                                                                                                                                                                                                   |
+| ---------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `withScore`      | `true`    | When set to `true`, the search function will return an array of objects, each containing the matched element and its corresponding score. The score represents how closely the element matches the search text, with a higher score indicating a closer match. Even if the search doesn't match, it will return a score of 0. |
+| `withScore`      | `false`   | When set to `false` or not provided, the function will return an array of matched elements without their scores.                                                                                                                                                                                                              |
+| `cacheKey`       | `unknown` | The cacheKey is required if you dynamically update the `searchableKeys` as the memoization function will use the elements array by default to memoize the search tokens.                                                                                                                                                      |
 
 ### Example Usage
 
@@ -170,6 +171,17 @@ console.log(result)
 //  { element: { name: 'Jane' }, score: 0 },
 //  { element: { name: 'Doe' }, score: 0 }
 // ]
+```
+
+When updating the `searchableKeys` dynamically, you need to provide a `cacheKey`:
+```javascript
+const data = [{ name: 'John', age: 50 }, { name: 'Jane', age: 40 }]
+const result1 = search(data, ['name'], 'John', { cacheKey: 'name' })
+const result2 = search(data, ['age'], 40, { cacheKey: 'age' })
+// result1: [{ name: 'John', age: 50 }]
+// result2: [{ name: 'Jane', age: 40 }]
+
+// If you do not manually update the cache-key, your second search would have used "name" as the `searchKeys` and returned an empty array
 ```
 
 ![](benchmark.gif)
