@@ -174,8 +174,12 @@ console.log(result)
 ```
 
 When updating the `searchableKeys` dynamically, you need to provide a `cacheKey`:
+
 ```javascript
-const data = [{ name: 'John', age: 50 }, { name: 'Jane', age: 40 }]
+const data = [
+  { name: 'John', age: 50 },
+  { name: 'Jane', age: 40 },
+]
 const result1 = search(data, ['name'], 'John', { cacheKey: 'name' })
 const result2 = search(data, ['age'], 40, { cacheKey: 'age' })
 // result1: [{ name: 'John', age: 50 }]
