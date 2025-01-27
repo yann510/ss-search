@@ -1,3 +1,15 @@
+## 1.12.2 (2025-01-27)
+
+
+### 🩹 Fixes
+
+- memoization issue which created a new array reference on every function call, making memoization useless ([#111](https://github.com/yann510/ss-search/pull/111))
+
+
+### ❤️  Thank You
+
+- Yann Thibodeau
+
 ## 1.12.1 (2024-11-03)
 
 
