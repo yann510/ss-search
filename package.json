@@ -35,7 +35,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "format:check:ci": "nx format:check",
+    "format:check:ci": "nx format:check --base=origin/master",
     "format:check:local": "nx format:check --base=origin/master",
     "format:write": "nx format:write --base=origin/master",
     "lint:all": "nx run-many --target=lint --all",
