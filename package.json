@@ -53,7 +53,7 @@
     "@mui/icons-material": "5.14.8",
     "@mui/material": "5.14.8",
     "@swc/helpers": "0.5.13",
-    "axios": "1.7.7",
+    "axios": "1.8.4",
     "flexsearch": "0.6.32",
     "fuse.js": "6.6.2",
     "fuzzysort": "2.0.4",
