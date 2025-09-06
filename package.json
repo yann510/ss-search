@@ -46,7 +46,7 @@
     "pre-run:ci:local": "npm run format:write && nx run-many --targets=lint --fix && nx run-many --targets=build,test",
     "benchmark": "nx run benchmark:build && node dist/benchmark/main.js",
     "web-app:serve": "nx run web-app:serve",
-    "netlify:deploy": "nx run web-app:build --prod && netlify deploy --prod --dir=dist/web-app"
+    "netlify:deploy": "nx run web-app:build --prod && netlify deploy --prod --no-build --dir=dist/web-app"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
