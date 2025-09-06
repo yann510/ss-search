@@ -23,7 +23,8 @@ function DataTable(props: Props) {
 
   const handleChangePage = (_: unknown, newPage: number) => setPage(newPage)
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
+    const target = event.target as HTMLInputElement
+    setRowsPerPage(parseInt(target.value, 10))
     setPage(0)
   }
 

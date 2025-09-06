@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-empty-function */
-import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -20,7 +21,9 @@ import { BackdropProgress } from '../components/backdrop-loader'
 import { makeStyles } from 'tss-react/mui'
 
 import fuzzysort from 'fuzzysort'
-import Flexsearch from 'flexsearch'
+// FlexSearch v0.7/v0.8 compatibility
+// eslint-disable-next-line import/no-duplicates
+import FlexSearch, { Document as FlexDocument } from 'flexsearch'
 import { indexDocuments, search, tokenize } from '@yann510/ss-search'
 
 interface BenchmarkResult {
@@ -59,7 +62,7 @@ const debouncedSearches = debounce(
     lunrIndex: lunr.Index | undefined,
     jsSearch: JsSearch.Search | undefined,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    flexsearch: any
+    flexsearch: any,
   ) => {
     setSearchWords(tokenize(searchText))
 
@@ -87,7 +90,7 @@ const debouncedSearches = debounce(
       })
     }
   },
-  200
+  200,
 )
 
 function BenchmarkPage(props: Props) {
@@ -113,7 +116,7 @@ function BenchmarkPage(props: Props) {
         const benchmarkResults: BenchmarkResult[] = [
           {
             libraryName: 'ss-search',
-            indexationFn: (data: Data[]) => indexDocuments(data, Object.keys(data[0])),
+            indexationFn: (data: Data[]) => indexDocuments(data, Object.keys(data[0]), null),
             searchFn: (data: Data[], searchText: string) => search(data, Object.keys(data[0]), searchText) as Data[],
           },
           {
@@ -151,7 +154,7 @@ function BenchmarkPage(props: Props) {
                   })),
                   {
                     keys: Object.keys(data[0]),
-                  }
+                  },
                 )
                 .map((x) => x.obj),
           },
@@ -170,19 +173,51 @@ function BenchmarkPage(props: Props) {
           {
             libraryName: 'flexsearch',
             indexationFn: (data: Data[]) => {
-              // @ts-ignore
+              // Prefer Document API (v0.7+). Fallback to default if needed.
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const flexsearch: any = new Flexsearch({
-                doc: {
-                  id: 'id',
-                  field: Object.keys(data[0]),
-                },
-              })
-              flexsearch.add(data)
-              setFlexsearch(flexsearch)
+              let instance: any
+              const keys = Object.keys(data[0])
+              try {
+                // Prefer named export Document (v0.8)
+                // @ts-ignore
+                instance = new (FlexDocument as any)({
+                  document: {
+                    id: 'id',
+                    index: keys,
+                  },
+                })
+              } catch {
+                // v0.7 style
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const AnyFlex: any = FlexSearch as any
+                if (AnyFlex && AnyFlex.Document) {
+                  instance = new AnyFlex.Document({
+                    document: {
+                      id: 'id',
+                      index: keys,
+                    },
+                  })
+                } else {
+                  // Last resort: older constructor signature
+                  instance = new (FlexSearch as unknown as { new (opts: unknown): unknown })({
+                    doc: {
+                      id: 'id',
+                      field: keys,
+                    },
+                  })
+                }
+              }
+              instance.add(data)
+              setFlexsearch(instance)
             },
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            searchFn: (_: Data[], searchText: string, params: any) => params.flexsearch.search(searchText),
+            searchFn: (_: Data[], searchText: string, params: any) => {
+              const res = params.flexsearch.search(searchText, { enrich: true })
+              // res could be an array of groups: [{ field, result: [{ id, score }, ...] }, ...]
+              const resultsArray = Array.isArray(res) ? res : []
+              const ids = resultsArray.flatMap((g: any) => (Array.isArray(g.result) ? g.result.map((r: any) => r.id) : []))
+              return ids.map((id: string | number) => params.dataById[id]).filter(Boolean)
+            },
           },
           {
             libraryName: 'fuse.js',
@@ -223,14 +258,14 @@ function BenchmarkPage(props: Props) {
   return (
     <>
       <BackdropProgress isLoading={isIndexing} text="Indexing search libraries..." />
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+      <Stack spacing={3}>
+        <Box>
           <Paper className={classes.paper}>
             <TextField
               className={classes.searchTextField}
               label="Search"
               value={searchText}
-              onChange={(e) => handleSearch((e.target as unknown as { value: string }).value)}
+              onChange={(e) => handleSearch((e.target as HTMLInputElement).value)}
             />
             <Table>
               <TableHead>
@@ -262,18 +297,18 @@ function BenchmarkPage(props: Props) {
               </TableBody>
             </Table>
           </Paper>
-        </Grid>
+        </Box>
         {benchmarkResults.map((benchmarkResult) => (
-          <Grid item xs={12} key={benchmarkResult.libraryName}>
+          <Box key={benchmarkResult.libraryName}>
             <Paper className={classes.paper}>
               <Typography className={classes.resultText} variant="body2">
                 {benchmarkResult.libraryName} results
               </Typography>
               <DataTable data={benchmarkResult.searchResults} searchWords={searchWords} />
             </Paper>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Stack>
     </>
   )
 }

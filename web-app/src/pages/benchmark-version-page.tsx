@@ -1,4 +1,5 @@
-import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
 import React from 'react'
 import axios from 'axios'
@@ -35,8 +36,8 @@ function BenchmarkVersionPage() {
   }, [])
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
+    <Stack spacing={3}>
+      <Box>
         <Paper className={classes.paper}>
           <ResponsiveContainer width="99%">
             <LineChart data={benchmarkResults}>
@@ -48,8 +49,8 @@ function BenchmarkVersionPage() {
             </LineChart>
           </ResponsiveContainer>
         </Paper>
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   )
 }
 
