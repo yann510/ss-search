@@ -15,7 +15,11 @@
         "main": "web-app/src/main.tsx",
         "tsConfig": "web-app/tsconfig.app.json",
         "rspackConfig": "web-app/rspack.config.js",
-        "assets": ["web-app/src/favicon.ico", "web-app/src/assets"]
+        "assets": [
+          "web-app/src/favicon.ico",
+          { "glob": "_redirects", "input": "web-app/src/assets", "output": "." },
+          { "glob": "**/*", "input": "web-app/src/assets", "output": "assets" }
+        ]
       },
       "configurations": {
         "development": {
