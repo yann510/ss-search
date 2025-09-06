@@ -61,29 +61,43 @@ export const getScore = (matchesAllSearchWords: boolean, searchWords: string[], 
 
 export type SearchResultWithScore<T> = { element: T; score: number }
 
-export function search<T, TWithScore extends boolean>(
+export function search<T>(
   elements: T[],
   searchableKeys: string[],
   searchText: string,
-  options?: { withScore?: TWithScore; cacheKey?: unknown },
-): TWithScore extends true ? SearchResultWithScore<T>[] : T[] {
+  options: { withScore: true; cacheKey?: unknown },
+): SearchResultWithScore<T>[]
+export function search<T>(
+  elements: T[],
+  searchableKeys: string[],
+  searchText: string,
+  options?: { withScore?: false | undefined; cacheKey?: unknown },
+): T[]
+export function search<T>(
+  elements: T[],
+  searchableKeys: string[],
+  searchText: string,
+  options?: { withScore?: boolean; cacheKey?: unknown },
+): Array<SearchResultWithScore<T> | T> {
   const searchWords = tokenize(searchText)
   const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys, options?.cacheKey)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return searchableDataStrings.reduce<any>((accumulator, x, i) => {
+  const results: Array<SearchResultWithScore<T> | T> = []
+
+  for (let i = 0; i < searchableDataStrings.length; i++) {
+    const x = searchableDataStrings[i]!
     const matchesAllSearchWords = searchWords.every((searchWord) => x.includes(searchWord))
+
     if (options?.withScore) {
       const score = getScore(matchesAllSearchWords, searchWords, x)
-      accumulator.push({ element: elements[i], score })
-
-      return accumulator
+      results.push({ element: elements[i]!, score })
+      continue
     }
 
     if (matchesAllSearchWords) {
-      accumulator.push(elements[i])
+      results.push(elements[i]!)
     }
+  }
 
-    return accumulator
-  }, [])
+  return results
 }

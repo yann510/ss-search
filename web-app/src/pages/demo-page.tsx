@@ -23,11 +23,12 @@ const debouncedSearch = debounce(
     setSearchTime: React.Dispatch<React.SetStateAction<number>>,
     withScore: boolean,
   ) => {
-    const searchResults = search(data, Object.keys(data[0]), searchText, { withScore })
-    if (typeof searchResults[0]?.score === 'number') {
-      const filteredAndSortedResults = (searchResults as SearchResultWithScore<Data>[]).sort((a, b) => b.score - a.score)
+    if (withScore) {
+      const searchResultsWithScore = search(data, Object.keys(data[0]), searchText, { withScore: true })
+      const filteredAndSortedResults = (searchResultsWithScore as SearchResultWithScore<Data>[]).sort((a, b) => b.score - a.score)
       setSearchResults(filteredAndSortedResults)
     } else {
+      const searchResults = search(data, Object.keys(data[0]), searchText)
       setSearchResults(searchResults)
     }
 
