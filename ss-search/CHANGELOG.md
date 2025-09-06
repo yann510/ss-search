@@ -1,3 +1,13 @@
+## 1.13.0 (2025-09-06)
+
+### 🚀 Features
+
+- **ss-search:** typed overloads for search() with correct return types ([#126](https://github.com/yann510/ss-search/pull/126))
+
+### ❤️ Thank You
+
+- Yann Thibodeau
+
 ## 1.12.3 (2025-09-06)
 
 This was a version bump only for ss-search to align it with other projects, there were no code changes.
