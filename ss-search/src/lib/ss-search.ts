@@ -35,11 +35,11 @@ export const convertToSearchableStrings = memoize(
 
             return value
           })
-          .reduce((a, b) => a + b, '')
+          .reduce((a, b) => a + b, ''),
       )
       .map((x) => normalize(x))
   },
-  (elements, _, cacheKey) => cacheKey ?? elements
+  (elements, _, cacheKey) => cacheKey ?? elements,
 )
 
 export const indexDocuments = convertToSearchableStrings
@@ -54,7 +54,7 @@ export const getScore = (matchesAllSearchWords: boolean, searchWords: string[], 
     .sort((a, b) => b.length - a.length)
     .reduce(
       (remainingText, searchWord) => remainingText.replace(new RegExp(searchWord, 'gm'), ''),
-      searchableDataStringWithoutNonWordCharacters
+      searchableDataStringWithoutNonWordCharacters,
     )
   return round(1 - remainingTextAfterRemovingSearchWords.length / searchableDataStringWithoutNonWordCharacters.length, 4)
 }
@@ -65,7 +65,7 @@ export function search<T, TWithScore extends boolean>(
   elements: T[],
   searchableKeys: string[],
   searchText: string,
-  options?: { withScore?: TWithScore; cacheKey?: unknown }
+  options?: { withScore?: TWithScore; cacheKey?: unknown },
 ): TWithScore extends true ? SearchResultWithScore<T>[] : T[] {
   const searchWords = tokenize(searchText)
   const searchableDataStrings = convertToSearchableStrings(elements, searchableKeys, options?.cacheKey)
