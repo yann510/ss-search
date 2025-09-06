@@ -68,6 +68,9 @@
       }
     }
   },
+  "tui": {
+    "enabled": false
+  },
   "useInferencePlugins": false,
   "nxCloudId": "670f1d8b22b1a18844d39587",
   "release": {
@@ -84,10 +87,9 @@
     "version": {
       "conventionalCommits": true,
       "preVersionCommand": "npx nx run-many -t build",
-      "generatorOptions": {
-        "packageRoot": "dist/{projectName}",
-        "fallbackCurrentVersionResolver": "disk"
-      }
+      "fallbackCurrentVersionResolver": "disk",
+      "preserveLocalDependencyProtocols": false,
+      "manifestRootsToUpdate": ["dist/{projectName}"]
     },
     "git": {
       "commit": true,

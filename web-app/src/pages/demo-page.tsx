@@ -1,4 +1,5 @@
-import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -20,7 +21,7 @@ const debouncedSearch = debounce(
     data: Data[],
     setSearchResults: React.Dispatch<React.SetStateAction<Data[] | SearchResultWithScore<Data>[]>>,
     setSearchTime: React.Dispatch<React.SetStateAction<number>>,
-    withScore: boolean
+    withScore: boolean,
   ) => {
     const searchResults = search(data, Object.keys(data[0]), searchText, { withScore })
     if (typeof searchResults[0]?.score === 'number') {
@@ -33,7 +34,7 @@ const debouncedSearch = debounce(
     const endTime = performance.now()
     setSearchTime(endTime - (startTime + debounceTime))
   },
-  debounceTime
+  debounceTime,
 )
 
 interface Props {
@@ -51,7 +52,7 @@ function DemoPage(props: Props) {
 
   React.useEffect(() => {
     if (data && data.length > 0) {
-      indexDocuments(data, Object.keys(data[0]))
+      indexDocuments(data, Object.keys(data[0]), null)
       setSearchResults(data)
     }
   }, [data])
@@ -72,18 +73,24 @@ function DemoPage(props: Props) {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
+    <Stack spacing={3}>
+      <Box>
         <Paper className={classes.paper}>
           <Typography variant="body2" color="textSecondary" align="right">{`Execution time ${Math.round(searchTime)}ms`}</Typography>
-          <TextField className={classes.searchTextField} label="Search" value={searchText} onChange={(e) => handleSearch(e.target.value)} />
+          <TextField
+            className={classes.searchTextField}
+            label="Search"
+            value={searchText}
+            onChange={(e) => handleSearch((e.target as HTMLInputElement).value)}
+          />
           <FormControlLabel
             control={
               <Checkbox
                 checked={withScore}
                 onChange={(e) => {
-                  setWithScore(e.target.checked)
-                  handleSearch(searchText, e.target.checked)
+                  const checked = (e.target as HTMLInputElement).checked
+                  setWithScore(checked)
+                  handleSearch(searchText, checked)
                 }}
                 name="withScoreOption"
                 color="primary"
@@ -93,8 +100,8 @@ function DemoPage(props: Props) {
           />
           <DataTable data={searchResults} searchWords={searchWords} />
         </Paper>
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   )
 }
 
