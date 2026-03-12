@@ -21,6 +21,13 @@ function DataTable(props: Props) {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
+  React.useEffect(() => {
+    const maxPage = Math.max(0, Math.ceil(data.length / rowsPerPage) - 1)
+    if (page > maxPage) {
+      setPage(maxPage)
+    }
+  }, [data.length, page, rowsPerPage])
+
   const handleChangePage = (_: unknown, newPage: number) => setPage(newPage)
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const target = event.target as HTMLInputElement
