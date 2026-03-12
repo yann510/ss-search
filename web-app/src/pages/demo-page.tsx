@@ -25,7 +25,10 @@ const debouncedSearch = debounce(
   ) => {
     if (withScore) {
       const searchResultsWithScore = search(data, Object.keys(data[0]), searchText, { withScore: true })
-      const filteredAndSortedResults = (searchResultsWithScore as SearchResultWithScore<Data>[]).sort((a, b) => b.score - a.score)
+      const hasSearchTerms = tokenize(searchText).length > 0
+      const filteredAndSortedResults = (searchResultsWithScore as SearchResultWithScore<Data>[])
+        .filter((result) => !hasSearchTerms || result.score > 0)
+        .sort((a, b) => b.score - a.score)
       setSearchResults(filteredAndSortedResults)
     } else {
       const searchResults = search(data, Object.keys(data[0]), searchText)
