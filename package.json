@@ -78,10 +78,10 @@
     "@nx/jest": "21.4.1",
     "@nx/js": "21.4.1",
     "@nx/node": "21.4.1",
-    "@nx/react": "22.1.2",
+    "@nx/react": "22.7.5",
     "@nx/rollup": "21.4.1",
     "@nx/rspack": "22.1.2",
-    "@nx/vite": "21.4.1",
+    "@nx/vite": "23.0.0",
     "@nx/workspace": "21.4.1",
     "@rspack/cli": "1.5.2",
     "@rspack/core": "1.5.2",
@@ -127,8 +127,8 @@
     "ts-node": "10.9.2",
     "tsup": "8.5.0",
     "typescript": "5.9.2",
-    "vite": "6.4.2",
-    "vitest": "3.2.4"
+    "vite": "8.0.16",
+    "vitest": "4.1.9"
   },
   "nxrelease": {
     "repositoryUrl": "https://github.com/yann510/ss-search",
