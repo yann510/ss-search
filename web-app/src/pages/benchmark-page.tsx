@@ -21,8 +21,6 @@ import { BackdropProgress } from '../components/backdrop-loader'
 import { makeStyles } from 'tss-react/mui'
 
 import fuzzysort from 'fuzzysort'
-// FlexSearch v0.7/v0.8 compatibility
-// eslint-disable-next-line import/no-duplicates
 import FlexSearch, { Document as FlexDocument } from 'flexsearch'
 import { indexDocuments, search, tokenize } from '@yann510/ss-search'
 
