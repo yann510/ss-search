@@ -45,7 +45,7 @@ function BenchmarkVersionPage() {
               <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
               <XAxis dataKey="version" />
               <YAxis domain={[paddedMinAbsValue, paddedMaxAbsValue]} tickFormatter={(value: number) => round(value).toLocaleString()} />
-              <Tooltip formatter={(value) => [value.toLocaleString(), 'Operations per second']} />
+              <Tooltip formatter={(value) => [Number(value ?? 0).toLocaleString(), 'Operations per second']} />
             </LineChart>
           </ResponsiveContainer>
         </Paper>

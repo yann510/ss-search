@@ -152,6 +152,9 @@ function BenchmarkPage(props: Props) {
                   })),
                   {
                     keys: Object.keys(data[0]),
+                    // v4 defaults to limit: 10 and threshold: 0.5; keep previous unlimited matching.
+                    limit: 0,
+                    threshold: 0,
                   },
                 )
                 .map((x) => x.obj),

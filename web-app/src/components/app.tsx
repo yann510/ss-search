@@ -51,7 +51,7 @@ export function App() {
               <Route element={<Demo data={data} />} path="/" />
               <Route element={<Demo data={data} />} path="/demo" />
             </Routes>
-            <Box pt={4}>
+            <Box sx={{ pt: 4 }}>
               <Typography variant="body2" color="textSecondary" align="center">
                 Stop searching, start finding.
               </Typography>
