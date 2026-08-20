@@ -17,8 +17,16 @@
         "rspackConfig": "web-app/rspack.config.js",
         "assets": [
           "web-app/src/favicon.ico",
-          { "glob": "_redirects", "input": "web-app/src/assets", "output": "." },
-          { "glob": "**/*", "input": "web-app/src/assets", "output": "assets" }
+          {
+            "glob": "_redirects",
+            "input": "web-app/src/assets",
+            "output": "."
+          },
+          {
+            "glob": "**/*",
+            "input": "web-app/src/assets",
+            "output": "assets"
+          }
         ]
       },
       "configurations": {

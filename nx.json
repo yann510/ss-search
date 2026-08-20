@@ -23,25 +23,31 @@
         }
       }
     },
-    "@nx/vite:test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "cache": true
-    },
     "@nx/eslint:lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore", "{workspaceRoot}/eslint.config.js"],
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/tools/eslint-rules/**/*"
+      ],
       "cache": true
     },
     "nx-release-publish": {
       "options": {
         "packageRoot": "dist/{projectName}"
       }
+    },
+    "@nx/vitest:test": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "cache": true
     }
   },
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
-      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.mjs",
       "!{projectRoot}/eslint.config.js",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
@@ -75,7 +81,6 @@
   "nxCloudId": "670f1d8b22b1a18844d39587",
   "release": {
     "projectsRelationship": "independent",
-    "releaseTagPattern": "{projectName}v{version}",
     "changelog": {
       "projectChangelogs": {
         "createRelease": "github"
@@ -94,6 +99,9 @@
     "git": {
       "commit": true,
       "tag": true
+    },
+    "releaseTag": {
+      "pattern": "{projectName}v{version}"
     }
   }
 }

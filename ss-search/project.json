@@ -18,10 +18,10 @@
       "executor": "@nx/eslint:lint"
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/ss-search"],
       "options": {
-        "reportsDirectory": "../coverage/ss-search"
+        "reportsDirectory": "{workspaceRoot}/coverage/ss-search"
       }
     }
   }

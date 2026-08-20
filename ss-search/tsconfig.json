@@ -16,7 +16,8 @@
     "declarationMap": true,
     "noEmit": true,
     "module": "ESNext",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Bundler",
+    "ignoreDeprecations": "6.0"
   },
   "files": [],
   "include": [],
