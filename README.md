@@ -1,3 +1,5 @@
+
+
 ![npm](https://img.shields.io/npm/v/ss-search?style=flat-square)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/ss-search?style=flat-square)
 ![build](https://github.com/yann510/ss-search/actions/workflows/publish-package.yml/badge.svg)
@@ -32,6 +34,8 @@ How does it compare to other search libraries? Test out for yourself with this i
 ss-search is available on [npm](https://www.npmjs.com/package/ss-search). Install it with:
 
 `npm install ss-search`
+
+It supports both ES modules and CommonJS.
 
 ## Usage
 
