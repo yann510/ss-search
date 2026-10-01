@@ -54,7 +54,7 @@
     "@mui/icons-material": "9.3.1",
     "@mui/material": "9.3.1",
     "@swc/helpers": "0.5.23",
-    "axios": "1.19.0",
+    "axios": "1.20.0",
     "clsx": "2.1.1",
     "flexsearch": "0.8.212",
     "fuse.js": "7.5.0",
