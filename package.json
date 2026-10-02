@@ -130,6 +130,7 @@
     "@opentelemetry/api": "^1.9.1",
     "esbuild": "$esbuild",
     "nx": {
+      "axios": "$axios",
       "brace-expansion": "5.0.9"
     },
     "sharp": "0.35.3"
