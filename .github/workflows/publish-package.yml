@@ -50,13 +50,13 @@ jobs:
         run: npm ci
 
       - name: Lint files
-        run: npm run lint:all
+        run: npm run lint:all && npx eslint scripts/release-package.mjs scripts/release-package.test.mjs
 
       - name: Check formatting
         run: npm run format:check:ci
 
       - name: Run tests
-        run: npm run test:all
+        run: npm run test:all && node --test scripts/release-package.test.mjs
 
       - name: Build apps
         run: npm run build:all -- --prod
@@ -83,7 +83,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-        run: npx nx release -y
+        run: node scripts/release-package.mjs
 
       - name: Deploy to netlify
         if: github.ref == 'refs/heads/master'
