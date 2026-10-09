@@ -73,16 +73,16 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
-    "@nx/esbuild": "23.1.1",
-    "@nx/eslint": "23.1.1",
-    "@nx/eslint-plugin": "23.1.1",
-    "@nx/jest": "23.1.1",
-    "@nx/js": "23.1.1",
-    "@nx/react": "23.1.1",
-    "@nx/rspack": "23.1.1",
-    "@nx/vite": "23.1.1",
-    "@nx/vitest": "23.1.1",
-    "@nx/workspace": "23.1.1",
+    "@nx/esbuild": "23.2.1",
+    "@nx/eslint": "23.2.1",
+    "@nx/eslint-plugin": "23.2.1",
+    "@nx/jest": "23.2.1",
+    "@nx/js": "23.2.1",
+    "@nx/react": "23.2.1",
+    "@nx/rspack": "23.2.1",
+    "@nx/vite": "23.2.1",
+    "@nx/vitest": "23.2.1",
+    "@nx/workspace": "23.2.1",
     "@rspack/cli": "2.1.10",
     "@rspack/core": "2.1.10",
     "@rspack/dev-server": "2.2.0",
@@ -116,7 +116,7 @@
     "jest-environment-node": "30.4.1",
     "jsonc-eslint-parser": "3.3.0",
     "netlify-cli": "27.5.1",
-    "nx": "23.1.1",
+    "nx": "23.2.1",
     "prettier": "3.9.6",
     "react-refresh": "0.18.0",
     "ts-jest": "29.4.12",
@@ -132,9 +132,9 @@
     "nx": {
       "axios": "$axios",
       "brace-expansion": "5.0.12",
-      "smol-toml": "1.7.1"
+      "smol-toml": "1.9.0"
     },
-    "sharp": "0.35.4"
+    "sharp": "0.35.5"
   },
   "nxrelease": {
     "repositoryUrl": "https://github.com/yann510/ss-search",
