@@ -131,9 +131,10 @@
     "esbuild": "$esbuild",
     "nx": {
       "axios": "$axios",
-      "brace-expansion": "5.0.9"
+      "brace-expansion": "5.0.12",
+      "smol-toml": "1.7.1"
     },
-    "sharp": "0.35.3"
+    "sharp": "0.35.4"
   },
   "nxrelease": {
     "repositoryUrl": "https://github.com/yann510/ss-search",
