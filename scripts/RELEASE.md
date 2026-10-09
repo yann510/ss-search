@@ -4,6 +4,8 @@ CI runs `node scripts/release-package.mjs` on master. Before Nx can create a
 version, commit, or tag, the wrapper checks the existing GitHub token's repository
 access and npm authentication. These read checks cannot guarantee publish rights;
 write failures still stop the workflow. Credentials and permissions are unchanged.
+Preflight also requires the genuine GitHub workflow SHA to match the initial
+checkout, including when recovery is unnecessary and normal Nx versioning follows.
 
 The wrapper reconciles the highest stable remote `ss-searchvX.Y.Z` tag first. It requires
 the checkout's latest tag to equal that tag, be in the checkout's history, match its remote GitHub tag commit, and

@@ -201,7 +201,7 @@ export function createRuntime(root = process.cwd(), { fetchImpl = fetch, execute
       throw new Error('Registry release superseded the recovery version; latest promotion blocked')
     }
   }
-  function assertPublication(c) {
+  function assertWorkflowIdentity() {
     // npm's automatic payload uses the workflow SHA, not the detached build checkout.
     if (
       environment.GITHUB_ACTIONS !== 'true' ||
@@ -214,6 +214,9 @@ export function createRuntime(root = process.cwd(), { fetchImpl = fetch, execute
         'Recovery provenance cannot attest the tagged source from this workflow identity; a supported tag-aware signed provenance recovery is required',
       )
     }
+  }
+  function assertPublication(c) {
+    assertWorkflowIdentity()
     // Build the real workflow source, but never put changed package inputs under an old version.
     const changed = git('diff', '--name-only', c.sha, initialHead, '--').split('\n').filter(Boolean)
     if (changed.some((path) => !recoveryFiles.has(path))) {
@@ -248,6 +251,7 @@ export function createRuntime(root = process.cwd(), { fetchImpl = fetch, execute
   const io = {
     async preflight() {
       if (!token || !environment.NODE_AUTH_TOKEN) throw new Error('Release credentials must be configured before versioning')
+      assertWorkflowIdentity()
       const repo = await github('')
       if (repo.full_name !== repository || repo.permissions?.push !== true)
         throw new Error('GitHub token cannot write the expected repository')

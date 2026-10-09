@@ -459,6 +459,15 @@ test('provenance requires the genuine workflow SHA to match the initial checkout
   assert.equal(state.release, null)
   assert.equal(state.publishCalls, 0)
 })
+test('workflow/check-out SHA mismatch blocks normal Nx even when both destinations are already complete', async (t) => {
+  const { runtime, state, environment } = runtimeFixture(t, { laterChange: false })
+  state.release = existingGithub
+  state.npm = existingNpm
+  environment.GITHUB_SHA = 'different-workflow-sha'
+  await assert.rejects(releasePackage(runtime), /provenance.*workflow identity/i)
+  assert.equal(state.normalRuns, 0)
+  assert.equal(state.publishCalls, 0)
+})
 test('npm gitHead from a non-equivalent workflow source is never accepted as the tagged package', async (t) => {
   const { runtime, state, environment } = runtimeFixture(t)
   state.release = existingGithub
