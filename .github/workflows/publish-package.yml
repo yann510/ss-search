@@ -49,13 +49,13 @@ jobs:
         run: npm ci
 
       - name: Lint files
-        run: npm run lint:all && npx eslint scripts/release-package.mjs scripts/release-package.test.mjs
+        run: npm run lint:all
 
       - name: Check formatting
         run: npm run format:check:ci
 
       - name: Run tests
-        run: npm run test:all && node --test scripts/release-package.test.mjs
+        run: npm run test:all
 
       - name: Build apps
         run: npm run build:all -- --prod
@@ -78,11 +78,11 @@ jobs:
       - name: Release + Publish package
         if: github.ref == 'refs/heads/master'
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-        run: node scripts/release-package.mjs
+        run: npx nx release -y
 
       - name: Deploy to netlify
         if: github.ref == 'refs/heads/master'
