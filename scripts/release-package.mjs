@@ -8,6 +8,22 @@ import { pathToFileURL } from 'node:url'
 const repository = 'yann510/ss-search'
 const registry = 'https://registry.npmjs.org'
 const tagPattern = /^ss-searchv(\d+\.\d+\.\d+)$/
+const stablePattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
+const recoveryFiles = new Set([
+  '.github/workflows/publish-package.yml',
+  'scripts/release-package.mjs',
+  'scripts/release-package.test.mjs',
+  'scripts/RELEASE.md',
+])
+
+function compareVersions(left, right) {
+  const a = left.split('.').map(BigInt)
+  const b = right.split('.').map(BigInt)
+  for (let index = 0; index < 3; index++) {
+    if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1
+  }
+  return 0
+}
 
 export function matchingLocks(tagged, current) {
   const normalize = (text) => {
@@ -31,7 +47,7 @@ function validateNpm(pkg, candidate) {
     (pkg.name !== 'ss-search' ||
       pkg.version !== candidate.version ||
       !pkg.dist?.integrity ||
-      (pkg.gitHead && pkg.gitHead !== candidate.sha))
+      (pkg.gitHead && pkg.gitHead !== candidate.sha && pkg.gitHead !== candidate.equivalentSourceSha))
   ) {
     throw new Error('Ambiguous npm package identity; manual review required')
   }
@@ -45,8 +61,10 @@ export async function releasePackage(io) {
     const npm = await io.npm(candidate)
     validateGithub(github, candidate)
     validateNpm(npm, candidate)
+    await io.assertCandidate(candidate)
     let artifact
     if (!npm) {
+      await io.assertPublication(candidate)
       artifact = await io.build(candidate)
       if (artifact.name !== 'ss-search' || artifact.version !== candidate.version || !artifact.integrity) {
         throw new Error('Invalid recovery artifact identity or integrity')
@@ -146,19 +164,86 @@ export function createRuntime(root = process.cwd(), { fetchImpl = fetch, execute
   const git = (...args) => run('git', args)
   const initialHead = git('rev-parse', 'HEAD')
   const github = (path, options = {}) => requestJson(`https://api.github.com/repos/${repository}${path}`, { token, fetchImpl, ...options })
+  async function highestRemoteTag() {
+    const refs = await github('/git/matching-refs/tags/ss-searchv')
+    if (!Array.isArray(refs) || refs.some((ref) => typeof ref.ref !== 'string')) throw new Error('Invalid remote tag listing')
+    let highest
+    for (const ref of refs) {
+      const tag = ref.ref.replace(/^refs\/tags\//, '')
+      const version = tagPattern.exec(tag)?.[1]
+      if (version && stablePattern.test(version) && (!highest || compareVersions(version, highest.version) > 0)) {
+        highest = { tag, version }
+      }
+    }
+    return highest
+  }
+  async function assertRegistry(c) {
+    const pkg = await requestJson(`${registry}/ss-search`, { missing: true, fetchImpl })
+    if (!pkg) return
+    if (
+      pkg.name !== 'ss-search' ||
+      !pkg.versions ||
+      typeof pkg.versions !== 'object' ||
+      Array.isArray(pkg.versions) ||
+      !pkg['dist-tags'] ||
+      typeof pkg['dist-tags'] !== 'object' ||
+      Array.isArray(pkg['dist-tags'])
+    ) {
+      throw new Error('Ambiguous registry version/dist-tag metadata')
+    }
+    const latest = pkg['dist-tags'].latest
+    if (latest !== undefined && (typeof latest !== 'string' || !stablePattern.test(latest)))
+      throw new Error('Ambiguous registry latest version')
+    if (
+      (latest && compareVersions(latest, c.version) > 0) ||
+      Object.keys(pkg.versions).some((version) => stablePattern.test(version) && compareVersions(version, c.version) > 0)
+    ) {
+      throw new Error('Registry release superseded the recovery version; latest promotion blocked')
+    }
+  }
+  function assertPublication(c) {
+    // npm's automatic payload uses the workflow SHA, not the detached build checkout.
+    if (
+      environment.GITHUB_ACTIONS !== 'true' ||
+      environment.GITHUB_REPOSITORY !== repository ||
+      environment.GITHUB_SERVER_URL !== 'https://github.com' ||
+      environment.GITHUB_SHA !== initialHead ||
+      !environment.GITHUB_REF
+    ) {
+      throw new Error(
+        'Recovery provenance cannot attest the tagged source from this workflow identity; a supported tag-aware signed provenance recovery is required',
+      )
+    }
+    // Build the real workflow source, but never put changed package inputs under an old version.
+    const changed = git('diff', '--name-only', c.sha, initialHead, '--').split('\n').filter(Boolean)
+    if (changed.some((path) => !recoveryFiles.has(path))) {
+      throw new Error(
+        'Recovery provenance cannot attest equivalent tagged source: tracked package/build inputs differ from the workflow commit',
+      )
+    }
+    return initialHead
+  }
   async function candidate() {
     const tags = git('tag', '--list', 'ss-searchv*', '--sort=-version:refname').split('\n').filter(Boolean)
-    if (!tags.length) return null
+    const highest = await highestRemoteTag()
+    if (!tags.length && !highest) return null
+    if (!tags.length || highest?.tag !== tags[0]) throw new Error('Checkout release tag is not the highest remote stable tag')
     const tag = tags[0]
     const match = tagPattern.exec(tag)
-    if (!match) throw new Error('Unsupported release tag; manual review required')
+    if (!match || !stablePattern.test(match[1])) throw new Error('Unsupported release tag; manual review required')
     const sha = git('rev-parse', `${tag}^{commit}`)
     git('merge-base', '--is-ancestor', sha, 'HEAD')
     const remote = await github(`/git/ref/tags/${encodeURIComponent(tag)}`)
     let remoteSha = remote.object?.sha
     if (remote.object?.type === 'tag') remoteSha = (await github(`/git/tags/${remoteSha}`)).object?.sha
     if (remoteSha !== sha) throw new Error('Local and remote release tag commits differ')
-    return { tag, version: match[1], sha, body: releaseNotes(git('show', `${tag}:ss-search/CHANGELOG.md`), match[1]) }
+    const c = { tag, version: match[1], sha, body: releaseNotes(git('show', `${tag}:ss-search/CHANGELOG.md`), match[1]) }
+    try {
+      c.equivalentSourceSha = assertPublication(c)
+    } catch {
+      // An existing package needs no new attestation; only its tagged gitHead is trusted in this case.
+    }
+    return c
   }
   const io = {
     async preflight() {
@@ -171,21 +256,24 @@ export function createRuntime(root = process.cwd(), { fetchImpl = fetch, execute
         throw new Error('Release inputs contain uncommitted changes')
     },
     candidate,
+    assertPublication,
     async assertCandidate(c) {
       const current = await candidate()
       if (git('rev-parse', 'HEAD') !== initialHead || current?.tag !== c.tag || current.sha !== c.sha) {
         throw new Error('Release tag or checkout changed during recovery')
       }
+      await assertRegistry(c)
     },
     github: (c) => github(`/releases/tags/${encodeURIComponent(c.tag)}`, { missing: true }),
     npm: (c) => requestJson(`${registry}/ss-search/${c.version}`, { missing: true, fetchImpl }),
     async build(c) {
+      const buildSha = assertPublication(c)
       // Reuse installed tooling only when it is exactly the tagged dependency lock.
       if (!matchingLocks(git('show', `${c.tag}:package-lock.json`), readFileSync(join(root, 'package-lock.json'), 'utf8'))) {
         throw new Error('Tagged dependency lock differs; recover using the tagged checkout and its dependencies')
       }
-      worktree = join(temporary, 'tag')
-      git('worktree', 'add', '--detach', worktree, c.sha)
+      worktree = join(temporary, 'build')
+      git('worktree', 'add', '--detach', worktree, buildSha)
       symlinkSync(resolve(root, 'node_modules'), join(worktree, 'node_modules'), 'dir')
       run('npx', ['nx', 'run', 'ss-search:build', '--skip-nx-cache'], worktree, { NX_DAEMON: 'false', NX_NO_CLOUD: 'true' })
       const manifestPath = join(worktree, 'dist/ss-search/package.json')
@@ -209,16 +297,22 @@ export function createRuntime(root = process.cwd(), { fetchImpl = fetch, execute
       if (packs.length !== 1) throw new Error('Expected exactly one recovery tarball')
       const path = join(temporary, packs[0].filename)
       const integrity = validatePack(packs[0], manifest, readFileSync(path))
-      return { path, name: manifest.name, version: manifest.version, integrity }
+      return { path, name: manifest.name, version: manifest.version, integrity, tag: c.tag, sha: c.sha, buildSha }
     },
     createRelease: (c) =>
       github('/releases', {
         method: 'POST',
         body: { tag_name: c.tag, target_commitish: c.sha, name: c.tag, body: c.body, draft: false, prerelease: false },
       }),
-    publish: (artifact) =>
-      run('npm', ['publish', artifact.path, '--ignore-scripts', '--provenance', `--registry=${registry}`, '--tag=latest']),
+    async publish(artifact) {
+      if (artifact.buildSha !== assertPublication(artifact))
+        throw new Error('Recovery artifact source does not match truthful workflow provenance')
+      await io.assertCandidate(artifact)
+      return run('npm', ['publish', artifact.path, '--ignore-scripts', '--provenance', `--registry=${registry}`, '--tag=latest'])
+    },
     async normal() {
+      const before = await candidate()
+      if (before) await io.assertCandidate(before)
       run('npx', ['nx', 'release', '-y'])
       const c = await candidate()
       if (!c) throw new Error('Nx finished without a verifiable release tag')
