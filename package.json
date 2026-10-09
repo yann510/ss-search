@@ -115,7 +115,7 @@
     "jest-environment-jsdom": "30.4.1",
     "jest-environment-node": "30.4.1",
     "jsonc-eslint-parser": "3.3.0",
-    "netlify-cli": "27.1.2",
+    "netlify-cli": "27.5.1",
     "nx": "23.1.1",
     "prettier": "3.9.6",
     "react-refresh": "0.18.0",
