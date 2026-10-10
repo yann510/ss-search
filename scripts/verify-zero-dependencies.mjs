@@ -26,7 +26,8 @@ const report = {
   samples,
   sampleMs,
   caseFilter: process.env.VERIFY_CASE || null,
-  policy: 'Bundle bytes must not increase. Performance flags require median candidate/baseline > 1.05 and paired bootstrap 95% lower bound > 1.02; flagged cases require a separate confirmation run. Timings are local evidence, not proof of zero regression.',
+  policy:
+    'Bundle bytes must not increase. Performance flags require median candidate/baseline > 1.05 and paired bootstrap 95% lower bound > 1.02; flagged cases require a separate confirmation run. Timings are local evidence, not proof of zero regression.',
   bundles: [],
   performance: [],
 }
@@ -40,8 +41,14 @@ function sizes(bytes) {
 async function bundle(source, format, consumer) {
   const result = await build({
     stdin: { contents: source, loader: 'ts', resolveDir: dirname(sourcePath), sourcefile: 'verification.ts' },
-    bundle: true, minify: true, treeShaking: true, write: false,
-    platform: consumer ? 'browser' : 'neutral', mainFields: ['module', 'main'], target: 'es2020', format,
+    bundle: true,
+    minify: true,
+    treeShaking: true,
+    write: false,
+    platform: consumer ? 'browser' : 'neutral',
+    mainFields: ['module', 'main'],
+    target: 'es2020',
+    format,
     metafile: true,
   })
   return { bytes: result.outputFiles[0].contents, inputs: Object.keys(result.metafile.inputs) }
@@ -56,8 +63,9 @@ function random() {
   return seed / 4294967296
 }
 function confidence(ratios) {
-  const boot = Array.from({ length: 3000 }, () => median(Array.from({ length: ratios.length }, () => ratios[Math.floor(random() * ratios.length)])))
-    .sort((a, b) => a - b)
+  const boot = Array.from({ length: 3000 }, () =>
+    median(Array.from({ length: ratios.length }, () => ratios[Math.floor(random() * ratios.length)])),
+  ).sort((a, b) => a - b)
   return [boot[Math.floor(boot.length * 0.025)], boot[Math.floor(boot.length * 0.975)]]
 }
 function dataset(count, kind) {
@@ -86,14 +94,27 @@ try {
       const standalone = await bundle(source, format, false)
       const consumerSource = `import { search } from ${JSON.stringify(outputPath)}; export function find(rows, query) { return search(rows, ['name', 'details.title'], query); }`
       const consumer = await bundle(consumerSource, format, true)
-      for (const [kind, result] of [['standalone', standalone], ['search-only-consumer', consumer]]) {
-        report.bundles.push({ label, format, kind, ...sizes(result.bytes), runtimeImports: label === 'candidate' ? result.inputs.filter((path) => path.includes('node_modules')) : undefined })
+      for (const [kind, result] of [
+        ['standalone', standalone],
+        ['search-only-consumer', consumer],
+      ]) {
+        report.bundles.push({
+          label,
+          format,
+          kind,
+          ...sizes(result.bytes),
+          runtimeImports: label === 'candidate' ? result.inputs.filter((path) => path.includes('node_modules')) : undefined,
+        })
       }
     }
   }
   const base = modules.baseline
   const next = modules.candidate
-  const keysByKind = { ascii: ['name', 'description'], accents: ['name', 'description'], nested: ['name', 'details.title', 'details.tags[name]'] }
+  const keysByKind = {
+    ascii: ['name', 'description'],
+    accents: ['name', 'description'],
+    nested: ['name', 'details.title', 'details.tags[name]'],
+  }
   let assertions = 0
   for (const count of [100, 1000, 10000]) {
     for (const kind of ['ascii', 'accents', 'nested']) {
@@ -104,7 +125,11 @@ try {
         for (const withScore of [false, true]) {
           base.convertToSearchableStrings.cache.clear()
           next.convertToSearchableStrings.cache.clear()
-          assert.deepEqual(next.search(rows, keys, text, { withScore }), base.search(rows, keys, text, { withScore }), `${count}/${kind}/${text}/${withScore}`)
+          assert.deepEqual(
+            next.search(rows, keys, text, { withScore }),
+            base.search(rows, keys, text, { withScore }),
+            `${count}/${kind}/${text}/${withScore}`,
+          )
           assertions++
         }
       }
@@ -115,7 +140,10 @@ try {
           module.convertToSearchableStrings.cache.clear()
           if (mode !== 'cold-index') module.search(rows, keys, performanceQuery)
           return mode === 'cold-index'
-            ? () => { module.convertToSearchableStrings.cache.clear(); return module.convertToSearchableStrings(rows.slice(), keys, null) }
+            ? () => {
+                module.convertToSearchableStrings.cache.clear()
+                return module.convertToSearchableStrings(rows.slice(), keys, null)
+              }
             : () => module.search(rows, keys, performanceQuery, { withScore: mode === 'cached-scored' })
         })
         // Warm both implementations and calibrate a common operation count.
@@ -132,23 +160,46 @@ try {
         const ratio = median(ratios)
         const ci = confidence(ratios)
         const flagged = ratio > 1.05 && ci[0] > 1.02
-        const row = { count, kind, mode, iterations, baselineMs: median(measurements[0]), candidateMs: median(measurements[1]), ratio, ci95: ci, flagged, pairedRatios: ratios, baselineSamplesMs: measurements[0], candidateSamplesMs: measurements[1] }
+        const row = {
+          count,
+          kind,
+          mode,
+          iterations,
+          baselineMs: median(measurements[0]),
+          candidateMs: median(measurements[1]),
+          ratio,
+          ci95: ci,
+          flagged,
+          pairedRatios: ratios,
+          baselineSamplesMs: measurements[0],
+          candidateSamplesMs: measurements[1],
+        }
         report.performance.push(row)
-        console.log(`${count} ${kind} ${mode}: candidate/baseline ${ratio.toFixed(3)} [${ci.map((x) => x.toFixed(3)).join(', ')}]${flagged ? ' FLAG' : ''}`)
+        console.log(
+          `${count} ${kind} ${mode}: candidate/baseline ${ratio.toFixed(3)} [${ci.map((x) => x.toFixed(3)).join(', ')}]${flagged ? ' FLAG' : ''}`,
+        )
       }
     }
   }
   report.resultEqualityAssertions = assertions
   report.lastResultLength = sink?.length
-  report.bundleRegressions = report.bundles.filter((entry) => entry.label === 'candidate').flatMap((entry) => {
-    const original = report.bundles.find((other) => other.label === 'baseline' && entry.format === other.format && entry.kind === other.kind)
-    return ['raw', 'gzip', 'brotli'].filter((metric) => entry[metric] > original[metric]).map((metric) => ({ format: entry.format, kind: entry.kind, metric, baseline: original[metric], candidate: entry[metric] }))
-  })
+  report.bundleRegressions = report.bundles
+    .filter((entry) => entry.label === 'candidate')
+    .flatMap((entry) => {
+      const original = report.bundles.find(
+        (other) => other.label === 'baseline' && entry.format === other.format && entry.kind === other.kind,
+      )
+      return ['raw', 'gzip', 'brotli']
+        .filter((metric) => entry[metric] > original[metric])
+        .map((metric) => ({ format: entry.format, kind: entry.kind, metric, baseline: original[metric], candidate: entry[metric] }))
+    })
   report.runtimeDependencies = report.bundles.filter((entry) => entry.label === 'candidate').flatMap((entry) => entry.runtimeImports)
   report.performanceFlags = report.performance.filter((entry) => entry.flagged).length
   report.passed = !report.bundleRegressions.length && !report.runtimeDependencies.length && !report.performanceFlags
   console.table(report.bundles.map(({ label, format, kind, raw, gzip, brotli }) => ({ label, format, kind, raw, gzip, brotli })))
-  console.log(`Equality: ${assertions} comparisons passed; performance flags: ${report.performanceFlags}; validation: ${report.passed ? 'PASS' : 'FAIL'}`)
+  console.log(
+    `Equality: ${assertions} comparisons passed; performance flags: ${report.performanceFlags}; validation: ${report.passed ? 'PASS' : 'FAIL'}`,
+  )
   if (!report.passed) process.exitCode = 1
 } catch (error) {
   report.error = error.stack
