@@ -40,8 +40,5 @@
       "import": "./index.js",
       "require": "./index.cjs"
     }
-  },
-  "dependencies": {
-    "lodash-es": "^4.18.1"
   }
 }
