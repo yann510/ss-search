@@ -3,6 +3,13 @@ env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
 on:
+  workflow_dispatch:
+    inputs:
+      publish_version:
+        description: Existing release version to publish to npm
+        required: true
+        default: '1.13.4'
+        type: string
   pull_request:
   push:
     branches:
@@ -20,16 +27,31 @@ jobs:
       id-token: write
 
     steps:
+      - name: Validate recovery version
+        if: github.event_name == 'workflow_dispatch'
+        id: recovery
+        env:
+          PUBLISH_VERSION: ${{ inputs.publish_version }}
+        run: |
+          if [[ ! "$PUBLISH_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "Recovery requires a stable version in major.minor.patch format." >&2
+            exit 1
+          fi
+          echo "tag=refs/tags/ss-searchv${PUBLISH_VERSION}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.head_ref || github.ref }}
+          ref: ${{ steps.recovery.outputs.tag || github.head_ref || github.ref }}
 
       - name: Setup node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@11
 
       - name: Remove package versions from package-lock.json for caching
         run: |
@@ -67,25 +89,63 @@ jobs:
         run: npm run benchmark
 
       - name: Configure Git identity (required to create NX git commit and tags)
-        if: github.ref == 'refs/heads/master'
+        if: github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master'
         run: |
           git config --global user.email "nx@fake-domain.com"
           git config --global user.name "NX CI Bot"
 
-      - name: Authenticate with npm
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
       - name: Release + Publish package
-        if: github.ref == 'refs/heads/master'
+        if: github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
         run: npx nx release -y
 
+      - name: Check recovery version against npm
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          PUBLISH_VERSION: ${{ inputs.publish_version }}
+        run: |
+          node <<'JS'
+          const { execFileSync } = require('node:child_process')
+          const semver = require('semver')
+          const version = process.env.PUBLISH_VERSION
+          const metadata = JSON.parse(execFileSync('npm', ['view', 'ss-search', 'versions', 'dist-tags', '--json'], { encoding: 'utf8' }))
+          if (metadata.versions.includes(version)) {
+            throw new Error(`ss-search@${version} is already published; no recovery is needed.`)
+          }
+          const latest = metadata['dist-tags'].latest
+          if (!semver.valid(version) || !semver.valid(latest) || semver.lte(version, latest)) {
+            throw new Error(`Recovery version ${version} must be newer than npm latest ${latest}.`)
+          }
+          console.log(`Recovery will publish ss-search@${version}; npm latest is ${latest}.`)
+          JS
+
+      - name: Prepare existing release for recovery
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          PUBLISH_VERSION: ${{ inputs.publish_version }}
+        run: |
+          node <<'JS'
+          const fs = require('node:fs')
+          const path = 'dist/ss-search/package.json'
+          const manifest = JSON.parse(fs.readFileSync(path, 'utf8'))
+          if (manifest.name !== 'ss-search') throw new Error('Recovery package must be ss-search.')
+          for (const field of ['dependencies', 'peerDependencies', 'optionalDependencies']) {
+            if (Object.keys(manifest[field] || {}).length) throw new Error(`Recovery package has ${field}.`)
+          }
+          manifest.version = process.env.PUBLISH_VERSION
+          fs.writeFileSync(path, JSON.stringify(manifest, null, 2) + '\n')
+          console.log(`Prepared dependency-free ss-search@${manifest.version} from the existing release tag.`)
+          JS
+
+      - name: Publish existing release
+        if: github.event_name == 'workflow_dispatch'
+        run: npm publish ./dist/ss-search --access public --tag latest --provenance
+
       - name: Deploy to netlify
-        if: github.ref == 'refs/heads/master'
+        if: github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/master'
         run: npm run netlify:deploy
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
