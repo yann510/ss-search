@@ -9,7 +9,12 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist/{projectName}"],
       "options": {
-        "commands": ["tsup", "cp package.json ../dist/ss-search/package.json", "cp ../README.md ../dist/ss-search/README.md"],
+        "commands": [
+          "tsup",
+          "cp package.json ../dist/ss-search/package.json",
+          "cp ../README.md ../dist/ss-search/README.md",
+          "cp THIRD_PARTY_LICENSES ../dist/ss-search/THIRD_PARTY_LICENSES"
+        ],
         "cwd": "ss-search",
         "parallel": false
       }
