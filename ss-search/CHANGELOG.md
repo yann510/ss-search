@@ -1,3 +1,13 @@
+## 1.13.4 (2026-10-10)
+
+### 💅 Refactors
+
+- **ss-search:** remove published runtime dependencies ([#217](https://github.com/yann510/ss-search/pull/217))
+
+### ❤️ Thank You
+
+- Yann Thibodeau
+
 ## 1.13.3 (2026-10-09)
 
 This was a version bump only for ss-search to align it with other projects, there were no code changes.
