@@ -135,6 +135,7 @@
       "smol-toml": "1.9.0",
       "follow-redirects": "1.16.1"
     },
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "toml": "5.0.1"
   }
 }
