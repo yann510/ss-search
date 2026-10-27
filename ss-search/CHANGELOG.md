@@ -1,3 +1,7 @@
+## 1.13.7 (2026-10-27)
+
+This was a version bump only for ss-search to align it with other projects, there were no code changes.
+
 ## 1.13.6 (2026-10-22)
 
 This was a version bump only for ss-search to align it with other projects, there were no code changes.
